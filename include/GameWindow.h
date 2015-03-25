@@ -27,7 +27,9 @@ public:
     GameWindow(string windowName, int width, int height);
     virtual ~GameWindow();
 
-    static bool init(Renderer * r, int * argc, char ** argv);
+    static void setRenderer(Renderer * r);
+    static Renderer * getRenderer();
+    static bool init(int * argc, char ** argv);
     static void mainLoop();
 
     // Callback functions

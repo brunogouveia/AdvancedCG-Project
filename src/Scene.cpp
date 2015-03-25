@@ -1,7 +1,8 @@
 #include "Scene.h"
 
 Scene::Scene() {
-	// do nothing
+	// Initialize camera
+	camera = new Camera();
 }
 
 Scene::~Scene() {
