@@ -3,12 +3,14 @@
 
 #include <List>
 #include <GameObject.h>
+#include <Camera.h>
 
 using namespace std;
 
 class Scene
 {
 private:
+	Camera * camera;
 	list<GameObject*> objects;
 	// list<Light> lights;
 

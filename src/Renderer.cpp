@@ -1,30 +1,54 @@
 #include <Renderer.h>
+#include <iostream>
 
 Renderer::Renderer(Scene * s) {
     scene = s;
+    camera = NULL;
     th=0;       //  Azimuth of view angle
     ph=0;       //  Elevation of view angle
     zh=0;       //  Light angle
     fov=55.0;   //  Field of view (angles)
     asp=1;      //  Screen aspect ratio
-    dim=2;      //  World dimension
+    dim=3.0;      //  World dimension
 }
 
 Renderer::~Renderer() {
     
 }
 
+int Renderer::createShaderProg(char * vertShaderFile, char * fragShaderFile) {
+    // Create shader
+    int shader = CreateShaderProg(vertShaderFile, fragShaderFile);
+
+    // We need to bind this shader with the projection buffer
+    if (camera) {
+        camera->bindProjectionBuffer(shader);
+    } else {
+        std::cout << "Renderer::createShaderProg - camera is NULL" << std::endl;
+    }
+
+    // Return shader
+    return shader;
+}
+
+void Renderer::setScene(Scene * s) {
+    this->scene = s;
+}
+
+void Renderer::setCamera(Camera * c) {
+    this->camera = c;
+}
 
 void Renderer::display() {
     // Enable z-buffer and culling
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
     // Clear color and depth buffer
     glClearColor(0,0,0,1);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // Draw scene
-    scene->draw();
+    if (scene)
+        scene->draw();
 
     //  Display parameters
     glColor3f(1,1,1);
@@ -38,16 +62,18 @@ void Renderer::display() {
 }
 void Renderer::reshape(int width, int height) {
     //  Ratio of the width to the height of the window
-    asp = (width>0) ? (double)height/width : 1;
+    asp = (height>0) ? (double)width/height : 1;
     //  Set the viewport to the entire window
     glViewport(0,0, width,height);
-    //  Set model view matrix
-    float Ex = -2*dim*Sin(th)*Cos(ph);
-    float Ey = +2*dim        *Sin(ph);
-    float Ez = +2*dim*Cos(th)*Cos(ph);
-    SetModelViewMatrix(Ex, Ey, Ez, 0, 0, 0, 0, Cos(ph), 0);
-    //  Set projection
-    SetProjectionMatrix(M_PI*fov/180.0, asp, dim/16.0, dim*16.0);
+    if (camera) {
+        //  Set model view matrix
+        float Ex = -2*dim*Sin(th)*Cos(ph);
+        float Ey = +2*dim        *Sin(ph);
+        float Ez = +2*dim*Cos(th)*Cos(ph);
+        camera->lookAt(Ex, Ey, Ez, 0, 0, 0, 0, Cos(ph), 0);
+        //  Set projection
+        camera->setPerspective(M_PI*fov/180.0, asp, dim/16.0, dim*16.0);
+    }
 }
 void Renderer::special(int key, int x, int y) {
     //  Right arrow key - increase angle by 5 degrees
@@ -65,13 +91,15 @@ void Renderer::special(int key, int x, int y) {
     //  Keep angles to +/-360 degrees
     th %= 360;
     ph %= 360;
-    //  Set model view matrix
-    float Ex = -2*dim*Sin(th)*Cos(ph);
-    float Ey = +2*dim        *Sin(ph);
-    float Ez = +2*dim*Cos(th)*Cos(ph);
-    SetModelViewMatrix(Ex, Ey, Ez, 0, 0, 0, 0, Cos(ph), 0);
-    //  Set projection
-    SetProjectionMatrix(M_PI*fov/180.0, asp, dim/16.0, dim*16.0);
+    if (camera) {
+        //  Set model view matrix
+        float Ex = -2*dim*Sin(th)*Cos(ph);
+        float Ey = +2*dim        *Sin(ph);
+        float Ez = +2*dim*Cos(th)*Cos(ph);
+        camera->lookAt(Ex, Ey, Ez, 0, 0, 0, 0, Cos(ph), 0);
+        //  Set projection
+        camera->setPerspective(M_PI*fov/180.0, asp, dim/16.0, dim*16.0);
+    }
     //  Tell GLUT it is necessary to redisplay the scene
     glutPostRedisplay();
 }
