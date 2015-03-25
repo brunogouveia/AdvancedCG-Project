@@ -3,13 +3,11 @@
 
 #include "CSCIx239.h"
 #include <Scene.h>
-#include <Camera.h>
 
 class Renderer
 {
 public:
-    Scene * scene;  //  Scene to be rendered
-    Camera * camera;//  Camera info
+    Scene * scene;
     int th;         //  Azimuth of view angle
     int ph;         //  Elevation of view angle
     int zh;         //  Light angle
@@ -19,11 +17,6 @@ public:
 
     Renderer(Scene * s);
     ~Renderer();
-
-    int createShaderProg(char * vertShaderFile, char * fragShaderFile);
-
-    void setScene(Scene * s);
-    void setCamera(Camera * c);
 
     // Callback functions
     void display();

@@ -32,7 +32,6 @@ OBJS = \
 	$(BUILD_DIR)GameWindow.o \
 	$(BUILD_DIR)Renderer.o \
 	$(BUILD_DIR)Scene.o \
-	$(BUILD_DIR)Camera.o \
 	$(BUILD_DIR)GameObject.o \
 	$(BUILD_DIR)Cube.o \
 	$(BUILD_DIR)fatal.o \
@@ -76,9 +75,6 @@ $(BUILD_DIR)GameWindow.o: $(SRC_DIR)GameWindow.cpp
 
 $(BUILD_DIR)Renderer.o: $(SRC_DIR)Renderer.cpp
 	g++ -c -o $(BUILD_DIR)Renderer.o $(CFLG) -I$(INCLUDE_DIR) $(SRC_DIR)Renderer.cpp
-
-$(BUILD_DIR)Camera.o: $(SRC_DIR)Camera.cpp
-	g++ -c -o $(BUILD_DIR)Camera.o $(CFLG) -I$(INCLUDE_DIR) $(SRC_DIR)Camera.cpp
 
 $(BUILD_DIR)Scene.o: $(SRC_DIR)Scene.cpp
 	g++ -c -o $(BUILD_DIR)Scene.o $(CFLG) -I$(INCLUDE_DIR) $(SRC_DIR)Scene.cpp

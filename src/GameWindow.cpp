@@ -23,7 +23,7 @@ GameWindow::~GameWindow() {
     // do nothing
 }
 
-bool GameWindow::init(int * argc, char ** argv) {
+bool GameWindow::init(Renderer * r, int * argc, char ** argv) {
     // Initialize GLUT
     glutInit(argc, argv);
     // Request double buffer, true color and z buffering
@@ -45,15 +45,10 @@ bool GameWindow::init(int * argc, char ** argv) {
     glutKeyboardFunc(key);
     glutIdleFunc(idle);
 
-    return true;
-}
-
-void GameWindow::setRenderer(Renderer * r) {
+    // Set renderer
     renderer = r;
-}
 
-Renderer * GameWindow::getRenderer() {
-    return renderer;
+    return true;
 }
 
 void GameWindow::mainLoop() {
@@ -62,22 +57,17 @@ void GameWindow::mainLoop() {
 }
 
 void GameWindow::display() {
-    if (renderer)
-        renderer->display();
+    renderer->display();
 }
 void GameWindow::reshape(int width, int height) {
-    if (renderer)
-        renderer->reshape(width, height);
+    renderer->reshape(width, height);
 }
 void GameWindow::special(int key, int x, int y) {
-    if (renderer)
-        renderer->special(key, x, y);
+    renderer->special(key, x, y);
 }
 void GameWindow::key(unsigned char ch, int x, int y) {
-    if (renderer)
-        renderer->key(ch, x, y);
+    renderer->key(ch, x, y);
 }
 void GameWindow::idle() {
-    if (renderer)
-        renderer->idle();
+    renderer->idle();
 }

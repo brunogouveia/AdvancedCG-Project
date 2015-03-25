@@ -6,10 +6,10 @@ uniform Tranformations {
 	mat4 ProjectionMatrix;
 	// ModelView Matrix
 	mat4 ModelViewMatrix;
-	// Normal matrix;
-	mat4 normalMatrix;
 	// ModelViewProjection Matrix
 	mat4 MVP;
+	// Normal matrix;
+	mat4 normalMatrix;
 } tranformations;
 
 uniform Light {
@@ -45,5 +45,5 @@ void main()
    ITextCoord = TextCoord;
 
    //  Set transformed vertex location
-   gl_Position =  tranformations.ProjectionMatrix * tranformations.ModelViewMatrix * Vertex;
+   gl_Position =  tranformations.MVP * Vertex;
 }

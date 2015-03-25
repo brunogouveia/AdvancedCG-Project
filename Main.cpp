@@ -2,23 +2,19 @@
 #include <Cube.h>
 
 int main(int argc, char ** argv) {
-
-
-	// Create a game window
-	GameWindow gw("GE", 800, 800);
-
-	// Initailize it
-	GameWindow::init(&argc, argv);
 	// Create scene
 	Scene s;
+
 	Renderer r(&s);
-	GameWindow::setRenderer(&r);
-	r.setScene(&s);
-	r.setCamera(new Camera());
+
+	// Create a game window
+	GameWindow gw("GE", 800, 600);
+
+	// Initailize it
+	GameWindow::init(&r, &argc, argv);
 
 	Cube cube;
-	cube.init(r.createShaderProg("shaders/phong.vert","shaders/phong.frag"));
-	s.addGameObject(&cube);
+	cube.init(CreateShaderProg("shaders/phong.vert","shaders/phong.frag"));
 	// Call main loop
 	GameWindow::mainLoop();
 	return 0;

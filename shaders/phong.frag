@@ -6,10 +6,10 @@ uniform Tranformations {
 	mat4 ProjectionMatrix;
 	// ModelView Matrix
 	mat4 ModelViewMatrix;
-	// Normal matrix;
-	mat4 normalMatrix;
 	// ModelViewProjection Matrix
 	mat4 MVP;
+	// Normal matrix;
+	mat4 normalMatrix;
 } tranformations;
 
 uniform Light {
@@ -65,5 +65,5 @@ vec4 phong()
 
 void main()
 {
-   Fragcolor = vec4(FrontColor,1.0);
+   Fragcolor = vec4(FrontColor,1.0)*phong();
 }

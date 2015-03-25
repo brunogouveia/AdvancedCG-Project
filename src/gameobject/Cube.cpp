@@ -1,5 +1,4 @@
 #include "Cube.h"
-#include <iostream>
 
 float Cube::vertices[] = {
 //  X  Y  Z  W    Nx Ny Nz   Tx Ty Tz    R G B   s t
