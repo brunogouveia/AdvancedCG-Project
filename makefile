@@ -34,6 +34,7 @@ OBJS = \
 	$(BUILD_DIR)Scene.o \
 	$(BUILD_DIR)Camera.o \
 	$(BUILD_DIR)GameObject.o \
+	$(BUILD_DIR)Texture.o \
 	$(BUILD_DIR)Cube.o \
 	$(BUILD_DIR)fatal.o \
 	$(BUILD_DIR)cube.o \
@@ -85,6 +86,9 @@ $(BUILD_DIR)Scene.o: $(SRC_DIR)Scene.cpp
 
 $(BUILD_DIR)GameObject.o: $(SRC_DIR)gameobject/GameObject.cpp
 	g++ -c -o $(BUILD_DIR)GameObject.o $(CFLG) -I$(INCLUDE_DIR) $(SRC_DIR)gameobject/GameObject.cpp
+
+$(BUILD_DIR)Texture.o: $(SRC_DIR)Texture.cpp
+	g++ -c -o $(BUILD_DIR)Texture.o $(CFLG) -I$(INCLUDE_DIR) $(SRC_DIR)Texture.cpp
 
 $(BUILD_DIR)Cube.o: $(SRC_DIR)gameobject/Cube.cpp
 	g++ -c -o $(BUILD_DIR)Cube.o $(CFLG) -I$(INCLUDE_DIR) $(SRC_DIR)gameobject/Cube.cpp

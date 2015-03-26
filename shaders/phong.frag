@@ -65,5 +65,5 @@ vec4 phong()
 
 void main()
 {
-   Fragcolor = vec4(FrontColor,1.0);
+   Fragcolor = texture(text, ITextCoord.st)*vec4(FrontColor,1.0);
 }

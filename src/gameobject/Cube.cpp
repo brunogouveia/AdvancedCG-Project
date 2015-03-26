@@ -1,4 +1,5 @@
 #include "Cube.h"
+#include <Texture.h>
 #include <iostream>
 
 float Cube::vertices[] = {
@@ -48,7 +49,7 @@ float Cube::vertices[] = {
 };
 
 
-Cube::Cube(glm::mat4 modelMatrix) {
+Cube::Cube(glm::mat4 modelMatrix) : GameObject() {
     this->modelMatrix = modelMatrix;
 }
 
@@ -97,7 +98,19 @@ void Cube::draw() {
     glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 12*sizeof(float), (void*)(7*sizeof(float)));
     // Set attribute 3 - texture (vec2)
     glEnableVertexAttribArray(3);
-    glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, 12*sizeof(float), (void*)(10*sizeof(float)));
+    glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, 12*sizeof(float), (void*)(10*sizeof(float)));   
+
+    // Activate texture
+    glActiveTexture(GL_TEXTURE0);
+    // Bind texture
+    if (texture >= 0) {
+        glBindTexture(GL_TEXTURE_2D, texture);
+    } else {
+        glBindTexture(GL_TEXTURE_2D, Texture::getDefaultTexture());
+    }
+    // Set uniform value
+    int id = glGetUniformLocation(shader, "text");
+    if (id >= 0) glUniform1i(id, 0);
 
     // Draw cube
     glDrawArrays(GL_TRIANGLES, 0, 36);

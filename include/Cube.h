@@ -1,7 +1,7 @@
 #ifndef CUBE_H__
 #define CUBE_H__ 
 
-#include "CSCIx239.h"
+#include <CSCIx239.h>
 #include <glm/glm.hpp>
 #include <GameWindow.h>
 #include <GameObject.h>

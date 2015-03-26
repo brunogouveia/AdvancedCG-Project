@@ -1,7 +1,7 @@
 #include "GameObject.h"
 
 GameObject::GameObject() {
-    // Do nothing
+    texture = -1;
 }
 
 GameObject::~GameObject() {
@@ -14,4 +14,9 @@ void GameObject::init(int shader) {
 
 void GameObject::draw() {
     // Do nothing
+}
+
+void GameObject::setTexture(char * textureFileName) {
+	glActiveTexture(GL_TEXTURE0);
+	texture = LoadTexBMP(textureFileName);
 }
