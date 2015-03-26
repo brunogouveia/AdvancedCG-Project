@@ -2,6 +2,12 @@
 
 int Texture::defaultTexture = -1;
 
+Texture::Texture(int textureUnit) {
+    this->textureUnit = textureUnit;
+    glActiveTexture(textureUnit);
+    this->texture = getDefaultTexture();
+}
+
 Texture::Texture(int textureUnit, char * fileName) {
     // Set texture unit
     this->textureUnit = textureUnit;
@@ -15,6 +21,10 @@ Texture::~Texture() {
 
 void Texture::active() const {
     glActiveTexture(textureUnit);
+}
+
+void Texture::bind() const {
+    glBindTexture(GL_TEXTURE_2D, texture);
 }
 
 int Texture::getDefaultTexture() {

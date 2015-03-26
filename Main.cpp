@@ -20,12 +20,14 @@ int main(int argc, char ** argv) {
 
 	Cube cube(glm::translate(id, glm::vec3(1.0)));
 	cube.init(r.createShaderProg("shaders/phong.vert","shaders/phong.frag"));
-	cube.setTexture("textures/pi.bmp");
+	Texture cubeTexture(GL_TEXTURE0, "textures/pi.bmp");
+	cube.setTexture(cubeTexture);
 	s.addGameObject(&cube);
 	
 	Cube cube2(glm::translate(id, glm::vec3(-1.0)));
 	cube2.init(r.createShaderProg("shaders/phong.vert","shaders/phong.frag"));
-	cube2.setTexture("textures/texture.bmp");
+	Texture cube2Texture(GL_TEXTURE0, "textures/texture.bmp");
+	cube2.setTexture(cube2Texture);
 	s.addGameObject(&cube2);
 
 	//  Make sure enough texture units are available

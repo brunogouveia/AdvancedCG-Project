@@ -1,7 +1,7 @@
 #include "GameObject.h"
 
-GameObject::GameObject() {
-    texture = -1;
+GameObject::GameObject() : texture(GL_TEXTURE0) {
+	// do nothing
 }
 
 GameObject::~GameObject() {
@@ -16,7 +16,6 @@ void GameObject::draw() {
     // Do nothing
 }
 
-void GameObject::setTexture(char * textureFileName) {
-	glActiveTexture(GL_TEXTURE0);
-	texture = LoadTexBMP(textureFileName);
+void GameObject::setTexture(Texture newTexture) {
+	texture = newTexture;
 }

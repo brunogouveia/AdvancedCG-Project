@@ -101,13 +101,15 @@ void Cube::draw() {
     glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, 12*sizeof(float), (void*)(10*sizeof(float)));   
 
     // Activate texture
+    // texture.active();
     glActiveTexture(GL_TEXTURE0);
     // Bind texture
-    if (texture >= 0) {
-        glBindTexture(GL_TEXTURE_2D, texture);
-    } else {
-        glBindTexture(GL_TEXTURE_2D, Texture::getDefaultTexture());
-    }
+    texture.bind();
+    // if (texture >= 0) {
+    //     glBindTexture(GL_TEXTURE_2D, texture);
+    // } else {
+    //     glBindTexture(GL_TEXTURE_2D, Texture::getDefaultTexture());
+    // }
     // Set uniform value
     int id = glGetUniformLocation(shader, "text");
     if (id >= 0) glUniform1i(id, 0);
