@@ -25,6 +25,8 @@ public:
 
     void bindProjectionBuffer(int shader);
     
+    void setModelMatrix(glm::mat4 & modelMatrix);
+
     void setPerspective(float fov, float aspRatio, float zNear, float zFar);
 
     void lookAt(float ex, float ey, float ez, float cx, float cy, float cz, float upx, float upy, float upz);

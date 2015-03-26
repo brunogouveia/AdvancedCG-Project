@@ -3,18 +3,20 @@
 
 #include "CSCIx239.h"
 #include <glm/glm.hpp>
+#include <GameWindow.h>
 #include <GameObject.h>
 
 class Cube: public GameObject
 {
 private:
+	glm::mat4 modelMatrix;
     unsigned int vertexArrayObj;
     unsigned int vertexBuffer;
     
     static float vertices[];
 
 public:
-    Cube();
+    Cube(glm::mat4 modelMatrix);
     ~Cube();
     
     virtual void init(int shader);

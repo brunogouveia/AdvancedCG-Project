@@ -48,8 +48,8 @@ float Cube::vertices[] = {
 };
 
 
-Cube::Cube() {
-    
+Cube::Cube(glm::mat4 modelMatrix) {
+    this->modelMatrix = modelMatrix;
 }
 
 Cube::~Cube() {
@@ -80,7 +80,7 @@ void Cube::draw() {
     glUseProgram(shader);
 
     // Set model matrix
-    // TODO - implement camera first
+    GameWindow::getRenderer()->camera->setModelMatrix(modelMatrix);
 
     // Bind vao and buffer
     glBindVertexArray(vertexArrayObj);

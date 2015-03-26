@@ -27,6 +27,15 @@ void Camera::bindProjectionBuffer(int shader) {
     if (id > 0) glUniformBlockBinding(shader, id, projectionBindingPoint);
 }
 
+void Camera::setModelMatrix(glm::mat4 & modelMatrix) {
+    // Compute the new model view matrix
+    glm::mat4 mvMatrix = modelViewMatrix * modelMatrix;
+    // Bind buffer and copy data
+    glBindBuffer(GL_UNIFORM_BUFFER, projectionBuffer);
+    glBufferSubData(GL_UNIFORM_BUFFER, 16*sizeof(float), 16*sizeof(float), glm::value_ptr(mvMatrix));
+    glBufferSubData(GL_UNIFORM_BUFFER, 32*sizeof(float), 16*sizeof(float), glm::value_ptr(glm::inverseTranspose(mvMatrix)));
+}
+
 void Camera::setPerspective(float fov, float asp, float zNear, float zFar) {
     // Create new projection matrix
     projectionMatrix = glm::perspective<float>(fov, asp, zNear, zFar);
