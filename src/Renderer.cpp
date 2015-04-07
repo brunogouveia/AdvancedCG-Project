@@ -1,4 +1,5 @@
 #include <Renderer.h>
+#include <Light.h>
 #include <iostream>
 
 Renderer::Renderer(Scene * s) {
@@ -27,6 +28,9 @@ int Renderer::createShaderProg(char * vertShaderFile, char * fragShaderFile) {
         std::cout << "Renderer::createShaderProg - camera is NULL" << std::endl;
     }
 
+    // Bind light as well
+    Light::bindLightBuffers(shader);
+
     // Return shader
     return shader;
 }
@@ -42,13 +46,30 @@ void Renderer::setCamera(Camera * c) {
 void Renderer::display() {
     // Enable z-buffer and culling
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+    // Set depth test function
+    glDepthFunc(GL_LEQUAL);
     // Clear color and depth buffer
     glClearColor(0,0,0,1);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // Draw scene
+    // Draw scene with regular shader
     if (scene)
-        scene->draw();
+        scene->firstDraw();
+
+
+    // Enable additive blending
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_ONE, GL_ONE);
+    // Set depth test function
+    glDepthFunc(GL_EQUAL);
+
+    // Draw scene with LIGHT shader
+    if (scene)
+        scene->drawObjectsWithLights();
+
+    // Disable blending
+    glDisable(GL_BLEND);
 
     //  Display parameters
     glColor3f(1,1,1);

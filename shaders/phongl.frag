@@ -39,7 +39,35 @@ uniform sampler2D text;
 //  Fragment color
 layout (location=0) out vec4 Fragcolor;
 
+
+vec4 phong()
+{
+	// Position in eye coordinates
+	vec3 pos = IPosition;
+
+	// Normal in eye coordinates
+	vec3 N = normalize(INormal);
+
+	// Light vector
+	vec3 L = normalize(vec3(tranformations.ModelViewMatrix * light.position) - pos);
+
+	// Reflection vector
+	vec3 R = reflect(-L, N);
+
+	// View vector in eye coordinates
+	vec3 V = normalize(-pos);
+
+	// Diffuse light intensity
+	float Id = max(0.0, dot(N, L));
+
+	// Specular light intensity
+	float Is = (Id > 0.0) ? pow(max(0.0, dot(R, V)), 100) : 0.0;
+
+	return Id*light.diffuse + Is*light.specular;
+}
+
+
 void main()
 {
-   Fragcolor = texture(text, ITextCoord.st)*vec4(FrontColor,1.0) * (globalLight.global + globalLight.ambient);
+   Fragcolor = texture(text, ITextCoord.st)*vec4(FrontColor,1.0) * phong();
 }

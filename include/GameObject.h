@@ -12,15 +12,16 @@ class GameObject
 {
 protected:
     int shader;             // Shader to render this object
-    Texture texture;			// Texture
+    int lightShader;		// Shader that render the light effect
+    Texture texture;		// Texture
     glm::mat4 modelMatrix;  // Model matrix
 
 public:
     GameObject();
     ~GameObject();
     
-    virtual void init(int shader);
-    virtual void draw();
+    virtual void init(int shader, int lightShader);
+    virtual void draw(bool useLight);
     virtual void setTexture(Texture newTexture);
 };
 

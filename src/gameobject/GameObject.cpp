@@ -8,11 +8,12 @@ GameObject::~GameObject() {
     // Do nothing
 }
 
-void GameObject::init(int shader) {
+void GameObject::init(int shader, int lightShader) {
     this->shader = shader;
+    this->lightShader = lightShader;
 }
 
-void GameObject::draw() {
+void GameObject::draw(bool useLight) {
     // Do nothing
 }
 

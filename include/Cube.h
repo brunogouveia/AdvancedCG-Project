@@ -19,8 +19,8 @@ public:
     Cube(glm::mat4 modelMatrix);
     ~Cube();
     
-    virtual void init(int shader);
-    virtual void draw();
+    virtual void init(int shader, int lightShader);
+    virtual void draw(bool useLight);
 };
 
 #endif
