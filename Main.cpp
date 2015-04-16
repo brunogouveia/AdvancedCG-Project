@@ -24,15 +24,16 @@ int main(int argc, char ** argv) {
 
 	Cube cube(id);
 	cube.init(r.createShaderProg("shaders/phong.vert","shaders/phong.frag"), r.createShaderProg("shaders/phongl.vert","shaders/phongl.frag"));
-	Script script(&cube);
 	Texture cubeTexture(GL_TEXTURE0, "textures/pi.bmp");
 	cube.setTexture(cubeTexture);
 	s.addGameObject(&cube);
-	s.addScript(&script);
 
 	Light firstLight;
 	firstLight.setPosition(1.438680, 2.0, 1.3893);
 	s.addLight(&firstLight);
+
+	// s.addScript(Script::GetScriptByName(&cube, "CubeScript"));
+	s.addScript(Script::GetScriptByName(&firstLight, "LightScript"));
 
 	// Cube cube2(glm::translate(id, glm::vec3(-1.0)));
 	// cube2.init(r.createShaderProg("shaders/phong.vert","shaders/phong.frag"));

@@ -4,16 +4,9 @@
 #include <CSCIx239.h>
 #include <List>
 #include <Texture.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/matrix_inverse.hpp>
-#include <glm/gtc/type_ptr.hpp>
+#include <Transform.h>
 
-// #include "glm/gtc/matrix_transform.hpp"
-// #include "glm/gtc/matrix_inverse.hpp"
-// #include "glm/gtc/type_ptr.hpp"
-
-class GameObject
+class GameObject : public Transform
 {
 protected:
     int shader;             // Shader to render this object
@@ -30,7 +23,7 @@ public:
     virtual void setTexture(Texture newTexture);
 
     // Transform functions
-    virtual void translate(glm::vec3 t);
+    virtual void translate(glm::vec3 & t);
     virtual void rotate(float angle, glm::vec3 & up);
 };
 

@@ -90,10 +90,10 @@ void Renderer::reshape(int width, int height) {
     glViewport(0,0, width,height);
     if (camera) {
         //  Set model view matrix
-        float Ex = -2*dim*Sin(th)*Cos(ph);
-        float Ey = +2*dim        *Sin(ph);
-        float Ez = +2*dim*Cos(th)*Cos(ph);
-        camera->lookAt(Ex, Ey, Ez, 0, 0, 0, 0, Cos(ph), 0);
+        float Ex = -2*dim*CsSin(th)*CsCos(ph);
+        float Ey = +2*dim        *CsSin(ph);
+        float Ez = +2*dim*CsCos(th)*CsCos(ph);
+        camera->lookAt(Ex, Ey, Ez, 0, 0, 0, 0, CsCos(ph), 0);
         //  Set projection
         camera->setPerspective(M_PI*fov/180.0, asp, dim/16.0, dim*16.0);
     }
@@ -116,10 +116,10 @@ void Renderer::special(int key, int x, int y) {
     ph %= 360;
     if (camera) {
         //  Set model view matrix
-        float Ex = -2*dim*Sin(th)*Cos(ph);
-        float Ey = +2*dim        *Sin(ph);
-        float Ez = +2*dim*Cos(th)*Cos(ph);
-        camera->lookAt(Ex, Ey, Ez, 0, 0, 0, 0, Cos(ph), 0);
+        float Ex = -2*dim*CsSin(th)*CsCos(ph);
+        float Ey = +2*dim        *CsSin(ph);
+        float Ez = +2*dim*CsCos(th)*CsCos(ph);
+        camera->lookAt(Ex, Ey, Ez, 0, 0, 0, 0, CsCos(ph), 0);
         //  Set projection
         camera->setPerspective(M_PI*fov/180.0, asp, dim/16.0, dim*16.0);
     }

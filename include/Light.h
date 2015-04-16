@@ -2,8 +2,9 @@
 #define LIGHT_H__ 
 
 #include <CSCIx239.h>
+#include <Transform.h>
 
-class Light
+class Light: public Transform
 {
 private:
     // Static attributes, this is global to all lights
@@ -33,6 +34,11 @@ public:
 
     static void init();
     static void bindLightBuffers(int shader);
+
+    // Tranform overwrite
+    virtual void translate(glm::vec3 & t);
+    virtual void rotate(float rad, glm::vec3 & normal);
+    virtual void scale(glm::vec3 & s);
     
 };
 

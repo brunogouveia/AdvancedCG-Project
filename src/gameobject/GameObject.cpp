@@ -21,7 +21,7 @@ void GameObject::setTexture(Texture newTexture) {
 	texture = newTexture;
 }
 
-void GameObject::translate(glm::vec3 t) {
+void GameObject::translate(glm::vec3 & t) {
 	modelMatrix = glm::translate(modelMatrix, t);
 }
 

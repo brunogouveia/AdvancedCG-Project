@@ -134,3 +134,30 @@ void Light::setShininess(float shininess) {
     // Set shininess
     data[11] = shininess;
 }
+
+void Light::translate(glm::vec3 & t){
+    // Add t to data
+    data[0] += t[0];
+    data[1] += t[1];
+    data[2] += t[2];
+};
+
+void Light::rotate(float rad, glm::vec3 & normal) {
+    // Create position
+    glm::vec3 p = glm::vec3(data[0], data[1], data[2]);
+
+    // Rotate point
+    p = glm::rotate(p, rad, normal);
+
+    // Copy back do data
+    data[0] = p[0];
+    data[1] = p[1];
+    data[2] = p[2];
+}
+
+void Light::scale(glm::vec3 & s) {
+    // Multiply data by s
+    data[0] *= s[0];
+    data[1] *= s[1];
+    data[2] *= s[2];
+}
