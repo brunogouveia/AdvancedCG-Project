@@ -5,6 +5,7 @@
 #include <GameObject.h>
 #include <Light.h>
 #include <Camera.h>
+#include <Script.h>
 
 using namespace std;
 
@@ -12,8 +13,12 @@ class Scene
 {
 private:
 	Camera * camera;
+	// List of objects
 	list<GameObject*> objects;
+	// List of lights
 	list<Light*> lights;
+	// List of scripts
+	list<Script*> scripts;
 
 public:
 	Scene();
@@ -22,9 +27,11 @@ public:
 	void firstDraw();
 
 	void drawObjectsWithLights();
+	void updateScripts();
 
 	void addGameObject(GameObject * gameObject);
 	void addLight(Light * light);
+	void addScript(Script * script);
 };
 
 #endif

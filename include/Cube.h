@@ -9,7 +9,6 @@
 class Cube: public GameObject
 {
 private:
-	glm::mat4 modelMatrix;
     unsigned int vertexArrayObj;
     unsigned int vertexBuffer;
     

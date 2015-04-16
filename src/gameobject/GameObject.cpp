@@ -20,3 +20,11 @@ void GameObject::draw(bool useLight) {
 void GameObject::setTexture(Texture newTexture) {
 	texture = newTexture;
 }
+
+void GameObject::translate(glm::vec3 t) {
+	modelMatrix = glm::translate(modelMatrix, t);
+}
+
+void GameObject::rotate(float angle, glm::vec3 & up) {
+	modelMatrix = glm::rotate(modelMatrix, angle, up);
+}

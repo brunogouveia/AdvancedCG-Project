@@ -29,10 +29,21 @@ void Scene::drawObjectsWithLights() {
 	}
 }
 
+void Scene::updateScripts() {
+	// For each script
+	for (list<Script*>::iterator curScript = scripts.begin(); curScript != scripts.end(); curScript++) {
+		(*curScript)->OnUpdate();
+	}
+}
+
 void Scene::addGameObject(GameObject * gameObject) {
 	objects.push_back(gameObject);
 }
 
 void Scene::addLight(Light * light) {
 	lights.push_back(light);
+}
+
+void Scene::addScript(Script * script) {
+	scripts.push_back(script);
 }

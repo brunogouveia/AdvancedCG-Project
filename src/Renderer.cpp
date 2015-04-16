@@ -44,6 +44,8 @@ void Renderer::setCamera(Camera * c) {
 }
 
 void Renderer::display() {
+    // Update scripts
+    scene->updateScripts();
     // Enable z-buffer and culling
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
@@ -140,7 +142,9 @@ void Renderer::key(unsigned char ch, int x, int y) {
     glutPostRedisplay();
 }
 void Renderer::idle() {
-    //  Elapsed time in seconds
+    // Update scripts
+    scene->updateScripts();
+    // Elapsed time in seconds
    double t = glutGet(GLUT_ELAPSED_TIME)/1000.0;
    zh = fmod(90*t,360.0);
    //  Tell GLUT it is necessary to redisplay the scene
