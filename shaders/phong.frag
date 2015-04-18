@@ -4,12 +4,12 @@
 uniform Tranformations {
 	// Projection Matrix
 	mat4 ProjectionMatrix;
-	// ModelView Matrix
-	mat4 ModelViewMatrix;
+	// Model Matrix
+	mat4 ModelMatrix;
+	// View Matrix
+	mat4 ViewMatrix;
 	// Normal matrix;
-	mat4 normalMatrix;
-	// ModelViewProjection Matrix
-	mat4 MVP;
+	mat4 NormalMatrix;
 } tranformations;
 
 uniform GlobalLight {

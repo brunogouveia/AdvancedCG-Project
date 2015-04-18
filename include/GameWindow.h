@@ -24,9 +24,7 @@ private:
     static int height;
 
 public:
-    GameWindow(string windowName, int width, int height);
-    virtual ~GameWindow();
-
+    static void setWindow(string windowName, int width, int height);
     static void setRenderer(Renderer * r);
     static Renderer * getRenderer();
     static bool init(int * argc, char ** argv);

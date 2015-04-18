@@ -15,6 +15,8 @@ public:
 	 */
 	virtual void translate(glm::vec3 & t){
 	};
+	virtual void translate(float tx, float ty, float tz){
+	};
 
 	/**
 	 *  Rotate the transform by 'rad' radians around the vector normal.
@@ -27,7 +29,8 @@ public:
 	 */
 	virtual void scale(glm::vec3 & s){
 	};
-
+	virtual void scale(float sx, float sy, float sz){
+	};
 };
 
 #endif

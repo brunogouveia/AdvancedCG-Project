@@ -40,6 +40,7 @@ OBJS = \
 	$(BUILD_DIR)Light.o \
 	$(BUILD_DIR)Texture.o \
 	$(BUILD_DIR)Cube.o \
+	$(BUILD_DIR)XmlParser.o \
 	$(BUILD_DIR)fatal.o \
 	$(BUILD_DIR)cube.o \
 	$(BUILD_DIR)light.o \
@@ -102,6 +103,9 @@ $(BUILD_DIR)Texture.o: $(SRC_DIR)Texture.cpp
 
 $(BUILD_DIR)Cube.o: $(SRC_DIR)gameobject/Cube.cpp
 	g++ -c -o $(BUILD_DIR)Cube.o $(CFLG) -I$(INCLUDE_DIR) $(SRC_DIR)gameobject/Cube.cpp
+
+$(BUILD_DIR)XmlParser.o: $(SRC_DIR)xml/XmlParser.cpp
+	g++ -c -o $(BUILD_DIR)XmlParser.o $(CFLG) -I$(INCLUDE_DIR) $(SRC_DIR)xml/XmlParser.cpp
 
 $(BUILD_DIR)fatal.o: $(SRC_DIR)fatal.c
 	g++ -c -o $(BUILD_DIR)fatal.o $(CFLG) -I$(INCLUDE_DIR) $(SRC_DIR)fatal.c

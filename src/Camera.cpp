@@ -28,12 +28,10 @@ void Camera::bindProjectionBuffer(int shader) {
 }
 
 void Camera::setModelMatrix(glm::mat4 & modelMatrix) {
-    // Compute the new model view matrix
-    glm::mat4 mvMatrix = modelViewMatrix * modelMatrix;
     // Bind buffer and copy data
     glBindBuffer(GL_UNIFORM_BUFFER, projectionBuffer);
-    glBufferSubData(GL_UNIFORM_BUFFER, 16*sizeof(float), 16*sizeof(float), glm::value_ptr(mvMatrix));
-    glBufferSubData(GL_UNIFORM_BUFFER, 32*sizeof(float), 16*sizeof(float), glm::value_ptr(glm::inverseTranspose(mvMatrix)));
+    glBufferSubData(GL_UNIFORM_BUFFER, 16*sizeof(float), 16*sizeof(float), glm::value_ptr(modelMatrix));
+    glBufferSubData(GL_UNIFORM_BUFFER, 48*sizeof(float), 16*sizeof(float), glm::value_ptr(glm::inverseTranspose(viewMatrix * modelMatrix)));
 }
 
 void Camera::setPerspective(float fov, float asp, float zNear, float zFar) {
@@ -50,15 +48,12 @@ void Camera::setPerspective(float fov, float asp, float zNear, float zFar) {
 
 void Camera::lookAt(float ex, float ey, float ez, float cx, float cy, float cz, float upx, float upy, float upz) {
     // Create new model view matrix
-    modelViewMatrix = glm::lookAt(glm::vec3(ex,ey,ez), glm::vec3(cx,cy,cz), glm::vec3(upx, upy, upz));
-    // Set normal matrix too
-    normalMatrix = glm::inverseTranspose(modelViewMatrix);
+    viewMatrix = glm::lookAt(glm::vec3(ex,ey,ez), glm::vec3(cx,cy,cz), glm::vec3(upx, upy, upz));
 
     // Bind buffer and copy data
     glBindBuffer(GL_UNIFORM_BUFFER, projectionBuffer);
-    glBufferSubData(GL_UNIFORM_BUFFER, 16*sizeof(float), 16*sizeof(float), glm::value_ptr(modelViewMatrix));
-    glBufferSubData(GL_UNIFORM_BUFFER, 32*sizeof(float), 16*sizeof(float), glm::value_ptr(normalMatrix));
-
+    glBufferSubData(GL_UNIFORM_BUFFER, 32*sizeof(float), 16*sizeof(float), glm::value_ptr(viewMatrix));
+    glBufferSubData(GL_UNIFORM_BUFFER, 48*sizeof(float), 16*sizeof(float), glm::value_ptr(glm::inverseTranspose(viewMatrix)));
     // Unbind buffer
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }

@@ -4,12 +4,15 @@
 #include "CSCIx239.h"
 #include <Scene.h>
 #include <Camera.h>
+#include <String>
 
 class Renderer
 {
 public:
     Scene * scene;  //  Scene to be rendered
     Camera * camera;//  Camera info
+    int defaultBasicShader;// Default basic shader
+    int defaultLightShader;// Default light shader
     int th;         //  Azimuth of view angle
     int ph;         //  Elevation of view angle
     int zh;         //  Light angle
@@ -20,7 +23,9 @@ public:
     Renderer(Scene * s);
     ~Renderer();
 
-    int createShaderProg(char * vertShaderFile, char * fragShaderFile);
+    int createShaderProg(std::string vertShaderFile, std::string fragShaderFile);
+    int getDefaultBasicShader();
+    int getDefaultLightShader();
 
     void setScene(Scene * s);
     void setCamera(Camera * c);

@@ -15,9 +15,7 @@ private:
     unsigned int projectionBuffer;
     // Matrices
     glm::mat4 projectionMatrix;
-    glm::mat4 modelViewMatrix;
-    glm::mat4 normalMatrix;
-    glm::mat4 MVPMatrix;
+    glm::mat4 viewMatrix;
 
 public:
     Camera();

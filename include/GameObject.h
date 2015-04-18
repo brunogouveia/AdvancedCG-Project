@@ -24,6 +24,7 @@ public:
 
     // Transform functions
     virtual void translate(glm::vec3 & t);
+    virtual void translate(float tx, float ty, float tz);
     virtual void rotate(float angle, glm::vec3 & up);
 };
 

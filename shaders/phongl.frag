@@ -4,12 +4,12 @@
 uniform Tranformations {
 	// Projection Matrix
 	mat4 ProjectionMatrix;
-	// ModelView Matrix
-	mat4 ModelViewMatrix;
+	// Model Matrix
+	mat4 ModelMatrix;
+	// View Matrix
+	mat4 ViewMatrix;
 	// Normal matrix;
-	mat4 normalMatrix;
-	// ModelViewProjection Matrix
-	mat4 MVP;
+	mat4 NormalMatrix;
 } tranformations;
 
 uniform GlobalLight {
@@ -49,7 +49,7 @@ vec4 phong()
 	vec3 N = normalize(INormal);
 
 	// Light vector
-	vec3 L = normalize(vec3(tranformations.ModelViewMatrix * light.position) - pos);
+	vec3 L = normalize(vec3(tranformations.ViewMatrix * light.position) - pos);
 
 	// Reflection vector
 	vec3 R = reflect(-L, N);

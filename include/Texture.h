@@ -2,6 +2,7 @@
 #define TEXTURE_H__ 
 
 #include <CSCIx239.h>
+#include <String>
 
 class Texture
 {
@@ -13,7 +14,7 @@ private:
 	static int defaultTexture;
 public:
 	Texture(int textureUnit);
-	Texture(int textureUnit, char * fileName);
+	Texture(int textureUnit, std::string fileName);
 	~Texture();
 	
 	void active() const;

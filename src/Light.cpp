@@ -85,7 +85,6 @@ void Light::bindLightBuffers(int shader) {
     // Bind if block exists
     if (id >= 0)  {
         glUniformBlockBinding(shader, id, globalLightBindingPoint);
-        printf("foi\n");
     }
 
     // Find light block index
@@ -103,7 +102,7 @@ void Light::setPosition(float x, float y, float z) {
 
 void Light::setPosition(float position[]) {
     // Copy to light's data
-    std::memcpy(data, position, sizeof(position));
+    std::memcpy(data, position, 3*sizeof(float));
 }
 
 void Light::setDiffuse(float r, float g, float b) {
@@ -115,7 +114,7 @@ void Light::setDiffuse(float r, float g, float b) {
 
 void Light::setDiffuse(float diffuse[]) {
     // Copy to light's data
-    std::memcpy(&(data[4]), diffuse, sizeof(diffuse));
+    std::memcpy(&(data[4]), diffuse, 3*sizeof(float));
 }
 
 void Light::setSpecular(float r, float g, float b) {
@@ -127,7 +126,7 @@ void Light::setSpecular(float r, float g, float b) {
 
 void Light::setSpecular(float specular[]) {
     // Copy to light's data
-    std::memcpy(&(data[8]), specular, sizeof(specular));
+    std::memcpy(&(data[8]), specular, 3*sizeof(float));
 }
 
 void Light::setShininess(float shininess) {

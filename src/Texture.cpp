@@ -8,11 +8,11 @@ Texture::Texture(int textureUnit) {
     this->texture = getDefaultTexture();
 }
 
-Texture::Texture(int textureUnit, char * fileName) {
+Texture::Texture(int textureUnit, std::string fileName) {
     // Set texture unit
     this->textureUnit = textureUnit;
     glActiveTexture(textureUnit);
-    this->texture = LoadTexBMP(fileName);
+    this->texture = LoadTexBMP(fileName.c_str());
 }
 
 Texture::~Texture() {

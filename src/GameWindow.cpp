@@ -12,15 +12,11 @@ string GameWindow::windowName;
 int GameWindow::width;
 int GameWindow::height;
 
-GameWindow::GameWindow(string wn, int w, int h) {
-    // Save data
+void GameWindow::setWindow(string wn, int w, int h) {
+    // Set data
     windowName = wn;
     width = w;
     height = h;
-}
-
-GameWindow::~GameWindow() {
-    // do nothing
 }
 
 bool GameWindow::init(int * argc, char ** argv) {

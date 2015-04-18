@@ -25,6 +25,11 @@ void GameObject::translate(glm::vec3 & t) {
 	modelMatrix = glm::translate(modelMatrix, t);
 }
 
+void GameObject::translate(float tx, float ty, float tz) {
+	glm::vec3 t = glm::vec3(tx, ty, tz);
+	modelMatrix = glm::translate(modelMatrix, t);
+}
+
 void GameObject::rotate(float angle, glm::vec3 & up) {
 	modelMatrix = glm::rotate(modelMatrix, angle, up);
 }

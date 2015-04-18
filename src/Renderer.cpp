@@ -11,15 +11,17 @@ Renderer::Renderer(Scene * s) {
     fov=55.0;   //  Field of view (angles)
     asp=1;      //  Screen aspect ratio
     dim=3.0;      //  World dimension
+    defaultBasicShader = -1;
+    defaultLightShader = -1;
 }
 
 Renderer::~Renderer() {
     
 }
 
-int Renderer::createShaderProg(char * vertShaderFile, char * fragShaderFile) {
+int Renderer::createShaderProg(std::string vertShaderFile, std::string fragShaderFile) {
     // Create shader
-    int shader = CreateShaderProg(vertShaderFile, fragShaderFile);
+    int shader = CreateShaderProg(vertShaderFile.c_str(), fragShaderFile.c_str());
 
     // We need to bind this shader with the projection buffer
     if (camera) {
@@ -33,6 +35,18 @@ int Renderer::createShaderProg(char * vertShaderFile, char * fragShaderFile) {
 
     // Return shader
     return shader;
+}
+
+int Renderer::getDefaultBasicShader() {
+    if (defaultBasicShader == -1)
+        defaultBasicShader = createShaderProg("shaders/phong.vert","shaders/phong.frag");
+    return defaultBasicShader;
+}
+
+int Renderer::getDefaultLightShader() {
+    if (defaultLightShader == -1)
+        defaultLightShader = createShaderProg("shaders/phongl.vert","shaders/phongl.frag");
+    return defaultLightShader;
 }
 
 void Renderer::setScene(Scene * s) {
