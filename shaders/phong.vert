@@ -21,6 +21,14 @@ uniform Light {
 	vec4 specular;
 } light;
 
+//  Shadows matrices
+uniform Shadows {
+	// Projection Matrix
+	mat4 depthMVP;
+	// Model Matrix
+	mat4 DepthBiasMVP;
+} shadows;
+
 //  Vertex attributes (input)
 layout(location = 0) in vec4 Vertex;
 layout(location = 1) in vec3 Normal;

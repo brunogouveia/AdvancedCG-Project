@@ -19,6 +19,7 @@ public:
     ~Cube();
     
     virtual void init(int shader, int lightShader);
+    virtual void draw(int shader, int depthTexture);
     virtual void draw(bool useLight);
 };
 

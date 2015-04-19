@@ -10,13 +10,17 @@ private:
     // Static attributes, this is global to all lights
     static GLuint globalLightBuffer;
     static GLuint lightBuffer; // This is shared between all lights.
+    static GLuint shadowBuffer;
     static int globalLightBindingPoint;
     static int lightBindingPoint;
+    static int shadowBindingPoint;
 
     // Light attributes
     float data[12];
 
 public:
+    glm::mat4 projectionMatrix;
+    glm::mat4 viewMatrix;
     Light();
     ~Light();
 
@@ -31,6 +35,7 @@ public:
 
 
     void activeLight();
+    void updateMatrices();
 
     static void init();
     static void bindLightBuffers(int shader);

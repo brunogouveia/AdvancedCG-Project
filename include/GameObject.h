@@ -19,6 +19,7 @@ public:
     ~GameObject();
     
     virtual void init(int shader, int lightShader);
+    virtual void draw(int shader, int depthTexture);
     virtual void draw(bool useLight);
     virtual void setTexture(Texture newTexture);
 
@@ -26,6 +27,8 @@ public:
     virtual void translate(glm::vec3 & t);
     virtual void translate(float tx, float ty, float tz);
     virtual void rotate(float angle, glm::vec3 & up);
+    virtual void scale(glm::vec3 & s);
+    virtual void scale(float sx, float sy, float sz);
 };
 
 #endif

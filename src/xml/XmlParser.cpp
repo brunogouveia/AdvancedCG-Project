@@ -62,13 +62,6 @@ void XmlParser::loadFromXml(const char * fileName, int * argc, char ** argv) {
 	// Set camera
 	renderer->setCamera(new Camera());
 
-	// Light * firstLight = new Light;
-	// firstLight->setPosition(1.438680, 2.0, 1.3893);
-	// scene->addLight(firstLight);
-
-	// // s.addScript(Script::GetScriptByName(&cube, "CubeScript"));
-	// scene->addScript(Script::GetScriptByName(firstLight, "LightScript"));
-
 	// Read objects
 	XmlNode * objectsNode = sceneNode->first_node("objects");
 	if (objectsNode) {

@@ -11,7 +11,7 @@ using namespace std;
 
 class Scene
 {
-private:
+public:
 	Camera * camera;
 	// List of objects
 	list<GameObject*> objects;
@@ -24,9 +24,10 @@ public:
 	Scene();
 	~Scene();
 
+	void shadowDraw(int shader, int depthTexture);
 	void firstDraw();
 
-	void drawObjectsWithLights();
+	void drawObjectsWithLights(int depthFrameBuffer, int depthShader, int depthTexture);
 	void updateScripts();
 
 	void addGameObject(GameObject * gameObject);

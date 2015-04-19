@@ -13,6 +13,10 @@ void GameObject::init(int shader, int lightShader) {
     this->lightShader = lightShader;
 }
 
+void GameObject::draw(int shader, int depthTexture) {
+    // Do nothing
+}
+
 void GameObject::draw(bool useLight) {
     // Do nothing
 }
@@ -32,4 +36,13 @@ void GameObject::translate(float tx, float ty, float tz) {
 
 void GameObject::rotate(float angle, glm::vec3 & up) {
 	modelMatrix = glm::rotate(modelMatrix, angle, up);
+}
+
+void GameObject::scale(glm::vec3 & s) {
+	modelMatrix = glm::scale(modelMatrix, s);
+}
+
+void GameObject::scale(float sx, float sy, float sz) {
+	glm::vec3 s = glm::vec3(sx, sy, sz);
+	modelMatrix = glm::scale(modelMatrix, s);
 }

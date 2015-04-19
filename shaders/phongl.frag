@@ -26,6 +26,14 @@ uniform Light {
 	vec4 diffuse;
 	vec4 specular;
 } light;
+
+//  Shadows matrices
+uniform Shadows {
+	// Projection Matrix
+	mat4 depthMVP;
+	// Model Matrix
+	mat4 DepthBiasMVP;
+} shadows;
  
 
 //  Input from previous shader
@@ -33,8 +41,10 @@ in vec3 IPosition;
 in vec3 INormal;
 in vec3 FrontColor;
 in vec2 ITextCoord;
+in vec4 PosModelCoord;
 
 uniform sampler2D text;
+uniform sampler2D depthText;
 
 //  Fragment color
 layout (location=0) out vec4 Fragcolor;
@@ -42,6 +52,10 @@ layout (location=0) out vec4 Fragcolor;
 
 vec4 phong()
 {
+	// Compute PosModelCoord in light coordinates
+	vec4 ShadowCoord = shadows.DepthBiasMVP * PosModelCoord;
+	ShadowCoord /= ShadowCoord.w;
+
 	// Position in eye coordinates
 	vec3 pos = IPosition;
 
@@ -51,23 +65,38 @@ vec4 phong()
 	// Light vector
 	vec3 L = normalize(vec3(tranformations.ViewMatrix * light.position) - pos);
 
-	// Reflection vector
-	vec3 R = reflect(-L, N);
+	float bias = 0.005*tan(acos(dot(N,L)));
+	bias = clamp(bias, 0.0,0.01);
 
-	// View vector in eye coordinates
-	vec3 V = normalize(-pos);
+	if (texture(depthText, ShadowCoord.xy).z + 0.01 > ShadowCoord.z || texture(depthText, ShadowCoord.xy).z == 1.0) {
 
-	// Diffuse light intensity
-	float Id = max(0.0, dot(N, L));
+		// Reflection vector
+		vec3 R = reflect(-L, N);
 
-	// Specular light intensity
-	float Is = (Id > 0.0) ? pow(max(0.0, dot(R, V)), 100) : 0.0;
+		// View vector in eye coordinates
+		vec3 V = normalize(-pos);
 
-	return Id*light.diffuse + Is*light.specular;
+		// Diffuse light intensity
+		float Id = max(0.0, dot(N, L));
+
+		// Specular light intensity
+		float Is = (Id > 0.0) ? pow(max(0.0, dot(R, V)), 100) : 0.0;
+
+		return Id*light.diffuse + Is*light.specular;
+	} else {
+		return vec4(0);
+	}
 }
 
 
 void main()
 {
-   Fragcolor = texture(text, ITextCoord.st)*vec4(FrontColor,1.0) * phong();
+	// Compute PosModelCoord in light coordinates
+	vec4 ShadowCoord = shadows.DepthBiasMVP * PosModelCoord;
+	ShadowCoord /= ShadowCoord.w;
+	
+	Fragcolor = texture(text, ITextCoord.st)*vec4(FrontColor,1.0) * phong();
+	// Fragcolor = vec4(texture(depthText, ITextCoord.st));
+	// Fragcolor = vec4(ShadowCoord.xyz, 1.0);
+	// Fragcolor = vec4(texture(depthText, ShadowCoord.xy).z);
 }

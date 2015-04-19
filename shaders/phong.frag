@@ -27,6 +27,13 @@ uniform Light {
 	vec4 specular;
 } light;
  
+//  Shadows matrices
+uniform Shadows {
+	// Projection Matrix
+	mat4 depthMVP;
+	// Model Matrix
+	mat4 DepthBiasMVP;
+} shadows;
 
 //  Input from previous shader
 in vec3 IPosition;
@@ -35,6 +42,7 @@ in vec3 FrontColor;
 in vec2 ITextCoord;
 
 uniform sampler2D text;
+uniform sampler2D depthText;
 
 //  Fragment color
 layout (location=0) out vec4 Fragcolor;
