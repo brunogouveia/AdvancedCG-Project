@@ -18,9 +18,10 @@ class GameWindow {
 private:
     // Renderer
     static Renderer * renderer;
-
     static string windowName;
+
 public:
+    // Windows size
     static int width;
     static int height;
 

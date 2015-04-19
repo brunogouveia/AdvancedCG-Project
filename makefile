@@ -36,6 +36,8 @@ OBJS = \
 	$(BUILD_DIR)Scene.o \
 	$(BUILD_DIR)Camera.o \
 	$(BUILD_DIR)GameObject.o \
+	$(BUILD_DIR)MeshObject.o \
+	$(BUILD_DIR)glm.o \
 	$(BUILD_DIR)Script.o \
 	$(BUILD_DIR)Light.o \
 	$(BUILD_DIR)Texture.o \
@@ -69,6 +71,7 @@ CSCIx239.a: $(OBJS)
 GE: $(BUILD_DIR)Main.o CSCIx239.a
 	g++ -O3 -o GE -I$(INCLUDE_DIR) $(BUILD_DIR)Main.o CSCIx239.a $(LIBS) $(SRC_DIR)scripts/*.cpp
 
+
 #  Clean
 clean:
 	$(CLEAN)
@@ -91,6 +94,12 @@ $(BUILD_DIR)Scene.o: $(SRC_DIR)Scene.cpp
 
 $(BUILD_DIR)GameObject.o: $(SRC_DIR)gameobject/GameObject.cpp
 	g++ -c -o $(BUILD_DIR)GameObject.o $(CFLG) -I$(INCLUDE_DIR) $(SRC_DIR)gameobject/GameObject.cpp
+
+$(BUILD_DIR)MeshObject.o: $(SRC_DIR)gameobject/MeshObject.cpp
+	g++ -c -o $(BUILD_DIR)MeshObject.o $(CFLG) -I$(INCLUDE_DIR) $(SRC_DIR)gameobject/MeshObject.cpp
+
+$(BUILD_DIR)glm.o: $(SRC_DIR)obj/glm.c
+	g++ -c -o $(BUILD_DIR)glm.o $(CFLG) -I$(INCLUDE_DIR) $(SRC_DIR)obj/glm.c
 
 $(BUILD_DIR)Script.o: $(SRC_DIR)Script.cpp
 	g++ -c -o $(BUILD_DIR)Script.o $(CFLG) -I$(INCLUDE_DIR) $(SRC_DIR)Script.cpp

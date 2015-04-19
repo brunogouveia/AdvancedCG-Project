@@ -16,7 +16,7 @@ protected:
 
 public:
     GameObject();
-    ~GameObject();
+    virtual ~GameObject();
     
     virtual void init(int shader, int lightShader);
     virtual void shadowPass();

@@ -65,7 +65,7 @@ void Renderer::display() {
 
     // Enable z-buffer and culling
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
+    // glEnable(GL_CULL_FACE);
     // Set depth test function
     glDepthFunc(GL_LEQUAL);
 

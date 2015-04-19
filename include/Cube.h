@@ -16,7 +16,7 @@ private:
 
 public:
     Cube(glm::mat4 modelMatrix);
-    ~Cube();
+    virtual ~Cube();
     
     virtual void init(int shader, int lightShader);
     virtual void shadowPass();

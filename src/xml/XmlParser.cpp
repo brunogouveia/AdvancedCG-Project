@@ -10,6 +10,7 @@
 #include <Cube.h>
 #include <Scene.h>
 #include <Script.h>
+ #include <MeshObject.h>
 
 XmlParser::~XmlParser() {
 }
@@ -64,6 +65,19 @@ void XmlParser::loadFromXml(const char * fileName, int * argc, char ** argv) {
 
 	// Light shadow map must be initialized after renderer has a camera
 	Light::initShadowMap(renderer->createShaderProg("shaders/shadow.vert", "shaders/shadow.frag"));
+
+	// glm::mat4 moid;
+	// glm::vec3 s = glm::vec3(0.1);
+	// moid = glm::scale(moid, s);
+	// MeshObject * mo = new MeshObject(moid);
+	// mo->init(renderer->getDefaultBasicShader(), renderer->getDefaultLightShader());
+	// mo->loadFromFile("houseA_obj.obj");
+
+	// Texture tex(GL_TEXTURE0,"houseA.bmp");
+	// mo->setTexture(tex);
+
+	// scene->addGameObject(mo);
+	// scene->addScript(Script::GetScriptByName(mo, "LightScript"));
 
 	// Read objects
 	XmlNode * objectsNode = sceneNode->first_node("objects");
@@ -128,6 +142,73 @@ void XmlParser::loadFromXml(const char * fileName, int * argc, char ** argv) {
 
 			// Get next cube
 			cubeNode = cubeNode->next_sibling("cube");
+		}
+
+		// Read all cubes from scene
+		XmlNode * meshNode = objectsNode->first_node("mesh");
+		while(meshNode) {
+			// Create cube
+			glm::mat4 id;
+			MeshObject * mesh = new MeshObject(id);
+			// Read shaders and init it
+			int basicShader = renderer->getDefaultBasicShader();
+			int lightShader = renderer->getDefaultLightShader();
+			XmlNode * basicShaderNode = meshNode->first_node("basic-shader");
+			XmlNode * lightShaderNode = meshNode->first_node("light-shader");
+			
+			// If there is a basic shader node
+			if (basicShaderNode) {
+				XmlAttr * vert, * frag;
+				xmlAttribute(vert, basicShaderNode);
+				xmlAttribute(frag, basicShaderNode);
+				// Create new shader
+				basicShader = renderer->createShaderProg(vert->value(), frag->value());
+			}
+
+			// If there is a light shader node
+			if (lightShaderNode) {
+				XmlAttr * vert, * frag;
+				xmlAttribute(vert, lightShaderNode);
+				xmlAttribute(frag, lightShaderNode);
+				// Create new shader
+				lightShader = renderer->createShaderProg(vert->value(), frag->value());
+			}
+
+			// Init mesh
+			mesh->init(basicShader, lightShader);
+
+			// Load file (it must exist)
+			XmlAttr * file;
+			xmlAttribute(file, meshNode);
+			mesh->loadFromFile(file->value());
+			
+			// Try to read model
+			readModel(mesh, meshNode->first_node("model"));
+
+
+			// Add c to scene
+			scene->addGameObject(mesh);
+
+			// Set texture
+			XmlNode * texture = meshNode->first_node("texture");
+			if (texture) {
+				// Get file name
+				XmlAttr * file;
+				xmlAttribute(file, texture);
+
+				// Create texture
+				Texture texture(GL_TEXTURE0, file->value());
+
+				// Set texture
+				mesh->setTexture(texture);
+			}
+
+			// Read Scripts
+			XmlNode * scripts = meshNode->first_node("scripts");
+			readScripts(scene, mesh, scripts);
+
+			// Get next cube
+			meshNode = meshNode->next_sibling("mesh");
 		}
 	} else {
 		printf("No objects\n");

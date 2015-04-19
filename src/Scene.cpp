@@ -57,7 +57,7 @@ void Scene::drawObjectsWithLights() {
 	    glColorMask(1,1,1,1);
 
 	    // Set window size to normal
-	    glViewport(0,0,GameWindow::width,GameWindow::height);
+	    glViewport(0,0,GameWindow::width, GameWindow::height);
 	    
 	    // Enable blending back
 	    glEnable(GL_BLEND);
