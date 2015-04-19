@@ -62,6 +62,10 @@ void GameWindow::display() {
         renderer->display();
 }
 void GameWindow::reshape(int width, int height) {
+    // Update local values of width and heigh
+    GameWindow::width = width;
+    GameWindow::height = height;
+    
     if (renderer)
         renderer->reshape(width, height);
 }

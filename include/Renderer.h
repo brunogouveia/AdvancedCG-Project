@@ -11,8 +11,7 @@ class Renderer
 public:
     Scene * scene;  //  Scene to be rendered
     Camera * camera;//  Camera info
-    unsigned int depthFrameBuffer;
-    int shadowShader;
+
     int defaultBasicShader;// Default basic shader
     int defaultLightShader;// Default light shader
     int th;         //  Azimuth of view angle
@@ -21,12 +20,9 @@ public:
     float fov;      //  Field of view (angles)
     float asp;      //  Screen aspect ratio
     float dim;      //  World dimension
-    int width,height;
 
     Renderer(Scene * s);
     ~Renderer();
-
-    void initShadowMap();
 
     int createShaderProg(std::string vertShaderFile, std::string fragShaderFile);
     int getDefaultBasicShader();

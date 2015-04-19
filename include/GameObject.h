@@ -19,8 +19,8 @@ public:
     ~GameObject();
     
     virtual void init(int shader, int lightShader);
-    virtual void draw(int shader, int depthTexture);
-    virtual void draw(bool useLight);
+    virtual void shadowPass();
+    virtual void rendererPass(bool useLight);
     virtual void setTexture(Texture newTexture);
 
     // Transform functions

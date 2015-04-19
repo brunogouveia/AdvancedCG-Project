@@ -1,12 +1,18 @@
 #include "Light.h"
 #include <cstring>
 
-GLuint Light::globalLightBuffer;
-GLuint Light::lightBuffer;
-GLuint Light::shadowBuffer;
-int Light::globalLightBindingPoint = 5;
-int Light::lightBindingPoint = 3;
-int Light::shadowBindingPoint = 4;
+// Global
+GLuint  Light::globalLightBuffer;
+GLuint  Light::lightBuffer;
+int     Light::globalLightBindingPoint = 5;
+int     Light::lightBindingPoint = 3;
+
+// Shadow
+GLuint  Light::shadowBuffer;
+int     Light::shadowBindingPoint = 4;
+GLuint  Light::shadowFrameBuffer;
+int     Light::shadowShader;
+GLuint  Light::shadowTexture;
 
 Light::Light() {
     // do nothing
@@ -99,6 +105,57 @@ void Light::init() {
     ErrCheck("Light::init");  
 }
 
+void Light::initShadowMap(int shadowShader) {
+    // unsigned int shadowtex; //  Shadow buffer texture id
+    int shadowdim = 2048;
+    int n;
+    
+    Light::shadowShader = shadowShader;
+    //  Make sure multi-textures are supported
+    glGetIntegerv(GL_MAX_TEXTURE_UNITS,&n);
+    if (n<2) Fatal("Multiple textures not supported\n");
+    
+    //  Get maximum texture buffer size
+    glGetIntegerv(GL_MAX_TEXTURE_SIZE,&shadowdim);
+    //  Limit texture size to maximum buffer size
+    glGetIntegerv(GL_MAX_RENDERBUFFER_SIZE,&n);
+    if (shadowdim>n) shadowdim = n;
+    //  Limit texture size to 2048 for performance
+    if (shadowdim>2048) shadowdim = 2048;
+    if (shadowdim<512) Fatal("Shadow map dimensions too small %d\n",shadowdim);
+    
+    //  Do Shadow textures in MultiTexture 1
+    glActiveTexture(GL_TEXTURE1);
+    
+    //  Allocate and bind shadow texture
+    glGenTextures(1,&shadowTexture);
+    glBindTexture(GL_TEXTURE_2D,shadowTexture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24, shadowdim, shadowdim, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+    
+    //  Map single depth value to RGBA (this is called intensity)
+    glTexParameteri(GL_TEXTURE_2D,GL_DEPTH_TEXTURE_MODE,GL_INTENSITY);
+    
+    //  Set texture mapping to clamp and linear interpolation
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+    
+    // Switch back to default textures
+    glActiveTexture(GL_TEXTURE0);
+    
+    // Attach shadow texture to frame buffer
+    glGenFramebuffers(1,&shadowFrameBuffer);
+    glBindFramebuffer(GL_FRAMEBUFFER,shadowFrameBuffer);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, shadowTexture, 0);
+    //  Don't write or read to visible color buffer
+    glDrawBuffer(GL_NONE);
+    glReadBuffer(GL_NONE);
+    //  Make sure this all worked
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) Fatal("Error setting up frame buffer\n");
+    glBindFramebuffer(GL_FRAMEBUFFER,0);
+}
+
 void Light::bindLightBuffers(int shader) {
     // Find global light block index
     int id = glGetUniformBlockIndex(shader, "GlobalLight");
@@ -119,6 +176,19 @@ void Light::bindLightBuffers(int shader) {
 
     ErrCheck("Light::bindLightBuffers");
 }
+
+GLuint Light::getShadowFrameBuffer() {
+    return shadowFrameBuffer;
+}
+
+int Light::getShadowShader() {
+    return shadowShader;
+}
+
+GLuint Light::getShadowTexture() {
+    return shadowTexture;
+}
+
 
 void Light::updateMatrices() {
     //  Light distance

@@ -13,11 +13,11 @@ void GameObject::init(int shader, int lightShader) {
     this->lightShader = lightShader;
 }
 
-void GameObject::draw(int shader, int depthTexture) {
+void GameObject::shadowPass() {
     // Do nothing
 }
 
-void GameObject::draw(bool useLight) {
+void GameObject::rendererPass(bool useLight) {
     // Do nothing
 }
 

@@ -1,4 +1,5 @@
 #include "Scene.h"
+#include <GameWindow.h>
 
 Scene::Scene() {
 	// Initialize camera
@@ -9,21 +10,14 @@ Scene::~Scene() {
 	// do nothing
 }
 
-void Scene::shadowDraw(int shader, int depthTexture) {
-	// For each object, draw it with regular shader
-	for (list<GameObject*>::iterator curObject = objects.begin(); curObject != objects.end(); ++curObject) {
-		(*curObject)->draw(shader, depthTexture);
-	}
-}
-
 void Scene::firstDraw() {
 	// For each object, draw it with regular shader
 	for (list<GameObject*>::iterator curObject = objects.begin(); curObject != objects.end(); ++curObject) {
-		(*curObject)->draw(false);
+		(*curObject)->rendererPass(false);
 	}
 }
 
-void Scene::drawObjectsWithLights(int depthFrameBuffer, int depthShader, int depthTexture) {
+void Scene::drawObjectsWithLights() {
 	// For each light
 	for (list<Light*>::iterator curLight = lights.begin(); curLight != lights.end(); curLight++) {
 		// Active current light
@@ -37,9 +31,9 @@ void Scene::drawObjectsWithLights(int depthFrameBuffer, int depthShader, int dep
 		glDisable(GL_TEXTURE_2D);
 
 		// Set depth framebuffer
-		glBindFramebuffer(GL_FRAMEBUFFER, depthFrameBuffer);
+		glBindFramebuffer(GL_FRAMEBUFFER, Light::getShadowFrameBuffer());
 		// Set depthShader
-		glUseProgram(depthShader);
+		glUseProgram(Light::getShadowShader());
 
 		//  No write to color buffer and no smoothing
 	    glShadeModel(GL_FLAT);
@@ -51,7 +45,7 @@ void Scene::drawObjectsWithLights(int depthFrameBuffer, int depthShader, int dep
 
 	    // Draw objects with current light
 		for (list<GameObject*>::iterator curObject = objects.begin(); curObject != objects.end(); ++curObject) {
-			(*curObject)->draw(depthShader, depthTexture);
+			(*curObject)->shadowPass();
 		}
 
 		// Bind default framebuffer back
@@ -63,17 +57,17 @@ void Scene::drawObjectsWithLights(int depthFrameBuffer, int depthShader, int dep
 	    glColorMask(1,1,1,1);
 
 	    // Set window size to normal
-	    glViewport(0,0,1024,780);
+	    glViewport(0,0,GameWindow::width,GameWindow::height);
 	    
 	    // Enable blending back
 	    glEnable(GL_BLEND);
     	glBlendFunc(GL_ONE, GL_ONE);
     	// Set depth test function
     	glDepthFunc(GL_EQUAL);
-    	
+
 		// Draw objects with current light
 		for (list<GameObject*>::iterator curObject = objects.begin(); curObject != objects.end(); ++curObject) {
-			(*curObject)->draw(true);
+			(*curObject)->rendererPass(true);
 		}
 	}
 }

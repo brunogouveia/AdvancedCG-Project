@@ -15,64 +15,10 @@ Renderer::Renderer(Scene * s) {
     dim=3.0;      //  World dimension
     defaultBasicShader = -1;
     defaultLightShader = -1;
-
-    // initShadowMap();
-    // shadowShader = createShaderProg("shaders/shadow.vert", "shaders/shadow.frag");
 }
 
 Renderer::~Renderer() {
     
-}
-
-void Renderer::initShadowMap() {
-    // unsigned int shadowtex; //  Shadow buffer texture id
-    int shadowdim = 2048;
-    int n;
-    
-    shadowShader = createShaderProg("shaders/shadow.vert", "shaders/shadow.frag");
-    //  Make sure multi-textures are supported
-    glGetIntegerv(GL_MAX_TEXTURE_UNITS,&n);
-    if (n<2) Fatal("Multiple textures not supported\n");
-    
-    //  Get maximum texture buffer size
-    glGetIntegerv(GL_MAX_TEXTURE_SIZE,&shadowdim);
-    //  Limit texture size to maximum buffer size
-    glGetIntegerv(GL_MAX_RENDERBUFFER_SIZE,&n);
-    if (shadowdim>n) shadowdim = n;
-    //  Limit texture size to 2048 for performance
-    if (shadowdim>2048) shadowdim = 2048;
-    if (shadowdim<512) Fatal("Shadow map dimensions too small %d\n",shadowdim);
-    
-    //  Do Shadow textures in MultiTexture 1
-    glActiveTexture(GL_TEXTURE1);
-    
-    //  Allocate and bind shadow texture
-    glGenTextures(1,&shadowtex);
-    glBindTexture(GL_TEXTURE_2D,shadowtex);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24, shadowdim, shadowdim, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
-    
-    //  Map single depth value to RGBA (this is called intensity)
-    glTexParameteri(GL_TEXTURE_2D,GL_DEPTH_TEXTURE_MODE,GL_INTENSITY);
-    
-    //  Set texture mapping to clamp and linear interpolation
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-    
-    // Switch back to default textures
-    glActiveTexture(GL_TEXTURE0);
-    
-    // Attach shadow texture to frame buffer
-    glGenFramebuffers(1,&depthFrameBuffer);
-    glBindFramebuffer(GL_FRAMEBUFFER,depthFrameBuffer);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, shadowtex, 0);
-    //  Don't write or read to visible color buffer
-    glDrawBuffer(GL_NONE);
-    glReadBuffer(GL_NONE);
-    //  Make sure this all worked
-    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) Fatal("Error setting up frame buffer\n");
-    glBindFramebuffer(GL_FRAMEBUFFER,0);
 }
 
 int Renderer::createShaderProg(std::string vertShaderFile, std::string fragShaderFile) {
@@ -111,7 +57,6 @@ void Renderer::setScene(Scene * s) {
 
 void Renderer::setCamera(Camera * c) {
     this->camera = c;
-    initShadowMap();
 }
 
 void Renderer::display() {
@@ -140,7 +85,7 @@ void Renderer::display() {
 
     // Draw scene with LIGHT shader
     if (scene)
-        scene->drawObjectsWithLights(depthFrameBuffer, shadowShader, shadowtex);
+        scene->drawObjectsWithLights();
 
     // Disable blending
     glDisable(GL_BLEND);
@@ -156,9 +101,6 @@ void Renderer::display() {
     glutSwapBuffers();
 }
 void Renderer::reshape(int width, int height) {
-    // Update local data
-    this->width = width;
-    this->height = height;
     //  Ratio of the width to the height of the window
     asp = (height>0) ? (double)width/height : 1;
     //  Set the viewport to the entire window

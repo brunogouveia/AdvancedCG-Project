@@ -10,10 +10,15 @@ private:
     // Static attributes, this is global to all lights
     static GLuint globalLightBuffer;
     static GLuint lightBuffer; // This is shared between all lights.
-    static GLuint shadowBuffer;
     static int globalLightBindingPoint;
     static int lightBindingPoint;
+
+    // Shadow
+    static GLuint shadowBuffer;
     static int shadowBindingPoint;
+    static GLuint shadowFrameBuffer;
+    static int shadowShader;
+    static GLuint shadowTexture;
 
     // Light attributes
     float data[12];
@@ -38,7 +43,12 @@ public:
     void updateMatrices();
 
     static void init();
+    static void initShadowMap(int shadowShader);
     static void bindLightBuffers(int shader);
+
+    static GLuint getShadowFrameBuffer();
+    static int getShadowShader();
+    static GLuint getShadowTexture();
 
     // Tranform overwrite
     virtual void translate(glm::vec3 & t);

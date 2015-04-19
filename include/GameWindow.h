@@ -20,10 +20,10 @@ private:
     static Renderer * renderer;
 
     static string windowName;
+public:
     static int width;
     static int height;
 
-public:
     static void setWindow(string windowName, int width, int height);
     static void setRenderer(Renderer * r);
     static Renderer * getRenderer();

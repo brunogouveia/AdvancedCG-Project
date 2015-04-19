@@ -24,10 +24,9 @@ public:
 	Scene();
 	~Scene();
 
-	void shadowDraw(int shader, int depthTexture);
 	void firstDraw();
 
-	void drawObjectsWithLights(int depthFrameBuffer, int depthShader, int depthTexture);
+	void drawObjectsWithLights();
 	void updateScripts();
 
 	void addGameObject(GameObject * gameObject);

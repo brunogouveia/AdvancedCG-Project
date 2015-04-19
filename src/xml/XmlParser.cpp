@@ -62,6 +62,9 @@ void XmlParser::loadFromXml(const char * fileName, int * argc, char ** argv) {
 	// Set camera
 	renderer->setCamera(new Camera());
 
+	// Light shadow map must be initialized after renderer has a camera
+	Light::initShadowMap(renderer->createShaderProg("shaders/shadow.vert", "shaders/shadow.frag"));
+
 	// Read objects
 	XmlNode * objectsNode = sceneNode->first_node("objects");
 	if (objectsNode) {
