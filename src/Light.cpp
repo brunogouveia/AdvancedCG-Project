@@ -1,5 +1,6 @@
 #include "Light.h"
 #include <cstring>
+#include <GameWindow.h>
 
 // Global
 GLuint  Light::globalLightBuffer;
@@ -192,7 +193,7 @@ GLuint Light::getShadowTexture() {
 
 void Light::updateMatrices() {
     //  Light distance
-    float Dim = 50.0;
+    float Dim = GameWindow::dim*5;
     float Ldist = sqrt(data[0]*data[0] + data[1]*data[1] + data[2]*data[2]);
     if (Ldist<1.1*Dim) Ldist = 1.1*Dim;
 

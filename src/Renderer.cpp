@@ -1,6 +1,7 @@
 #include <Renderer.h>
 #include <Light.h>
 #include <iostream>
+#include <GameWindow.h>
 
 unsigned int shadowtex;
 
@@ -12,7 +13,6 @@ Renderer::Renderer(Scene * s) {
     zh=0;       //  Light angle
     fov=55.0;   //  Field of view (angles)
     asp=1;      //  Screen aspect ratio
-    dim=3.0;      //  World dimension
     defaultBasicShader = -1;
     defaultLightShader = -1;
 }
@@ -107,12 +107,12 @@ void Renderer::reshape(int width, int height) {
     glViewport(0,0, width,height);
     if (camera) {
         //  Set model view matrix
-        float Ex = -2*dim*CsSin(th)*CsCos(ph);
-        float Ey = +2*dim        *CsSin(ph);
-        float Ez = +2*dim*CsCos(th)*CsCos(ph);
+        float Ex = -2*GameWindow::dim*CsSin(th)*CsCos(ph);
+        float Ey = +2*GameWindow::dim        *CsSin(ph);
+        float Ez = +2*GameWindow::dim*CsCos(th)*CsCos(ph);
         camera->lookAt(Ex, Ey, Ez, 0, 0, 0, 0, CsCos(ph), 0);
         //  Set projection
-        camera->setPerspective(M_PI*fov/180.0, asp, dim/16.0, dim*16.0);
+        camera->setPerspective(M_PI*fov/180.0, asp, GameWindow::dim/16.0, GameWindow::dim*16.0);
     }
 }
 void Renderer::special(int key, int x, int y) {
@@ -130,21 +130,21 @@ void Renderer::special(int key, int x, int y) {
       ph -= 5;
     //  PageUp key - increase dim
     else if (key == GLUT_KEY_PAGE_DOWN)
-        dim += 0.1;
+        GameWindow::dim += 0.1;
     //  PageDown key - decrease dim
-    else if (key == GLUT_KEY_PAGE_UP && dim>1)
-        dim -= 0.1;
+    else if (key == GLUT_KEY_PAGE_UP && GameWindow::dim>1)
+        GameWindow::dim -= 0.1;
     //  Keep angles to +/-360 degrees
     th %= 360;
     ph %= 360;
     if (camera) {
         //  Set model view matrix
-        float Ex = -2*dim*CsSin(th)*CsCos(ph);
-        float Ey = +2*dim        *CsSin(ph);
-        float Ez = +2*dim*CsCos(th)*CsCos(ph);
+        float Ex = -2*GameWindow::dim*CsSin(th)*CsCos(ph);
+        float Ey = +2*GameWindow::dim        *CsSin(ph);
+        float Ez = +2*GameWindow::dim*CsCos(th)*CsCos(ph);
         camera->lookAt(Ex, Ey, Ez, 0, 0, 0, 0, CsCos(ph), 0);
         //  Set projection
-        camera->setPerspective(M_PI*fov/180.0, asp, dim/16.0, dim*16.0);
+        camera->setPerspective(M_PI*fov/180.0, asp, GameWindow::dim/16.0, GameWindow::dim*16.0);
     }
     //  Tell GLUT it is necessary to redisplay the scene
     glutPostRedisplay();

@@ -11,6 +11,7 @@ Renderer * GameWindow::renderer = NULL;
 string GameWindow::windowName;
 int GameWindow::width;
 int GameWindow::height;
+float GameWindow::dim = 3.0;
 
 void GameWindow::setWindow(string wn, int w, int h) {
     // Set data

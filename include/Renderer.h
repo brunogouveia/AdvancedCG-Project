@@ -19,7 +19,6 @@ public:
     int zh;         //  Light angle
     float fov;      //  Field of view (angles)
     float asp;      //  Screen aspect ratio
-    float dim;      //  World dimension
 
     Renderer(Scene * s);
     ~Renderer();

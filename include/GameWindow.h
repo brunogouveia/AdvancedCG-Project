@@ -25,6 +25,8 @@ public:
     static int width;
     static int height;
 
+    static float dim;
+
     static void setWindow(string windowName, int width, int height);
     static void setRenderer(Renderer * r);
     static Renderer * getRenderer();
