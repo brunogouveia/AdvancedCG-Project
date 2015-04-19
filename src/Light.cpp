@@ -115,36 +115,40 @@ void Light::bindLightBuffers(int shader) {
     // Find Shadow block index
     id = glGetUniformBlockIndex(shader, "Shadows");
     // Bind if block exists
-    if (id >= 0) {
-        glUniformBlockBinding(shader, id, shadowBindingPoint);
-        printf("id > 0\n");
-    }
-    else printf("id < 0\n");
+    if (id >= 0) glUniformBlockBinding(shader, id, shadowBindingPoint);
 
     ErrCheck("Light::bindLightBuffers");
 }
 
 void Light::updateMatrices() {
     //  Light distance
-    float Dim = 3.0;
+    float Dim = 2.0;
     float Ldist = sqrt(data[0]*data[0] + data[1]*data[1] + data[2]*data[2]);
     if (Ldist<1.1*Dim) Ldist = 1.1*Dim;
 
+    // Set perspective
     projectionMatrix = glm::perspective<float>(M_PI*(114.6*atan(Dim/Ldist))/180,1,Ldist-Dim,Ldist+Dim);
-    // projectionMatrix = glm::ortho<float>(-10,10,-10,10,-10,20);
-    glm::vec3 lightInvDir = glm::vec3(data[0],data[1],data[2]);
-    viewMatrix = glm::lookAt(lightInvDir, glm::vec3(0,0,0), glm::vec3(0,1,0));
+    
+    // Set view
+    glm::vec3 lightPosition = glm::vec3(data[0],data[1],data[2]);
+    if (lightPosition.x != 0.0 || lightPosition.z !=0 )
+        viewMatrix = glm::lookAt(lightPosition, glm::vec3(0,0,0), glm::vec3(0,1,0));
+    else 
+        viewMatrix = glm::lookAt(lightPosition, glm::vec3(0,0,0), glm::vec3(0,0,1));
     glm::mat4 modelMatrix = glm::mat4(1.0);
 
+    // Copy to buffer
     glBindBuffer(GL_UNIFORM_BUFFER, shadowBuffer);
     glBufferSubData(GL_UNIFORM_BUFFER, 0, 16*sizeof(float), glm::value_ptr(projectionMatrix * viewMatrix * modelMatrix));
+
+    // Bias matrix
     glm::mat4 biasMatrix(
         0.5, 0.0, 0.0, 0.0,
         0.0, 0.5, 0.0, 0.0,
         0.0, 0.0, 0.5, 0.0,
         0.5, 0.5, 0.5, 1.0
     );
-
+    // Copy to buffer
     glBufferSubData(GL_UNIFORM_BUFFER, 16*sizeof(float), 16*sizeof(float), glm::value_ptr(biasMatrix * projectionMatrix * viewMatrix * modelMatrix));
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
 

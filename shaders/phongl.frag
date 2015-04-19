@@ -56,19 +56,15 @@ vec4 phong()
 	vec4 ShadowCoord = shadows.DepthBiasMVP * PosModelCoord;
 	ShadowCoord /= ShadowCoord.w;
 
-	// Position in eye coordinates
-	vec3 pos = IPosition;
-
-	// Normal in eye coordinates
-	vec3 N = normalize(INormal);
-
-	// Light vector
-	vec3 L = normalize(vec3(tranformations.ViewMatrix * light.position) - pos);
-
-	float bias = 0.005*tan(acos(dot(N,L)));
-	bias = clamp(bias, 0.0,0.01);
-
 	if (texture(depthText, ShadowCoord.xy).z + 0.01 > ShadowCoord.z || texture(depthText, ShadowCoord.xy).z == 1.0) {
+		// Position in eye coordinates
+		vec3 pos = IPosition;
+
+		// Normal in eye coordinates
+		vec3 N = normalize(INormal);
+
+		// Light vector
+		vec3 L = normalize(vec3(tranformations.ViewMatrix * light.position) - pos);
 
 		// Reflection vector
 		vec3 R = reflect(-L, N);
