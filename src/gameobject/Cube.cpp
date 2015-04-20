@@ -137,11 +137,18 @@ void Cube::rendererPass(bool useLight) {
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, Light::getShadowTexture());
 
+    // Activate normalMap
+    normalMap.active();
+    // Bind normal Map
+    normalMap.bind();
+
     // Set uniform value
     int id = glGetUniformLocation(useLight ? lightShader : shader, "text");
     if (id >= 0) glUniform1i(id, 0);
     id = glGetUniformLocation(useLight ? lightShader : shader, "depthText");
     if (id >= 0) glUniform1i(id, 1);
+    id = glGetUniformLocation(useLight ? lightShader : shader, "normalMap");
+    if (id >= 0) glUniform1i(id, 2);
 
     // Draw cube
     glDrawArrays(GL_TRIANGLES, 0, 36);

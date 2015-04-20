@@ -130,7 +130,7 @@ void XmlParser::loadFromXml(const char * fileName, int * argc, char ** argv) {
 				xmlAttribute(file, texture);
 
 				// Create texture
-				Texture texture(GL_TEXTURE0, file->value());
+				Texture texture(GL_TEXTURE0, std::string(file->value()));
 
 				// Set texture
 				c->setTexture(texture);
@@ -190,17 +190,31 @@ void XmlParser::loadFromXml(const char * fileName, int * argc, char ** argv) {
 			scene->addGameObject(mesh);
 
 			// Set texture
-			XmlNode * texture = meshNode->first_node("texture");
-			if (texture) {
+			XmlNode * textureNode = meshNode->first_node("texture");
+			if (textureNode) {
 				// Get file name
 				XmlAttr * file;
-				xmlAttribute(file, texture);
+				xmlAttribute(file, textureNode);
 
 				// Create texture
-				Texture texture(GL_TEXTURE0, file->value());
+				Texture texture(GL_TEXTURE0, std::string(file->value()));
 
 				// Set texture
 				mesh->setTexture(texture);
+			}
+
+			// Set texture
+			XmlNode * normalMapNode = meshNode->first_node("normal-map");
+			if (normalMapNode) {
+				// Get file name
+				XmlAttr * file;
+				xmlAttribute(file, normalMapNode);
+
+				// Create texture
+				Texture normalMap(GL_TEXTURE2, std::string(file->value()));
+
+				// Set texture
+				mesh->setNormalMap(normalMap);
 			}
 
 			// Read Scripts

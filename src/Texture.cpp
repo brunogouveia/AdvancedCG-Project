@@ -1,11 +1,12 @@
 #include "Texture.h"
 
 int Texture::defaultTexture = -1;
+int Texture::defaultNormalMap = -1;
 
-Texture::Texture(int textureUnit) {
+Texture::Texture(int textureUnit, bool isNormalMap) {
     this->textureUnit = textureUnit;
     glActiveTexture(textureUnit);
-    this->texture = getDefaultTexture();
+    this->texture = (isNormalMap) ? getDefaultNormalMap() : getDefaultTexture();
 }
 
 Texture::Texture(int textureUnit, std::string fileName) {
@@ -28,7 +29,17 @@ void Texture::bind() const {
 }
 
 int Texture::getDefaultTexture() {
-    if (defaultTexture == -1) 
+    if (defaultTexture == -1) {
         defaultTexture = LoadTexBMP("textures/defaultTexture.bmp");
+    }
     return defaultTexture;
+}
+
+int Texture::getDefaultNormalMap() {
+    if (defaultNormalMap == -1) {
+        glActiveTexture(GL_TEXTURE2);
+        defaultNormalMap = LoadTexBMP("textures/defaultNormalMap.bmp");
+        glActiveTexture(GL_TEXTURE0);
+    }
+    return defaultNormalMap;   
 }

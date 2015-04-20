@@ -56,7 +56,7 @@ vec4 phong()
 	vec4 ShadowCoord = shadows.DepthBiasMVP * PosModelCoord;
 	ShadowCoord /= ShadowCoord.w;
 
-	if (texture(depthText, ShadowCoord.xy).z + 0.001 > ShadowCoord.z || texture(depthText, ShadowCoord.xy).z == 1.0) {
+	if (texture(depthText, ShadowCoord.xy).z + 0.01 > ShadowCoord.z || texture(depthText, ShadowCoord.xy).z == 1.0) {
 		// Position in eye coordinates
 		vec3 pos = IPosition;
 

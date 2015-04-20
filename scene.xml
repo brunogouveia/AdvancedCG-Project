@@ -7,18 +7,18 @@
 	</window>
 	<scene>
 		<objects>
-			<!-- <cube>
+			<cube>
 				<model>
 					<scale x="0.5" y="0.5" z="0.5"/>
 				</model>
 				<basic-shader vert="shaders/phong.vert" frag="shaders/phong.frag"/>
 				<light-shader vert="shaders/phongl.vert" frag="shaders/phongl.frag"/>
 				<texture file="textures/pi.bmp"/>
-			</cube> -->
+			</cube>
 			<cube>
 				<model>
-					<translate x="0" y="-1.5" z="0"/>
-					<scale x="70" y="0.05" z="70"/>
+					<!-- <translate x="0" y="0.5" z="0"/> -->
+					<scale x="20" y="0.05" z="20"/>
 				</model>
 				<basic-shader vert="shaders/phong.vert" frag="shaders/phong.frag"/>
 				<light-shader vert="shaders/phongl.vert" frag="shaders/phongl.frag"/>
@@ -27,20 +27,22 @@
 				<model>
 					<scale x="0.1" y="0.1" z="0.1"/>
 				</model>
+				<light-shader vert="shaders/phongl.vert" frag="shaders/phongl-nm.frag"/>
 				<texture file="textures/houseA.bmp"/>
+				<normal-map file="textures/houseANM.bmp"/>
 			</mesh>
 		</objects>
 		<lights>
 			<light>
-				<position x="0" y="100.0" z="0"/>
+				<position x="0" y="6.0" z="0"/>
 				<diffuse r="0.3" g="0.3" b="0.3"/>
 				<specular r="0.3" g="0.3" b="0.3"/>
 				<shininess value="1.0"/>
 			</li1ght>
 			<light>
-				<position x="0" y="100.0" z="30"/>
-				<diffuse r="0.3" g="0.3" b="0.3"/>
-				<specular r="0.3" g="0.3" b="0.3"/>
+				<position x="0" y="30.0" z="20"/>
+				<diffuse r="1.0" g="1.0" b="1.0"/>
+				<specular r="1.0" g="1.0" b="1.0"/>
 				<shininess value="1.0"/>
 				<scripts>
 					<script name="LightScript"/>

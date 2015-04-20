@@ -12,8 +12,9 @@ private:
 
 	// Static attributes
 	static int defaultTexture;
+	static int defaultNormalMap;
 public:
-	Texture(int textureUnit);
+	Texture(int textureUnit, bool isNormalMap = false);
 	Texture(int textureUnit, std::string fileName);
 	~Texture();
 	
@@ -22,6 +23,7 @@ public:
 
 	// Static methods
 	static int getDefaultTexture();
+	static int getDefaultNormalMap();
 };
 
 #endif
