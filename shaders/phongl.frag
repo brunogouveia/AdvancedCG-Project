@@ -44,7 +44,7 @@ in vec2 ITextCoord;
 in vec4 PosModelCoord;
 
 uniform sampler2D text;
-uniform sampler2D depthText;
+uniform sampler2DShadow depthText;
 
 //  Fragment color
 layout (location=0) out vec4 Fragcolor;
@@ -56,7 +56,7 @@ vec4 phong()
 	vec4 ShadowCoord = shadows.DepthBiasMVP * PosModelCoord;
 	ShadowCoord /= ShadowCoord.w;
 
-	if (texture(depthText, ShadowCoord.xy).z + 0.01 > ShadowCoord.z || texture(depthText, ShadowCoord.xy).z == 1.0) {
+	if (textureProj(depthText, ShadowCoord) == 1.0 || (ShadowCoord.x < 0.0 || ShadowCoord.x > 1.0) || (ShadowCoord.y < 0.0 || ShadowCoord.y > 1.0)) {
 		// Position in eye coordinates
 		vec3 pos = IPosition;
 
@@ -80,7 +80,7 @@ vec4 phong()
 
 		return Id*light.diffuse + Is*light.specular;
 	} else {
-		return vec4(0);
+		return vec4(0.0);
 	}
 }
 
@@ -91,8 +91,9 @@ void main()
 	vec4 ShadowCoord = shadows.DepthBiasMVP * PosModelCoord;
 	ShadowCoord /= ShadowCoord.w;
 	
-	Fragcolor = texture(text, ITextCoord.st)*vec4(FrontColor,1.0) * phong();
+	Fragcolor = texture(text, ITextCoord.st) * phong();
 	// Fragcolor = vec4(texture(depthText, ITextCoord.st));
 	// Fragcolor = vec4(ShadowCoord.xyz, 1.0);
 	// Fragcolor = vec4(texture(depthText, ShadowCoord.xy).z);
+	// Fragcolor = vec4(textureProj(depthText, ShadowCoord) + 0.2);
 }

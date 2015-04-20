@@ -6,7 +6,7 @@
 
 int main(int argc, char ** argv) {
 
-	int h=800, w=800;
+	// int h=800, w=800;
 	XmlParser::loadFromXml("scene.xml", &argc, argv);
 
 	// // Create a game window

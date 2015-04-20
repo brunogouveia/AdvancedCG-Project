@@ -7,17 +7,21 @@
 	</window>
 	<scene>
 		<objects>
-			<cube>
+			<!-- <cube>
 				<model>
+					<translate x="0" y="25" z="10"/>
 					<scale x="0.5" y="0.5" z="0.5"/>
 				</model>
+				<scripts>
+					<script name="LightScript"/>
+				</scripts>
 				<basic-shader vert="shaders/phong.vert" frag="shaders/phong.frag"/>
 				<light-shader vert="shaders/phongl.vert" frag="shaders/phongl.frag"/>
 				<texture file="textures/pi.bmp"/>
-			</cube>
+			</cube> -->
 			<cube>
 				<model>
-					<!-- <translate x="0" y="0.5" z="0"/> -->
+					<!-- <translate x="0" y="-2.5" z="0"/> -->
 					<scale x="20" y="0.05" z="20"/>
 				</model>
 				<basic-shader vert="shaders/phong.vert" frag="shaders/phong.frag"/>
@@ -31,18 +35,23 @@
 				<texture file="textures/houseA.bmp"/>
 				<normal-map file="textures/houseANM.bmp"/>
 			</mesh>
+			<mesh file="batman.obj">
+				<!-- <model>
+					<scale x="0.1" y="0.1" z="0.1"/>
+				</model> -->
+			</mesh>
 		</objects>
 		<lights>
-			<light>
+			<!-- <light>
 				<position x="0" y="6.0" z="0"/>
 				<diffuse r="0.3" g="0.3" b="0.3"/>
 				<specular r="0.3" g="0.3" b="0.3"/>
 				<shininess value="1.0"/>
-			</li1ght>
+			</li1ght> -->
 			<light>
-				<position x="0" y="30.0" z="20"/>
-				<diffuse r="1.0" g="1.0" b="1.0"/>
-				<specular r="1.0" g="1.0" b="1.0"/>
+				<position x="0" y="25.0" z="10"/>
+				<diffuse r="0.3" g="0.3" b="0.3"/>
+				<specular r="0.3" g="0.3" b="0.3"/>
 				<shininess value="1.0"/>
 				<scripts>
 					<script name="LightScript"/>

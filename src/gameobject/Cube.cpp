@@ -136,6 +136,11 @@ void Cube::rendererPass(bool useLight) {
     texture.bind();
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, Light::getShadowTexture());
+    glTexGendv(GL_S,GL_EYE_PLANE,Light::Svec);
+    glTexGendv(GL_T,GL_EYE_PLANE,Light::Tvec);
+    glTexGendv(GL_R,GL_EYE_PLANE,Light::Rvec);
+    glTexGendv(GL_Q,GL_EYE_PLANE,Light::Qvec);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_COMPARE_MODE,GL_COMPARE_R_TO_TEXTURE);
 
     // Activate normalMap
     normalMap.active();

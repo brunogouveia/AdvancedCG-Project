@@ -185,7 +185,6 @@ void XmlParser::loadFromXml(const char * fileName, int * argc, char ** argv) {
 			// Try to read model
 			readModel(mesh, meshNode->first_node("model"));
 
-
 			// Add c to scene
 			scene->addGameObject(mesh);
 

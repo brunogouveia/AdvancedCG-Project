@@ -23,12 +23,16 @@ void Scene::drawObjectsWithLights() {
 		// Active current light
 		(*curLight)->activeLight();
 
+		// Disable culling
+		glDisable(GL_CULL_FACE);
 		// Disable blend
 		glDisable(GL_BLEND);
 		// Set depth func (because at this points, it's probably GL_EQUAL)
 		glDepthFunc(GL_LEQUAL);
 		// Disable texture
 		glDisable(GL_TEXTURE_2D);
+		glPolygonOffset(10,0);
+		glEnable(GL_POLYGON_OFFSET_FILL);
 
 		// Set depth framebuffer
 		glBindFramebuffer(GL_FRAMEBUFFER, Light::getShadowFrameBuffer());
@@ -59,6 +63,8 @@ void Scene::drawObjectsWithLights() {
 	    // Set window size to normal
 	    glViewport(0,0,GameWindow::width, GameWindow::height);
 	    
+	    // Enable culling
+	    glEnable(GL_CULL_FACE);
 	    // Enable blending back
 	    glEnable(GL_BLEND);
     	glBlendFunc(GL_ONE, GL_ONE);

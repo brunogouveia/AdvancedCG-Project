@@ -3,21 +3,21 @@
 #include <GameWindow.h>
 
 MeshObject::MeshObject(glm::mat4 modelMatrix) {
-	this->modelMatrix = modelMatrix;
-	data = NULL;
+    this->modelMatrix = modelMatrix;
+    data = NULL;
 }
 
 MeshObject::~MeshObject() {
-	if (data)
-		delete data;
+    if (data)
+        delete data;
 }
 
 void MeshObject::init(int basicShader, int lightShader) {
-	// Set shaders
-	this->shader = basicShader;
-	this->lightShader = lightShader;
+    // Set shaders
+    this->shader = basicShader;
+    this->lightShader = lightShader;
 
-	// Create vertex array object
+    // Create vertex array object
     glGenVertexArrays(1, &vertexArrayObj);
     glBindVertexArray(vertexArrayObj);
 
@@ -25,10 +25,10 @@ void MeshObject::init(int basicShader, int lightShader) {
     glGenBuffers(1, &vertexBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
     float d[] = {
-    	// +5.245,+11.785,+0.415,+1,   0, 0,+1,   1,0,0,  1,1,
+        // +5.245,+11.785,+0.415,+1,   0, 0,+1,   1,0,0,  1,1,
      //    +5.166,+11.947,+0.356,+1,   0, 0,+1,   1,0,0,  0,1,
      //    +5.256,+11.906,+0.277,+1,   0, 0,+1,   1,0,0,  1,0,
-    	-2.40,+1.06,+2.05,+1,   0, 0,+1,   1,0,0,  1,1,
+        -2.40,+1.06,+2.05,+1,   0, 0,+1,   1,0,0,  1,1,
         +1.06,-2.40,-2.48,+1,   0, 0,+1,   1,0,0,  0,1,
         +1.06,+2.51,-2.50,+1,   0, 0,+1,   1,0,0,  1,0,
     };
@@ -42,7 +42,7 @@ void MeshObject::init(int basicShader, int lightShader) {
 }
 
 void MeshObject::shadowPass() {
-	// Set program
+    // Set program
     glUseProgram(Light::getShadowShader());
 
     // Set model matrix
@@ -71,7 +71,7 @@ void MeshObject::shadowPass() {
 }
 
 void MeshObject::rendererPass(bool useLight) {
-	// Set program
+    // Set program
     glUseProgram(useLight ? lightShader : shader);
 
     // Set model matrix
@@ -100,6 +100,11 @@ void MeshObject::rendererPass(bool useLight) {
     texture.bind();
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, Light::getShadowTexture());
+    glTexGendv(GL_S,GL_EYE_PLANE,Light::Svec);
+    glTexGendv(GL_T,GL_EYE_PLANE,Light::Tvec);
+    glTexGendv(GL_R,GL_EYE_PLANE,Light::Rvec);
+    glTexGendv(GL_Q,GL_EYE_PLANE,Light::Qvec);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_COMPARE_MODE,GL_COMPARE_R_TO_TEXTURE);
 
     // Activate normalMap
     normalMap.active();
@@ -131,18 +136,20 @@ void MeshObject::rendererPass(bool useLight) {
 }
 
 void MeshObject::loadFromFile(char * fileName) {
-	// Read from file
-	GLMmodel * model = glmReadOBJ(fileName);
+    // Read from file
+    printf("Antes\n");
+    GLMmodel * model = glmReadOBJ(fileName);
+    printf("Depois %s\n", (model == NULL) ? "NULL" : "");
 
-	printf("Num mat %d - %s\n", model->nummaterials, model->materials[1].name);
+    printf("Num mat %d %d %d %d %d\n", model->nummaterials, model->numvertices, model->numnormals, model->numtexcoords, model->numtriangles);
 
-	// Allocate vertices
-	float * vertices = new float[model->numvertices * 3];
+    // Allocate vertices
+    float * vertices = new float[model->numvertices * 3];
 
-	for (unsigned int i = 0; i < model->numvertices; i++) {
-		vertices[i * 3]     = model->vertices[(i + 1) * 3];
-		vertices[i * 3 + 1] = model->vertices[(i + 1) * 3 + 1];
-		vertices[i * 3 + 2] = model->vertices[(i + 1) * 3 + 2];
+    for (unsigned int i = 0; i < model->numvertices; i++) {
+        vertices[i * 3]     = model->vertices[(i + 1) * 3];
+        vertices[i * 3 + 1] = model->vertices[(i + 1) * 3 + 1];
+        vertices[i * 3 + 2] = model->vertices[(i + 1) * 3 + 2];
     }
 
 
@@ -150,52 +157,76 @@ void MeshObject::loadFromFile(char * fileName) {
     float * normals = new float[model->numnormals * 3];
 
     for (unsigned int i = 0; i < model->numnormals; i++) {
-		normals[i * 3]     = model->normals[(i + 1) * 3];
-		normals[i * 3 + 1] = model->normals[(i + 1) * 3 + 1];
-		normals[i * 3 + 2] = model->normals[(i + 1) * 3 + 2];
+        normals[i * 3]     = model->normals[(i + 1) * 3];
+        normals[i * 3 + 1] = model->normals[(i + 1) * 3 + 1];
+        normals[i * 3 + 2] = model->normals[(i + 1) * 3 + 2];
     }
 
     // Allocate texcoords
     float * texcoords = new float[model->numtexcoords * 2];
 
     for (unsigned int i = 0; i < model->numtexcoords; ++i) {
-    	texcoords[i * 2]     = model->texcoords[(i + 1) * 2];
-    	texcoords[i * 2 + 1] = model->texcoords[(i + 1) * 2 + 1];
+        texcoords[i * 2]     = model->texcoords[(i + 1) * 2];
+        texcoords[i * 2 + 1] = model->texcoords[(i + 1) * 2 + 1];
     }
 
-	// Allocate data
-	data = new float[model->numtriangles * 36];
+    // Allocate data
+    data = new float[model->numtriangles * 36];
 
-	// Read triangles
-	for (unsigned int i = 0; i < model->numtriangles; i++) {
+    // Read triangles
+    for (unsigned int i = 0; i < model->numtriangles; i++) {
         GLMtriangle triangle = model->triangles[i];
         for (int j = 0; j < 3; j++) {
-        	// Vertex index
-        	int vertexIndex = triangle.vindices[j] - 1;
+            // Vertex index
+            int vertexIndex = triangle.vindices[j] - 1;
 
-        	// Set vertex
-			data[36*i + 12*j]     = vertices[3*vertexIndex];
-			data[36*i + 12*j + 1] = vertices[3*vertexIndex + 1];
-			data[36*i + 12*j + 2] = vertices[3*vertexIndex + 2];
-			data[36*i + 12*j + 3] = 1.0;
+            // Set vertex
+            data[36*i + 12*j]     = vertices[3*vertexIndex];
+            data[36*i + 12*j + 1] = vertices[3*vertexIndex + 1];
+            data[36*i + 12*j + 2] = vertices[3*vertexIndex + 2];
+            data[36*i + 12*j + 3] = 1.0;
 
-			// Normal index
-        	int normalIndex = triangle.nindices[j] - 1;
+            // Normal index
+            if (model->numnormals > 0) {
+                int normalIndex = triangle.nindices[j] - 1;
 
-			// Set normal
-			data[36*i + 12*j + 4] = normals[3*normalIndex];
-			data[36*i + 12*j + 5] = normals[3*normalIndex + 1];
-			data[36*i + 12*j + 6] = normals[3*normalIndex + 2];
+                // Set normal
+                data[36*i + 12*j + 4] = normals[3*normalIndex];
+                data[36*i + 12*j + 5] = normals[3*normalIndex + 1];
+                data[36*i + 12*j + 6] = normals[3*normalIndex + 2];
 
-	        // Set white color and vertex
-	        data[36*i + 12*j + 7] = 1.0;
-	        data[36*i + 12*j + 8] = 1.0;
-	        data[36*i + 12*j + 9] = 1.0;
+                // Set white color and vertex
+                data[36*i + 12*j + 7] = 1.0;
+                data[36*i + 12*j + 8] = 1.0;
+                data[36*i + 12*j + 9] = 1.0;
+            }
 
-	        // Texcoords index
-	        int texcoordIndex = triangle.tindices[j] - 1;
-	        data[36*i + 12*j + 10] = texcoords[2*texcoordIndex];
-	        data[36*i + 12*j + 11] = texcoords[2*texcoordIndex + 1];
+            // Texcoords index
+            if (model->numtexcoords > 0) {
+                int texcoordIndex = triangle.tindices[j] - 1;
+                data[36*i + 12*j + 10] = texcoords[2*texcoordIndex];
+                data[36*i + 12*j + 11] = texcoords[2*texcoordIndex + 1];
+            } else {
+                data[36*i + 12*j + 10] = 0.0;
+                data[36*i + 12*j + 11] = 0.0;
+            }
+        }
+
+        // If obj has no normals, we need to compute them
+        if (model->numnormals == 0) {
+            // Vectors of triangle
+            glm::vec3 a = glm::vec3(data[36*i + 12] - data[36*i], data[36*i + 13] - data[36*i + 1], data[36*i + 14] - data[36*i + 2]);
+            glm::vec3 b = glm::vec3(data[36*i + 24] - data[36*i], data[36*i + 25] - data[36*i + 1], data[36*i + 26] - data[36*i + 2]);
+
+            // Compute normal
+            glm::vec3 n = glm::normalize(glm::cross(a,b));
+
+            // Copy normal to data
+            for (int j = 0; j < 3; ++j) {
+                data[36*i + 12*j + 4] = n[0];
+                data[36*i + 12*j + 5] = n[1];
+                data[36*i + 12*j + 6] = n[2];
+            }
         }
     }
 
@@ -213,14 +244,14 @@ void MeshObject::loadFromFile(char * fileName) {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
-	// Delete vertices
-	delete vertices;
-	// Delete normals
-	delete normals;
+    // Delete vertices
+    delete vertices;
+    // Delete normals
+    delete normals;
 
-	glmDelete(model);
+    glmDelete(model);
 
-	ErrCheck("obj");
+    ErrCheck("obj");
 }
 
 

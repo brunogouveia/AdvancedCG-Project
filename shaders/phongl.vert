@@ -47,7 +47,8 @@ out vec4 PosModelCoord;
 void main()
 {	
    //  Pass all attributes to fragment shader (will be interpolated)
-   IPosition = vec3(tranformations.ViewMatrix * tranformations.ModelMatrix * Vertex);
+	vec4 P = tranformations.ViewMatrix * tranformations.ModelMatrix * Vertex;
+   IPosition = vec3(P.xyz / P.w);
    INormal = normalize(mat3(tranformations.NormalMatrix) * Normal);
    FrontColor = Color;
    ITextCoord = TextCoord;

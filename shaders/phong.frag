@@ -49,5 +49,5 @@ layout (location=0) out vec4 Fragcolor;
 
 void main()
 {
-   Fragcolor = texture(text, ITextCoord.st)*vec4(FrontColor,1.0) * (globalLight.global + globalLight.ambient);
+   Fragcolor = texture(text, ITextCoord.st) * (globalLight.global + globalLight.ambient);
 }

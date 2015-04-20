@@ -15,6 +15,12 @@ GLuint  Light::shadowFrameBuffer;
 int     Light::shadowShader;
 GLuint  Light::shadowTexture;
 
+// Shadow texture planes
+double  Light::Svec[4];   // Texture planes S
+double  Light::Tvec[4];   // Texture planes T
+double  Light::Rvec[4];   // Texture planes R
+double  Light::Qvec[4];   // Texture planes Q
+
 Light::Light() {
     // do nothing
     float newData[12] = {
@@ -94,7 +100,7 @@ void Light::init() {
     glBindBuffer(GL_UNIFORM_BUFFER, shadowBuffer);
 
     // Copy global data to buffer
-    float shadowData[32] = {0};
+    float shadowData[36] = {0};
     glBufferData(GL_UNIFORM_BUFFER, sizeof(shadowData), shadowData, GL_DYNAMIC_DRAW);
 
     // Set binding point
@@ -141,6 +147,12 @@ void Light::initShadowMap(int shadowShader) {
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+
+    //  Set automatic texture generation mode to Eye Linear
+    glTexGeni(GL_S,GL_TEXTURE_GEN_MODE,GL_EYE_LINEAR);
+    glTexGeni(GL_T,GL_TEXTURE_GEN_MODE,GL_EYE_LINEAR);
+    glTexGeni(GL_R,GL_TEXTURE_GEN_MODE,GL_EYE_LINEAR);
+    glTexGeni(GL_Q,GL_TEXTURE_GEN_MODE,GL_EYE_LINEAR);
     
     // Switch back to default textures
     glActiveTexture(GL_TEXTURE0);
@@ -197,8 +209,11 @@ void Light::updateMatrices() {
     float Ldist = sqrt(data[0]*data[0] + data[1]*data[1] + data[2]*data[2]);
     if (Ldist<1.1*Dim) Ldist = 1.1*Dim;
 
+    float zNear = (Dim > 10 ) ? Ldist/Dim : Ldist / 10;
+    float zFar = (1.4*Ldist > Ldist + Dim) ? 1.4*Ldist : Ldist + Dim ;
+
     // Set perspective
-    projectionMatrix = glm::perspective<float>(M_PI*(114.6*atan(Dim/Ldist))/180,1,Ldist-Dim,Ldist+Dim);
+    projectionMatrix = glm::perspective<float>(M_PI*(30.6)/180,1,zNear,zFar);
     
     // Set view
     glm::vec3 lightPosition = glm::vec3(data[0],data[1],data[2]);
@@ -221,6 +236,38 @@ void Light::updateMatrices() {
     );
     // Copy to buffer
     glBufferSubData(GL_UNIFORM_BUFFER, 16*sizeof(float), 16*sizeof(float), glm::value_ptr(biasMatrix * projectionMatrix * viewMatrix * modelMatrix));
+
+    glm::mat4 Tproj = glm::transpose(biasMatrix * projectionMatrix * viewMatrix * modelMatrix);
+    Svec[0] = Tproj[0][0];    Tvec[0] = Tproj[0][1];    Rvec[0] = Tproj[0][2];    Qvec[0] = Tproj[0][3];
+    Svec[1] = Tproj[1][0];    Tvec[1] = Tproj[1][1];    Rvec[1] = Tproj[1][2];    Qvec[1] = Tproj[1][3];
+    Svec[2] = Tproj[2][0];    Tvec[2] = Tproj[2][1];    Rvec[2] = Tproj[2][2];    Qvec[2] = Tproj[2][3];
+    Svec[3] = Tproj[3][0];    Tvec[3] = Tproj[3][1];    Rvec[3] = Tproj[3][2];    Qvec[3] = Tproj[3][3];
+
+    // float svec[4];
+    // svec[0] = Svec[0];
+    // svec[1] = Svec[1];
+    // svec[2] = Svec[2];
+    // svec[3] = Svec[3];
+    // glBufferSubData(GL_UNIFORM_BUFFER, 32*sizeof(float), 4*sizeof(float), svec);
+    // float tvec[4];
+    // tvec[0] = Tvec[0];
+    // tvec[1] = Tvec[1];
+    // tvec[2] = Tvec[2];
+    // tvec[3] = Tvec[3];
+    // glBufferSubData(GL_UNIFORM_BUFFER, 36*sizeof(float), 4*sizeof(float), tvec);
+    // float rvec[4];
+    // rvec[0] = Rvec[0];
+    // rvec[1] = Rvec[1];
+    // rvec[2] = Rvec[2];
+    // rvec[3] = Rvec[3];
+    // glBufferSubData(GL_UNIFORM_BUFFER, 40*sizeof(float), 4*sizeof(float), rvec);
+    // float qvec[4];
+    // qvec[0] = Qvec[0];
+    // qvec[1] = Qvec[1];
+    // qvec[2] = Qvec[2];
+    // qvec[3] = Qvec[3];
+    // glBufferSubData(GL_UNIFORM_BUFFER, 44*sizeof(float), 4*sizeof(float), qvec);
+
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
     ErrCheck("Light::updateMatrices");

@@ -20,10 +20,16 @@ private:
     static int shadowShader;
     static GLuint shadowTexture;
 
+
     // Light attributes
     float data[12];
 
 public:
+    // Shadow texture planes
+    static double Svec[4];   // Texture planes S
+    static double Tvec[4];   // Texture planes T
+    static double Rvec[4];   // Texture planes R
+    static double Qvec[4];   // Texture planes Q
     glm::mat4 projectionMatrix;
     glm::mat4 viewMatrix;
     Light();
