@@ -24,12 +24,12 @@ double  Light::Qvec[4];   // Texture planes Q
 Light::Light() {
     // do nothing
     float newData[12] = {
-        // All attributes should be treated as a vec3 with last component equal 1.0 (except Specular)
+        // All attributes should be treated as a vec3 with last component equal 1.0
         // Position
         0.0, 0.0, 0.0, 1.0,
         // Diffuse
         1.0, 1.0, 1.0, 1.0,
-        // Specular - shininess (shininess is the last float of Specular)
+        // Specular
         1.0, 1.0, 1.0, 1.0
     };
 
@@ -309,11 +309,6 @@ void Light::setSpecular(float r, float g, float b) {
 void Light::setSpecular(float specular[]) {
     // Copy to light's data
     std::memcpy(&(data[8]), specular, 3*sizeof(float));
-}
-
-void Light::setShininess(float shininess) {
-    // Set shininess
-    data[11] = shininess;
 }
 
 void Light::translate(glm::vec3 & t){

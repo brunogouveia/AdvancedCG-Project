@@ -38,8 +38,10 @@ OBJS = \
 	$(BUILD_DIR)GameObject.o \
 	$(BUILD_DIR)MeshObject.o \
 	$(BUILD_DIR)glm.o \
+	$(BUILD_DIR)tiny_obj_loader.o \
 	$(BUILD_DIR)Script.o \
 	$(BUILD_DIR)Light.o \
+	$(BUILD_DIR)Material.o \
 	$(BUILD_DIR)Texture.o \
 	$(BUILD_DIR)Cube.o \
 	$(BUILD_DIR)XmlParser.o \
@@ -101,11 +103,17 @@ $(BUILD_DIR)MeshObject.o: $(SRC_DIR)gameobject/MeshObject.cpp
 $(BUILD_DIR)glm.o: $(SRC_DIR)obj/glm.c
 	g++ -c -o $(BUILD_DIR)glm.o $(CFLG) -I$(INCLUDE_DIR) $(SRC_DIR)obj/glm.c
 
+$(BUILD_DIR)tiny_obj_loader.o: $(SRC_DIR)obj/tiny_obj_loader.cpp
+	g++ -c -o $(BUILD_DIR)tiny_obj_loader.o $(CFLG) -I$(INCLUDE_DIR) $(SRC_DIR)obj/tiny_obj_loader.cpp
+
 $(BUILD_DIR)Script.o: $(SRC_DIR)Script.cpp
 	g++ -c -o $(BUILD_DIR)Script.o $(CFLG) -I$(INCLUDE_DIR) $(SRC_DIR)Script.cpp
 
 $(BUILD_DIR)Light.o: $(SRC_DIR)Light.cpp
 	g++ -c -o $(BUILD_DIR)Light.o $(CFLG) -I$(INCLUDE_DIR) $(SRC_DIR)Light.cpp
+
+$(BUILD_DIR)Material.o: $(SRC_DIR)Material.cpp
+	g++ -c -o $(BUILD_DIR)Material.o $(CFLG) -I$(INCLUDE_DIR) $(SRC_DIR)Material.cpp
 
 $(BUILD_DIR)Texture.o: $(SRC_DIR)Texture.cpp
 	g++ -c -o $(BUILD_DIR)Texture.o $(CFLG) -I$(INCLUDE_DIR) $(SRC_DIR)Texture.cpp

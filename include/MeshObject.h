@@ -3,6 +3,18 @@
 
 #include <GameObject.h>
 #include <String>
+#include <vector>
+
+class MeshShape {
+public:
+    int first;
+    int numVertices;
+    Texture texture;
+    Texture normalMap;
+
+    MeshShape();
+
+};
 
 class MeshObject : public GameObject
 {
@@ -10,7 +22,8 @@ private:
     unsigned int vertexArrayObj;
     unsigned int vertexBuffer;
 
-    int numTriangles;
+    int numVertices;
+    std::vector<MeshShape> meshShapes;
 
     float * data;
 public:

@@ -10,7 +10,8 @@
 #include <Cube.h>
 #include <Scene.h>
 #include <Script.h>
- #include <MeshObject.h>
+#include <Material.h>
+#include <MeshObject.h>
 
 XmlParser::~XmlParser() {
 }
@@ -48,7 +49,8 @@ void XmlParser::loadFromXml(const char * fileName, int * argc, char ** argv) {
 	}
 	// Init gamewindow and light
 	GameWindow::init(argc, argv);
-	Light::init();	
+	Light::init();
+	Material::init();	
 
 	/*** Read Scene ***/
 	// Reference to scene node
@@ -202,7 +204,7 @@ void XmlParser::loadFromXml(const char * fileName, int * argc, char ** argv) {
 				mesh->setTexture(texture);
 			}
 
-			// Set texture
+			// Set normal map
 			XmlNode * normalMapNode = meshNode->first_node("normal-map");
 			if (normalMapNode) {
 				// Get file name
@@ -273,16 +275,6 @@ void XmlParser::readLights(Scene * scene, XmlNode * lights) {
 				xmlAttribute(b, specular);
 				// Set specular
 				l->setSpecular(atof(r->value()), atof(g->value()), atof(b->value()));
-			}
-
-			// Try to get shininess
-			XmlNode * shininess = light->first_node("shininess");
-			if (shininess) {
-				// Get value
-				XmlAttr * value;
-				xmlAttribute(value, shininess);
-				// Set shininess
-				l->setShininess(atof(value->value()));
 			}
 
 			// Read scripts

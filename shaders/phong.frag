@@ -12,6 +12,18 @@ uniform Tranformations {
 	mat4 NormalMatrix;
 } tranformations;
 
+// Material
+uniform Material {
+	// Emissive
+	vec4 emissive;
+	// Ambient
+	vec4 ambient;
+	// Diffuse
+	vec4 diffuse;
+	// Specular
+	vec4 specular;
+} material;
+
 uniform GlobalLight {
 	// Colors
 	vec4 global;
@@ -49,5 +61,5 @@ layout (location=0) out vec4 Fragcolor;
 
 void main()
 {
-   Fragcolor = texture(text, ITextCoord.st) * (globalLight.global + globalLight.ambient);
+   Fragcolor = texture(text, ITextCoord.st) * (globalLight.global + globalLight.ambient * material.ambient);
 }

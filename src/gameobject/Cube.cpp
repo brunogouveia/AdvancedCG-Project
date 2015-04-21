@@ -155,6 +155,9 @@ void Cube::rendererPass(bool useLight) {
     id = glGetUniformLocation(useLight ? lightShader : shader, "normalMap");
     if (id >= 0) glUniform1i(id, 2);
 
+    // Active material
+    material->activeMaterial();
+
     // Draw cube
     glDrawArrays(GL_TRIANGLES, 0, 36);
 

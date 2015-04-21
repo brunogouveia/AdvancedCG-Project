@@ -12,6 +12,18 @@ uniform Tranformations {
 	mat4 NormalMatrix;
 } tranformations;
 
+// Material
+uniform Material {
+	// Emissive
+	vec4 emissive;
+	// Ambient
+	vec4 ambient;
+	// Diffuse
+	vec4 diffuse;
+	// Specular
+	vec4 specular;
+} material;
+
 uniform Light {
 	// Position
 	vec4 position;

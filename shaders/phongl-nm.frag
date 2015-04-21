@@ -12,6 +12,18 @@ uniform Tranformations {
 	mat4 NormalMatrix;
 } tranformations;
 
+// Material
+uniform Material {
+	// Emissive
+	vec4 emissive;
+	// Ambient
+	vec4 ambient;
+	// Diffuse
+	vec4 diffuse;
+	// Specular
+	vec4 specular;
+} material;
+
 uniform GlobalLight {
 	// Colors
 	vec4 global;
@@ -104,9 +116,9 @@ vec4 phong()
 		float Id = max(0.0, dot(N, L));
 
 		// Specular light intensity
-		float Is = (Id > 0.0) ? pow(max(0.0, dot(R, V)), 100) : 0.0;
+		float Is = (Id > 0.0) ? pow(max(0.0, dot(R, V)), material.specular[3]) : 0.0;
 
-		return Id*light.diffuse + Is*light.specular;
+		return Id*light.diffuse*material.diffuse + Is*light.specular*vec4(vec3(material.specular),1.0);
 	} else {
 		vec4(0.0);
 	}

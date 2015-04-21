@@ -1,5 +1,6 @@
 #include <Renderer.h>
 #include <Light.h>
+#include <Material.h>
 #include <iostream>
 #include <GameWindow.h>
 
@@ -32,8 +33,9 @@ int Renderer::createShaderProg(std::string vertShaderFile, std::string fragShade
         std::cout << "Renderer::createShaderProg - camera is NULL" << std::endl;
     }
 
-    // Bind light as well
+    // Bind to light and material as well
     Light::bindLightBuffers(shader);
+    Material::bindMaterialBuffers(shader);
 
     // Return shader
     return shader;

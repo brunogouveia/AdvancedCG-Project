@@ -1,6 +1,6 @@
 #include "GameObject.h"
 
-GameObject::GameObject() : texture(GL_TEXTURE0), normalMap(GL_TEXTURE2, true) {
+GameObject::GameObject() : texture(GL_TEXTURE0), normalMap(GL_TEXTURE2, true), material(Material::getDefaultMaterial()) {
 	// do nothing
 }
 
@@ -27,6 +27,10 @@ void GameObject::setTexture(Texture newTexture) {
 
 void GameObject::setNormalMap(Texture newNormalMap) {
 	normalMap = newNormalMap;
+}
+
+void GameObject::setMaterial(Material * newMaterial) {
+	material = newMaterial;
 }
 
 void GameObject::translate(glm::vec3 & t) {

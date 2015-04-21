@@ -4,6 +4,7 @@
 #include <CSCIx239.h>
 #include <List>
 #include <Texture.h>
+#include <Material.h>
 #include <Transform.h>
 
 class GameObject : public Transform
@@ -13,6 +14,7 @@ protected:
     int lightShader;		// Shader that render the light effect
     Texture texture;		// Texture
     Texture normalMap;      // Normal map
+    Material * material;      // Material
     glm::mat4 modelMatrix;  // Model matrix
 
 public:
@@ -24,6 +26,7 @@ public:
     virtual void rendererPass(bool useLight);
     virtual void setTexture(Texture newTexture);
     virtual void setNormalMap(Texture newNormalMap);
+    virtual void setMaterial(Material * newMaterial);
 
     // Transform functions
     virtual void translate(glm::vec3 & t);

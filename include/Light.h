@@ -42,7 +42,6 @@ public:
     void setDiffuse(float diffuse[]);
     void setSpecular(float r, float g, float b);
     void setSpecular(float specular[]);
-    void setShininess(float shininess);
 
 
     void activeLight();
