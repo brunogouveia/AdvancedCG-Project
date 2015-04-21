@@ -3,49 +3,49 @@
 #include <iostream>
 
 float Cube::vertices[] = {
-//  X  Y  Z  W   Nx Ny Nz    R G B   s t
+//  X  Y  Z  W   Nx Ny Nz    s t
    //  Front
-   +1,+1,+1,+1,   0, 0,+1,   1,0,0,  1,1,
-   -1,+1,+1,+1,   0, 0,+1,   1,0,0,  0,1,
-   +1,-1,+1,+1,   0, 0,+1,   1,0,0,  1,0,
-   +1,-1,+1,+1,   0, 0,+1,   1,0,0,  1,0,
-   -1,+1,+1,+1,   0, 0,+1,   1,0,0,  0,1,
-   -1,-1,+1,+1,   0, 0,+1,   1,0,0,  0,0,
+   +1,+1,+1,+1,   0, 0,+1,   1,1,
+   -1,+1,+1,+1,   0, 0,+1,   0,1,
+   +1,-1,+1,+1,   0, 0,+1,   1,0,
+   +1,-1,+1,+1,   0, 0,+1,   1,0,
+   -1,+1,+1,+1,   0, 0,+1,   0,1,
+   -1,-1,+1,+1,   0, 0,+1,   0,0,
    //  Back
-   +1,-1,-1,+1,   0, 0,-1,   0,0,1,  0,0,
-   -1,-1,-1,+1,   0, 0,-1,   0,0,1,  1,0,
-   -1,+1,-1,+1,   0, 0,-1,   0,0,1,  1,1,
-   +1,-1,-1,+1,   0, 0,-1,   0,0,1,  0,0,
-   -1,+1,-1,+1,   0, 0,-1,   0,0,1,  1,1,
-   +1,+1,-1,+1,   0, 0,-1,   0,0,1,  0,1,
+   +1,-1,-1,+1,   0, 0,-1,   0,0,
+   -1,-1,-1,+1,   0, 0,-1,   1,0,
+   -1,+1,-1,+1,   0, 0,-1,   1,1,
+   +1,-1,-1,+1,   0, 0,-1,   0,0,
+   -1,+1,-1,+1,   0, 0,-1,   1,1,
+   +1,+1,-1,+1,   0, 0,-1,   0,1,
    //  Right
-   +1,+1,+1,+1,  +1, 0, 0,   1,1,0,  0,1,
-   +1,-1,+1,+1,  +1, 0, 0,   1,1,0,  0,0,
-   +1,+1,-1,+1,  +1, 0, 0,   1,1,0,  1,1,
-   +1,+1,-1,+1,  +1, 0, 0,   1,1,0,  1,1,
-   +1,-1,+1,+1,  +1, 0, 0,   1,1,0,  0,0,
-   +1,-1,-1,+1,  +1, 0, 0,   1,1,0,  1,0,
+   +1,+1,+1,+1,  +1, 0, 0,   0,1,
+   +1,-1,+1,+1,  +1, 0, 0,   0,0,
+   +1,+1,-1,+1,  +1, 0, 0,   1,1,
+   +1,+1,-1,+1,  +1, 0, 0,   1,1,
+   +1,-1,+1,+1,  +1, 0, 0,   0,0,
+   +1,-1,-1,+1,  +1, 0, 0,   1,0,
    //  Left
-   -1,+1,+1,+1,  -1, 0, 0,   0,1,0,  1,1,
-   -1,+1,-1,+1,  -1, 0, 0,   0,1,0,  0,1,
-   -1,-1,+1,+1,  -1, 0, 0,   0,1,0,  1,0,
-   -1,-1,+1,+1,  -1, 0, 0,   0,1,0,  1,0,
-   -1,+1,-1,+1,  -1, 0, 0,   0,1,0,  0,1,
-   -1,-1,-1,+1,  -1, 0, 0,   0,1,0,  0,0,
+   -1,+1,+1,+1,  -1, 0, 0,   1,1,
+   -1,+1,-1,+1,  -1, 0, 0,   0,1,
+   -1,-1,+1,+1,  -1, 0, 0,   1,0,
+   -1,-1,+1,+1,  -1, 0, 0,   1,0,
+   -1,+1,-1,+1,  -1, 0, 0,   0,1,
+   -1,-1,-1,+1,  -1, 0, 0,   0,0,
    //  Top
-   +1,+1,+1,+1,   0,+1, 0,   0,1,1,  1,0,
-   +1,+1,-1,+1,   0,+1, 0,   0,1,1,  1,1,
-   -1,+1,+1,+1,   0,+1, 0,   0,1,1,  0,0,
-   -1,+1,+1,+1,   0,+1, 0,   0,1,1,  0,0,
-   +1,+1,-1,+1,   0,+1, 0,   0,1,1,  1,1,
-   -1,+1,-1,+1,   0,+1, 0,   0,1,1,  0,1,
+   +1,+1,+1,+1,   0,+1, 0,   1,0,
+   +1,+1,-1,+1,   0,+1, 0,   1,1,
+   -1,+1,+1,+1,   0,+1, 0,   0,0,
+   -1,+1,+1,+1,   0,+1, 0,   0,0,
+   +1,+1,-1,+1,   0,+1, 0,   1,1,
+   -1,+1,-1,+1,   0,+1, 0,   0,1,
    //  Bottom
-   -1,-1,-1,+1,   0,-1, 0,   1,0,1,  0,0,
-   +1,-1,-1,+1,   0,-1, 0,   1,0,1,  1,0,
-   -1,-1,+1,+1,   0,-1, 0,   1,0,1,  0,1,
-   -1,-1,+1,+1,   0,-1, 0,   1,0,1,  0,1,
-   +1,-1,-1,+1,   0,-1, 0,   1,0,1,  1,0,
-   +1,-1,+1,+1,   0,-1, 0,   1,0,1,  1,1
+   -1,-1,-1,+1,   0,-1, 0,   0,0,
+   +1,-1,-1,+1,   0,-1, 0,   1,0,
+   -1,-1,+1,+1,   0,-1, 0,   0,1,
+   -1,-1,+1,+1,   0,-1, 0,   0,1,
+   +1,-1,-1,+1,   0,-1, 0,   1,0,
+   +1,-1,+1,+1,   0,-1, 0,   1,1
 };
 
 
@@ -90,7 +90,7 @@ void Cube::shadowPass() {
 
     // Set attribute 0 - vertex (vec4)
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 12*sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 9*sizeof(float), (void*)0);
 
     // Draw cube
     glDrawArrays(GL_TRIANGLES, 0, 36);
@@ -119,16 +119,13 @@ void Cube::rendererPass(bool useLight) {
 
     // Set attribute 0 - vertex (vec4)
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 12*sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 9*sizeof(float), (void*)0);
     // Set attribute 1 - normal (vec3)
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 12*sizeof(float), (void*)(4*sizeof(float)));
-    // Set attribute 2 - color (vec3)
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9*sizeof(float), (void*)(4*sizeof(float)));
+    // Set attribute 2 - texture (vec2)
     glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 12*sizeof(float), (void*)(7*sizeof(float)));
-    // Set attribute 3 - texture (vec2)
-    glEnableVertexAttribArray(3);
-    glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, 12*sizeof(float), (void*)(10*sizeof(float)));   
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 9*sizeof(float), (void*)(7*sizeof(float)));
 
     // Activate texture
     texture.active();
@@ -165,8 +162,6 @@ void Cube::rendererPass(bool useLight) {
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
     glDisableVertexAttribArray(2);
-    glDisableVertexAttribArray(3);
-    glDisableVertexAttribArray(4);
 
     // Unbind everything
     glBindVertexArray(0);

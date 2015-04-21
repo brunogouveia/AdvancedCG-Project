@@ -51,7 +51,6 @@ uniform Shadows {
 //  Input from previous shader
 in vec3 IPosition;
 in vec3 INormal;
-in vec3 FrontColor;
 in vec2 ITextCoord;
 in vec4 PosModelCoord;
 

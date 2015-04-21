@@ -27,32 +27,35 @@
 				<basic-shader vert="shaders/phong.vert" frag="shaders/phong.frag"/>
 				<light-shader vert="shaders/phongl.vert" frag="shaders/phongl.frag"/>
 			</cube>
-			<mesh file="houseA_obj.obj">
+			<!-- <mesh file="houseA_obj.obj">
 				<model>
 					<scale x="0.1" y="0.1" z="0.1"/>
 				</model>
 				<light-shader vert="shaders/phongl.vert" frag="shaders/phongl-nm.frag"/>
 				<texture file="textures/houseA.bmp"/>
 				<normal-map file="textures/houseANM.bmp"/>
+			</mesh> -->
+			<mesh file="axe_body.obj">
+				<model>
+					<scale x="0.02" y="0.02" z="0.02"/>
+				</model>
+				<light-shader vert="shaders/phongl.vert" frag="shaders/phongl-nm.frag"/>
+				<texture file="textures/axe_body_color.bmp"/>
+				<normal-map file="textures/axe_body_normal.bmp"/>
 			</mesh>
-			<mesh file="batman.obj">
-				<!-- <model>
-					<scale x="0.1" y="0.1" z="0.1"/>
-				</model> -->
-			</mesh>
+			<!-- <mesh file="batman.obj"/> -->
+			<!-- <mesh file="001.obj"/> -->
 		</objects>
 		<lights>
 			<!-- <light>
 				<position x="0" y="6.0" z="0"/>
 				<diffuse r="0.3" g="0.3" b="0.3"/>
 				<specular r="0.3" g="0.3" b="0.3"/>
-				<shininess value="1.0"/>
 			</li1ght> -->
 			<light>
 				<position x="0" y="25.0" z="10"/>
 				<diffuse r="0.3" g="0.3" b="0.3"/>
 				<specular r="0.3" g="0.3" b="0.3"/>
-				<shininess value="1.0"/>
 				<scripts>
 					<script name="LightScript"/>
 				</scripts>

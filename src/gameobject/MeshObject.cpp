@@ -27,12 +27,9 @@ void MeshObject::init(int basicShader, int lightShader) {
     glGenBuffers(1, &vertexBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
     float d[] = {
-        // +5.245,+11.785,+0.415,+1,   0, 0,+1,   1,0,0,  1,1,
-     //    +5.166,+11.947,+0.356,+1,   0, 0,+1,   1,0,0,  0,1,
-     //    +5.256,+11.906,+0.277,+1,   0, 0,+1,   1,0,0,  1,0,
-        -2.40,+1.06,+2.05,+1,   0, 0,+1,   1,0,0,  1,1,
-        +1.06,-2.40,-2.48,+1,   0, 0,+1,   1,0,0,  0,1,
-        +1.06,+2.51,-2.50,+1,   0, 0,+1,   1,0,0,  1,0,
+        0,0,0,+1,   0, 0,+1,   1,1,
+        0,0,0,+1,   0, 0,+1,   0,1,
+        0,0,0,+1,   0, 0,+1,   1,0
     };
     numVertices = 3;
     // Copy data to 
@@ -56,7 +53,7 @@ void MeshObject::shadowPass() {
 
     // Set attribute 0 - vertex (vec4)
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 12*sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 9*sizeof(float), (void*)0);
 
     // Draw cube
     glDrawArrays(GL_TRIANGLES, 0, numVertices);
@@ -85,16 +82,13 @@ void MeshObject::rendererPass(bool useLight) {
 
     // Set attribute 0 - vertex (vec4)
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 12*sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 9*sizeof(float), (void*)0);
     // Set attribute 1 - normal (vec3)
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 12*sizeof(float), (void*)(4*sizeof(float)));
-    // Set attribute 2 - color (vec3)
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9*sizeof(float), (void*)(4*sizeof(float)));
+    // Set attribute 2 - texture (vec2)
     glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 12*sizeof(float), (void*)(7*sizeof(float)));
-    // Set attribute 3 - texture (vec2)
-    glEnableVertexAttribArray(3);
-    glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, 12*sizeof(float), (void*)(10*sizeof(float)));   
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9*sizeof(float), (void*)(7*sizeof(float)));
 
     // Activate texture
     texture.active();
@@ -131,8 +125,6 @@ void MeshObject::rendererPass(bool useLight) {
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
     glDisableVertexAttribArray(2);
-    glDisableVertexAttribArray(3);
-    glDisableVertexAttribArray(4);
 
     // Unbind everything
     glBindVertexArray(0);
@@ -160,7 +152,7 @@ void MeshObject::loadFromFile(char * fileName) {
     }
 
     // Initialize data
-    data = new float[numVertices * 12];
+    data = new float[numVertices * 9];
     int curVert = 0; // Current vertex
 
     // For each shape
@@ -173,42 +165,42 @@ void MeshObject::loadFromFile(char * fileName) {
                 int index = shapes[i].mesh.indices[3*j + k];
 
                 // Set vertex
-                data[36 * curVert + 12 * k]     = shapes[i].mesh.positions[3 * index];
-                data[36 * curVert + 12 * k + 1] = shapes[i].mesh.positions[3 * index + 1];
-                data[36 * curVert + 12 * k + 2] = shapes[i].mesh.positions[3 * index + 2];
-                data[36 * curVert + 12 * k + 3] = 1.0;
+                data[27 * curVert + 9 * k]     = shapes[i].mesh.positions[3 * index];
+                data[27 * curVert + 9 * k + 1] = shapes[i].mesh.positions[3 * index + 1];
+                data[27 * curVert + 9 * k + 2] = shapes[i].mesh.positions[3 * index + 2];
+                data[27 * curVert + 9 * k + 3] = 1.0;
 
                 // Set normal
                 if (shapes[i].mesh.normals.size() > 0) {
-                    data[36 * curVert + 12 * k + 4] = shapes[i].mesh.normals[3 * index];
-                    data[36 * curVert + 12 * k + 5] = shapes[i].mesh.normals[3 * index + 1];
-                    data[36 * curVert + 12 * k + 6] = shapes[i].mesh.normals[3 * index + 2];
+                    data[27 * curVert + 9 * k + 4] = shapes[i].mesh.normals[3 * index];
+                    data[27 * curVert + 9 * k + 5] = shapes[i].mesh.normals[3 * index + 1];
+                    data[27 * curVert + 9 * k + 6] = shapes[i].mesh.normals[3 * index + 2];
                 }
 
                 // Set texture
                 if (shapes[i].mesh.texcoords.size() > 0) {
-                    data[36 * curVert + 12 * k + 10] = shapes[i].mesh.texcoords[2 * index];
-                    data[36 * curVert + 12 * k + 11] = shapes[i].mesh.texcoords[2 * index + 1];
+                    data[27 * curVert + 9 * k + 7] = shapes[i].mesh.texcoords[2 * index];
+                    data[27 * curVert + 9 * k + 8] = shapes[i].mesh.texcoords[2 * index + 1];
                 } else {
-                    data[36 * curVert + 12 * k + 10] = 0.0;
-                    data[36 * curVert + 12 * k + 11] = 0.0;
+                    data[27 * curVert + 9 * k + 7] = 0.0;
+                    data[27 * curVert + 9 * k + 8] = 0.0;
                 }
             }
 
             // If obj has no normals, we need to compute them
             if (shapes[i].mesh.normals.size() == 0) {
                 // Vectors of triangle
-                glm::vec3 a = glm::vec3(data[36*curVert + 12] - data[36*curVert], data[36*curVert + 13] - data[36*curVert + 1], data[36*curVert + 14] - data[36*curVert + 2]);
-                glm::vec3 b = glm::vec3(data[36*curVert + 24] - data[36*curVert], data[36*curVert + 25] - data[36*curVert + 1], data[36*curVert + 26] - data[36*curVert + 2]);
+                glm::vec3 a = glm::vec3(data[27*curVert + 9] - data[27*curVert], data[27*curVert + 10] - data[27*curVert + 1], data[27*curVert + 11] - data[27*curVert + 2]);
+                glm::vec3 b = glm::vec3(data[27*curVert + 18] - data[27*curVert], data[27*curVert + 19] - data[27*curVert + 1], data[27*curVert + 20] - data[27*curVert + 2]);
 
                 // Compute normal
                 glm::vec3 n = glm::normalize(glm::cross(a,b));
 
                 // Copy normal to data
                 for (int k = 0; k < 3; ++k) {
-                    data[36 * curVert + 12 * k + 4] = n[0];
-                    data[36 * curVert + 12 * k + 5] = n[1];
-                    data[36 * curVert + 12 * k + 6] = n[2];
+                    data[27 * curVert + 9 * k + 4] = n[0];
+                    data[27 * curVert + 9 * k + 5] = n[1];
+                    data[27 * curVert + 9 * k + 6] = n[2];
                 }
             }
             // Incremente curVert
@@ -221,7 +213,7 @@ void MeshObject::loadFromFile(char * fileName) {
     // Bind buffer
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
     // Copy data to 
-    glBufferData(GL_ARRAY_BUFFER, (numVertices * 12 * sizeof(float)), data, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, (numVertices * 9 * sizeof(float)), data, GL_STATIC_DRAW);
 
     // Unbind vao and buffer
     glBindBuffer(GL_ARRAY_BUFFER, 0);

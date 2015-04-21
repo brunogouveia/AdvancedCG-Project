@@ -45,24 +45,21 @@ uniform Shadows {
 //  Vertex attributes (input)
 layout(location = 0) in vec4 Vertex;
 layout(location = 1) in vec3 Normal;
-layout(location = 2) in vec3 Color;
-layout(location = 3) in vec2 TextCoord;
+layout(location = 2) in vec2 TextCoord;
 
 
 //  Output to next shader
 out vec3 IPosition;
 out vec3 INormal;
-out vec3 FrontColor;
 out vec2 ITextCoord;
 out vec4 PosModelCoord;
 
 void main()
 {	
    //  Pass all attributes to fragment shader (will be interpolated)
-	vec4 P = tranformations.ViewMatrix * tranformations.ModelMatrix * Vertex;
+   vec4 P = tranformations.ViewMatrix * tranformations.ModelMatrix * Vertex;
    IPosition = vec3(P.xyz / P.w);
    INormal = normalize(mat3(tranformations.NormalMatrix) * Normal);
-   FrontColor = Color;
    ITextCoord = TextCoord;
    //  Position in model coordinates
    PosModelCoord = tranformations.ModelMatrix * Vertex;
