@@ -18,7 +18,14 @@ public:
 	Texture(int textureUnit, std::string fileName);
 	~Texture();
 	
+	/**
+	 *	Active this texture
+	 */
 	void active() const;
+
+	/**
+	 *	Bind this texture
+	 */
 	void bind() const;
 
 	// Static methods

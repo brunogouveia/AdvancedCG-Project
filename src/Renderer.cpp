@@ -6,8 +6,8 @@
 
 unsigned int shadowtex;
 
-Renderer::Renderer(Scene * s) {
-    scene = s;
+Renderer::Renderer() {
+    scene = NULL;
     camera = NULL;
     th=0;       //  Azimuth of view angle
     ph=0;       //  Elevation of view angle
@@ -19,7 +19,9 @@ Renderer::Renderer(Scene * s) {
 }
 
 Renderer::~Renderer() {
-    
+    // Delete scene
+    if (scene)
+        delete scene;
 }
 
 int Renderer::createShaderProg(std::string vertShaderFile, std::string fragShaderFile) {
@@ -57,13 +59,23 @@ void Renderer::setScene(Scene * s) {
     this->scene = s;
 }
 
+Scene * Renderer::getScene() {
+    return this->scene;
+}
+
+
 void Renderer::setCamera(Camera * c) {
     this->camera = c;
 }
 
+Camera * Renderer::getCamera() {
+    return this->camera;
+}
+
 void Renderer::display() {
     // Update scripts
-    scene->updateScripts();
+    if (scene)
+        scene->updateScripts();
 
     // Enable z-buffer 
     glEnable(GL_DEPTH_TEST);

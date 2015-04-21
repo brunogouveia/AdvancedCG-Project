@@ -11,7 +11,7 @@ class Transform
 {
 public:
 	/**
-	 * 	Translate by 't'.
+	 * 	Translate by a vector 't'.
 	 */
 	virtual void translate(glm::vec3 & t){
 	};
@@ -25,7 +25,7 @@ public:
 	};
 
 	/**
-	 *  Scale the transform by 's'.
+	 *  Scale the transform by a vector 's'.
 	 */
 	virtual void scale(glm::vec3 & s){
 	};

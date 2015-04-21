@@ -35,7 +35,23 @@
 				<texture file="textures/houseA.bmp"/>
 				<normal-map file="textures/houseANM.bmp"/>
 			</mesh> -->
-			<mesh file="axe_body.obj">
+			<mesh file="obj/axe_armor.obj">
+				<model>
+					<scale x="0.02" y="0.02" z="0.02"/>
+				</model>
+				<light-shader vert="shaders/phongl.vert" frag="shaders/phongl-nm.frag"/>
+				<texture file="textures/axe_armor_color.bmp"/>
+				<normal-map file="textures/axe_armor_normal.bmp"/>
+			</mesh>
+			<mesh file="obj/axe_belt.obj">
+				<model>
+					<scale x="0.02" y="0.02" z="0.02"/>
+				</model>
+				<light-shader vert="shaders/phongl.vert" frag="shaders/phongl-nm.frag"/>
+				<texture file="textures/axe_belt_color.bmp"/>
+				<normal-map file="textures/axe_belt_normal.bmp"/>
+			</mesh>
+			<mesh file="obj/axe_body.obj">
 				<model>
 					<scale x="0.02" y="0.02" z="0.02"/>
 				</model>
@@ -43,8 +59,35 @@
 				<texture file="textures/axe_body_color.bmp"/>
 				<normal-map file="textures/axe_body_normal.bmp"/>
 			</mesh>
+			<mesh file="obj/axe_hair.obj">
+				<model>
+					<scale x="0.02" y="0.02" z="0.02"/>
+				</model>
+				<light-shader vert="shaders/phongl.vert" frag="shaders/phongl-nm.frag"/>
+				<texture file="textures/axe_hair_color.bmp"/>
+				<normal-map file="textures/axe_hair_normal.bmp"/>
+			</mesh>
+			<mesh file="obj/axe_weapon.obj">
+				<model>
+					<scale x="0.02" y="0.02" z="0.02"/>
+					<rotate angle="1.7"/>
+				</model>
+				<light-shader vert="shaders/phongl.vert" frag="shaders/phongl-nm.frag"/>
+				<texture file="textures/axe_weapon_color.bmp"/>
+				<normal-map file="textures/axe_weapon_normal.bmp"/>
+			</mesh>
+			<!-- <mesh file="obj/axe_model.obj">
+				<model>
+					<scale x="0.02" y="0.02" z="0.02"/>
+				</model>
+				<light-shader vert="shaders/phongl.vert" frag="shaders/phongl-nm.frag"/>
+				<texture file="textures/axe_body_color.bmp"/>
+				<normal-map file="textures/axe_body_normal.bmp"/>
+			</mesh> -->
 			<!-- <mesh file="batman.obj"/> -->
-			<!-- <mesh file="001.obj"/> -->
+<!-- 			<mesh file="001.obj">
+				<texture file="textures/t_dante_hair_black_dm.bmp"/>
+			</mesh> -->
 		</objects>
 		<lights>
 			<!-- <light>

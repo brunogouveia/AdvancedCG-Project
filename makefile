@@ -10,7 +10,7 @@ all: $(EXE)
 
 #  MinGW
 ifeq "$(OS)" "Windows_NT"
-CFLG=-O3 -Wall -DUSEGLEW
+CFLG=-O3 -Wall -std=gnu++0x -DUSEGLEW
 LIBS=-lglew32 -lglut32cu -lglu32 -lopengl32
 CLEAN=del *.exe build\*.o *.a
 else

@@ -243,31 +243,7 @@ void Light::updateMatrices() {
     Svec[2] = Tproj[2][0];    Tvec[2] = Tproj[2][1];    Rvec[2] = Tproj[2][2];    Qvec[2] = Tproj[2][3];
     Svec[3] = Tproj[3][0];    Tvec[3] = Tproj[3][1];    Rvec[3] = Tproj[3][2];    Qvec[3] = Tproj[3][3];
 
-    // float svec[4];
-    // svec[0] = Svec[0];
-    // svec[1] = Svec[1];
-    // svec[2] = Svec[2];
-    // svec[3] = Svec[3];
-    // glBufferSubData(GL_UNIFORM_BUFFER, 32*sizeof(float), 4*sizeof(float), svec);
-    // float tvec[4];
-    // tvec[0] = Tvec[0];
-    // tvec[1] = Tvec[1];
-    // tvec[2] = Tvec[2];
-    // tvec[3] = Tvec[3];
-    // glBufferSubData(GL_UNIFORM_BUFFER, 36*sizeof(float), 4*sizeof(float), tvec);
-    // float rvec[4];
-    // rvec[0] = Rvec[0];
-    // rvec[1] = Rvec[1];
-    // rvec[2] = Rvec[2];
-    // rvec[3] = Rvec[3];
-    // glBufferSubData(GL_UNIFORM_BUFFER, 40*sizeof(float), 4*sizeof(float), rvec);
-    // float qvec[4];
-    // qvec[0] = Qvec[0];
-    // qvec[1] = Qvec[1];
-    // qvec[2] = Qvec[2];
-    // qvec[3] = Qvec[3];
-    // glBufferSubData(GL_UNIFORM_BUFFER, 44*sizeof(float), 4*sizeof(float), qvec);
-
+    // Unbind buffer
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
     ErrCheck("Light::updateMatrices");
@@ -319,6 +295,14 @@ void Light::translate(glm::vec3 & t){
     updateMatrices();
 };
 
+void Light::translate(float tx, float ty, float tz) {
+    // Add t to data
+    data[0] += tx;
+    data[1] += ty;
+    data[2] += tz;
+    updateMatrices();  
+}
+
 void Light::rotate(float rad, glm::vec3 & normal) {
     // Create position
     glm::vec3 p = glm::vec3(data[0], data[1], data[2]);
@@ -339,4 +323,12 @@ void Light::scale(glm::vec3 & s) {
     data[1] *= s[1];
     data[2] *= s[2];
     updateMatrices();
+}
+
+void Light::scale(float sx, float sy, float sz) {
+    // Multiply data by s
+    data[0] *= sx;
+    data[1] *= sy;
+    data[2] *= sz;
+    updateMatrices();  
 }

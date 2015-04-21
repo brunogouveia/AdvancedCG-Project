@@ -49,17 +49,24 @@ float Cube::vertices[] = {
 };
 
 
-Cube::Cube(glm::mat4 modelMatrix) : GameObject() {
-    this->modelMatrix = modelMatrix;
+Cube::Cube() : GameObject() {
+    // Do nothing
 }
 
 Cube::~Cube() {
-    // do nothing
+    // Do nothing
 }
 
-void Cube::init(int shader, int lightShader) {
+/**
+ *  This method initialize the vao and buffers, so it
+ * must be the first method to be called, but it must
+ * be called after OpenGL initialization
+ *  You can also choose the basic shader and light shader
+ * that will render the cube.
+ */
+void Cube::init(int basicShader, int lightShader) {
     // Set cube's shader
-    this->shader = shader;
+    this->basicShader = basicShader;
     this->lightShader = lightShader;
 
     // Create vertex array object
@@ -77,12 +84,17 @@ void Cube::init(int shader, int lightShader) {
     glBindVertexArray(0);
 }
 
+/**
+ *  This method is called to compute the shadow mapping, 
+ * which means that color is useless. So you shouldn't use
+ * any attribute such as textures or normals, just the vertex.
+ */
 void Cube::shadowPass() {
     // Set program
     glUseProgram(Light::getShadowShader());
 
     // Set model matrix
-    GameWindow::getRenderer()->camera->setModelMatrix(modelMatrix);
+    GameWindow::getRenderer()->getCamera()->setModelMatrix(modelMatrix);
 
     // Bind vao and buffer
     glBindVertexArray(vertexArrayObj);
@@ -106,12 +118,17 @@ void Cube::shadowPass() {
     glUseProgram(0);
 }
 
+/**
+ *  This method is called when the renderer wants to draw 
+ * the cube using color. Hence, attributes such as textures
+ * and normals are important here.
+ */
 void Cube::rendererPass(bool useLight) {
     // Set program
-    glUseProgram(useLight ? lightShader : shader);
+    glUseProgram(useLight ? lightShader : basicShader);
 
     // Set model matrix
-    GameWindow::getRenderer()->camera->setModelMatrix(modelMatrix);
+    GameWindow::getRenderer()->getCamera()->setModelMatrix(modelMatrix);
 
     // Bind vao and buffer
     glBindVertexArray(vertexArrayObj);
@@ -145,11 +162,11 @@ void Cube::rendererPass(bool useLight) {
     normalMap.bind();
 
     // Set uniform value
-    int id = glGetUniformLocation(useLight ? lightShader : shader, "text");
+    int id = glGetUniformLocation(useLight ? lightShader : basicShader, "text");
     if (id >= 0) glUniform1i(id, 0);
-    id = glGetUniformLocation(useLight ? lightShader : shader, "depthText");
+    id = glGetUniformLocation(useLight ? lightShader : basicShader, "depthText");
     if (id >= 0) glUniform1i(id, 1);
-    id = glGetUniformLocation(useLight ? lightShader : shader, "normalMap");
+    id = glGetUniformLocation(useLight ? lightShader : basicShader, "normalMap");
     if (id >= 0) glUniform1i(id, 2);
 
     // Active material

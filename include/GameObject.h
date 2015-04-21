@@ -10,22 +10,53 @@
 class GameObject : public Transform
 {
 protected:
-    int shader;             // Shader to render this object
-    int lightShader;		// Shader that render the light effect
-    Texture texture;		// Texture
+    int basicShader;        // Shader to render this object
+    int lightShader;        // Shader that render the light effect
+    Texture texture;        // Texture
     Texture normalMap;      // Normal map
-    Material * material;      // Material
+    Material * material;    // Material
     glm::mat4 modelMatrix;  // Model matrix
 
 public:
     GameObject();
     virtual ~GameObject();
     
-    virtual void init(int shader, int lightShader);
+    /**
+     *  This method initialize the vao and buffers, so it
+     * must be the first method to be called. However it must
+     * be called after OpenGL initialization.
+     *  You can also choose the basic shader and light shader
+     * that will render the GameObject.
+     */
+    virtual void init(int basicShader, int lightShader);
+
+    /**
+     *  This method is called to compute the shadow mapping, 
+     * which means that the color is useless. Hence, you shouldn't use
+     * any attribute such as textures or normals, just the vertex.
+     */
     virtual void shadowPass();
+
+    /**
+     *  This method is called when the renderer wants to draw 
+     * the GameObject using color. Hence, attributes such as textures
+     * and normals are important here.
+     */
     virtual void rendererPass(bool useLight);
+
+    /**
+     *  Set a new texture (deffuse texture)
+     */
     virtual void setTexture(Texture newTexture);
+
+    /**
+     *  Set a new normal map.
+     */
     virtual void setNormalMap(Texture newNormalMap);
+
+    /**
+     *  Set a new material.
+     */
     virtual void setMaterial(Material * newMaterial);
 
     // Transform functions

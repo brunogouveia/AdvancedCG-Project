@@ -17,7 +17,7 @@ Texture::Texture(int textureUnit, std::string fileName) {
 }
 
 Texture::~Texture() {
-    // do nthing
+    // Do nothing
 }
 
 void Texture::active() const {
