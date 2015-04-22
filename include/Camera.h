@@ -6,11 +6,12 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/matrix_inverse.hpp"
 #include "glm/gtc/type_ptr.hpp"
+#include <Transform.h>
 
 /////////////////////
 // Class Camera
 // ============
-class Camera
+class Camera : public Transform
 {
 private:
     // Private data
@@ -52,6 +53,19 @@ public:
      * up*: normal vector
      */
     void lookAt(float ex, float ey, float ez, float cx, float cy, float cz, float upx, float upy, float upz);
+
+    void updateViewMatrix();
+    void updateModelMatrix();
+
+    void moveUp(float distance);
+    void moveDown(float distance);
+    void moveForward(float distance);
+    void moveBackward(float distance);
+    void moveLeft(float distance);
+    void moveRight(float distance);
+
+    void rotate(float angle, glm::vec3 & normal);
+    void localRotate(float angle, glm::vec3 & normal);
 };
 
 #endif

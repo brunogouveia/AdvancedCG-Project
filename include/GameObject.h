@@ -15,7 +15,6 @@ protected:
     Texture texture;        // Texture
     Texture normalMap;      // Normal map
     Material * material;    // Material
-    glm::mat4 modelMatrix;  // Model matrix
 
 public:
     GameObject();

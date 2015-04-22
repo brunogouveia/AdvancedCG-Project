@@ -1,19 +1,27 @@
 #include "Camera.h"
+#include <iostream>
+#include "glm/ext.hpp"
+#include "glm/gtx/string_cast.hpp"
 
 Camera::Camera() : projectionBindingPoint(1) {
-    // Generate buffer
-    glGenBuffers(1, &projectionBuffer);
-    glBindBuffer(GL_UNIFORM_BUFFER, projectionBuffer);
+	position = glm::vec3(0, 0.5, 0);
+	direction = glm::vec3(0, 0, 1);
+	up = glm::vec3(0, 1, 0);
+	updateModelMatrix();
 
-    // Initialize data
-    float data[16*4] = {0};
-    glBufferData(GL_UNIFORM_BUFFER, sizeof(data), data, GL_DYNAMIC_DRAW);
+	// Generate buffer
+	glGenBuffers(1, &projectionBuffer);
+	glBindBuffer(GL_UNIFORM_BUFFER, projectionBuffer);
 
-    // Bind to binding point
-    glBindBufferBase(GL_UNIFORM_BUFFER, projectionBindingPoint, projectionBuffer);
+	// Initialize data
+	float data[16 * 4] = { 0 };
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(data), data, GL_DYNAMIC_DRAW);
 
-    // Unbind buffer
-    glBindBuffer(GL_UNIFORM_BUFFER, 0);
+	// Bind to binding point
+	glBindBufferBase(GL_UNIFORM_BUFFER, projectionBindingPoint,	projectionBuffer);
+
+	// Unbind buffer
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
 Camera::~Camera() {
@@ -72,7 +80,7 @@ void Camera::setPerspective(float fov, float asp, float zNear, float zFar) {
  */
 void Camera::lookAt(float ex, float ey, float ez, float cx, float cy, float cz, float upx, float upy, float upz) {
     // Create new model view matrix
-    viewMatrix = glm::lookAt(glm::vec3(ex,ey,ez), glm::vec3(cx,cy,cz), glm::vec3(upx, upy, upz));
+    viewMatrix = glm::lookAt(position, position + direction, glm::vec3(upx, upy, upz));
 
     // Bind buffer and copy data
     glBindBuffer(GL_UNIFORM_BUFFER, projectionBuffer);
@@ -80,4 +88,90 @@ void Camera::lookAt(float ex, float ey, float ez, float cx, float cy, float cz, 
     glBufferSubData(GL_UNIFORM_BUFFER, 48*sizeof(float), 16*sizeof(float), glm::value_ptr(glm::inverseTranspose(viewMatrix)));
     // Unbind buffer
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
+}
+
+void Camera::updateViewMatrix() {
+    // Create new model view matrix
+    viewMatrix = glm::lookAt(position, position + direction, up);
+
+    // Bind buffer and copy data
+    glBindBuffer(GL_UNIFORM_BUFFER, projectionBuffer);
+    glBufferSubData(GL_UNIFORM_BUFFER, 32*sizeof(float), 16*sizeof(float), glm::value_ptr(viewMatrix));
+    glBufferSubData(GL_UNIFORM_BUFFER, 48*sizeof(float), 16*sizeof(float), glm::value_ptr(glm::inverseTranspose(viewMatrix)));
+    // Unbind buffer
+    glBindBuffer(GL_UNIFORM_BUFFER, 0);
+}
+
+void Camera::updateModelMatrix() {
+	modelMatrix = glm::mat4(glm::vec4(glm::cross(up,direction),0), glm::vec4(up,0), glm::vec4(direction,0), glm::vec4(0,0,0,1));
+}
+
+void Camera::moveUp(float distance) {
+    // Set new position
+    position += distance * up;
+    // Update matrix
+    updateViewMatrix();
+}
+
+void Camera::moveDown(float distance) {
+    // Set new position
+    position -= distance * up;
+    // Update matrix
+    updateViewMatrix();
+}
+
+void Camera::moveForward(float distance) {
+    // Set new position
+    position += distance * direction;
+    // Update matrix
+    updateViewMatrix();
+}
+
+void Camera::moveBackward(float distance) {
+    // Set new position
+    position -= distance * direction;
+    // Update matrix
+    updateViewMatrix();
+}
+
+void Camera::moveLeft(float distance) {
+    // Set new position
+    position += distance * glm::cross(up,direction);
+    // Update matrix
+    updateViewMatrix();
+}
+
+void Camera::moveRight(float distance) {
+    // Set new position
+    position += distance * -glm::cross(up,direction);
+    // Update matrix
+    updateViewMatrix();
+}
+
+void Camera::rotate(float angle, glm::vec3 & normal) {
+	// update vectors
+	position = glm::rotate(position, angle, normal);
+	direction = glm::rotate(direction, angle, normal);
+	up =  glm::rotate(up, angle, normal);
+
+	// Update matrices
+	updateModelMatrix();
+	updateViewMatrix();
+}
+
+void Camera::localRotate(float angle, glm::vec3 & normal) {
+	// Compute the transformation matrix
+	glm::mat4 transformation = glm::mat4();
+	transformation = glm::inverse(modelMatrix) * transformation;
+	transformation = glm::rotate(glm::mat4(), angle,	normal) * transformation;
+	transformation = modelMatrix * transformation;
+
+
+	// Apply transformation in direction and up vectors
+	direction = glm::vec3(transformation * glm::vec4(direction, 1));
+	up = glm::vec3(transformation * glm::vec4(up, 1));
+
+	// Update matrices
+	updateModelMatrix();
+	updateViewMatrix();
 }

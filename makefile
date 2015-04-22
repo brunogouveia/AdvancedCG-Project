@@ -47,7 +47,6 @@ OBJS = \
 	$(BUILD_DIR)XmlParser.o \
 	$(BUILD_DIR)fatal.o \
 	$(BUILD_DIR)cube.o \
-	$(BUILD_DIR)light.o \
 	$(BUILD_DIR)projection.o \
 	$(BUILD_DIR)loadtexbmp.o \
 	$(BUILD_DIR)print.o \
@@ -129,9 +128,6 @@ $(BUILD_DIR)fatal.o: $(SRC_DIR)fatal.c
 
 $(BUILD_DIR)cube.o: $(SRC_DIR)cube.c
 	g++ -c -o $(BUILD_DIR)cube.o $(CFLG) -I$(INCLUDE_DIR) $(SRC_DIR)cube.c
-
-$(BUILD_DIR)light.o: $(SRC_DIR)light.c
-	g++ -c -o $(BUILD_DIR)light.o $(CFLG) -I$(INCLUDE_DIR) $(SRC_DIR)light.c
 
 $(BUILD_DIR)projection.o: $(SRC_DIR)projection.cpp
 	g++ -c -o $(BUILD_DIR)projection.o $(CFLG) -I$(INCLUDE_DIR) $(SRC_DIR)projection.cpp

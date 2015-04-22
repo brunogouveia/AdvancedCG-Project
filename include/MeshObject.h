@@ -5,17 +5,6 @@
 #include <String>
 #include <vector>
 
-class MeshShape {
-public:
-    int first;
-    int numVertices;
-    Texture texture;
-    Texture normalMap;
-
-    MeshShape();
-
-};
-
 class MeshObject : public GameObject
 {
 private:
@@ -23,7 +12,6 @@ private:
     unsigned int vertexBuffer;
 
     int numVertices;
-    std::vector<MeshShape> meshShapes;
 
 public:
     MeshObject(glm::mat4 modelMatrix);

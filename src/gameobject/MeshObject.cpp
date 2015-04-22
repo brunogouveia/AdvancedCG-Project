@@ -5,7 +5,10 @@
 #include <GameWindow.h>
 
 MeshObject::MeshObject(glm::mat4 modelMatrix) {
-    this->modelMatrix = modelMatrix;
+	vertexArrayObj = -1;
+	vertexBuffer = -1;
+	numVertices = -1;
+	this->modelMatrix = modelMatrix;
 }
 
 MeshObject::~MeshObject() {
@@ -219,8 +222,4 @@ void MeshObject::loadFromFile(char * fileName) {
     glBindVertexArray(0);
 
     ErrCheck("obj");
-}
-
-
-MeshShape::MeshShape() : texture(GL_TEXTURE0), normalMap(GL_TEXTURE2, true) {
 }

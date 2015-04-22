@@ -132,17 +132,27 @@ void Renderer::reshape(int width, int height) {
 }
 void Renderer::special(int key, int x, int y) {
     //  Right arrow key - increase angle by 5 degrees
-    if (key == GLUT_KEY_RIGHT)
-      th += 5;
+    if (key == GLUT_KEY_RIGHT) {
+        glm::vec3 normal = camera->toTransform(glm::vec3(0,1,0));
+      camera->localRotate(-0.1, normal);
+    }
     //  Left arrow key - decrease angle by 5 degrees
-    else if (key == GLUT_KEY_LEFT)
-      th -= 5;
-    //  Up arrow key - increase elevation by 5 degrees
-    else if (key == GLUT_KEY_UP)
-      ph += 5;
-    //  Down arrow key - decrease elevation by 5 degrees
-    else if (key == GLUT_KEY_DOWN)
-      ph -= 5;
+    else if (key == GLUT_KEY_LEFT) {
+    	glm::vec3 normal = camera->toTransform(glm::vec3(0,1,0));
+      camera->localRotate(0.1, normal);
+    }
+	//  Up arrow key - increase elevation by 5 degrees
+	else if (key == GLUT_KEY_UP) {
+		glm::vec3 normal = glm::vec3(1, 0, 0);
+		camera->localRotate(-0.1, normal);
+	}
+	else if (key == GLUT_KEY_DOWN) {
+		glm::vec3 normal = glm::vec3(1, 0, 0);
+		camera->localRotate(0.1, normal);
+	}
+	//  Down arrow key - decrease elevation by 5 degrees
+	else if (key == GLUT_KEY_DOWN)
+    	camera->moveDown(0.1);
     //  PageUp key - increase dim
     else if (key == GLUT_KEY_PAGE_DOWN)
         GameWindow::dim += 0.1;
@@ -166,10 +176,25 @@ void Renderer::special(int key, int x, int y) {
 }
 void Renderer::key(unsigned char ch, int x, int y) {
     //  Exit on ESC
-    if (ch == 27)
-        exit(0);
-    //  Reset view angle
-    else if (ch == '0')
+	if (ch == 27)
+		exit(0);
+	//  Up arrow key - increase elevation by 5 degrees
+	else if (ch == 'q' || ch == 'Q')
+		camera->moveUp(0.1);
+	//  Down arrow key - decrease elevation by 5 degrees
+	else if (ch == 'z')
+		camera->moveDown(0.1);
+	else if (ch == 'w' || ch == 'W') {
+		camera->moveForward(0.1);
+	} else if (ch == 's' || ch == 'S') {
+		camera->moveBackward(0.1);
+	} else if (ch == 'a' || ch == 'A') {
+		camera->moveLeft(0.1);
+	} else if (ch == 'd' || ch == 'D') {
+		camera->moveRight(0.1);
+	}
+	//  Reset view angle
+	else if (ch == '0')
         th = ph = 0;
     //  Move light
     else if (ch == '[')
