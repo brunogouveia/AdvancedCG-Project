@@ -7,6 +7,7 @@
 
 #include "xml/XmlParser.h"
 #include <GameWindow.h>
+#include <Input.h>
 #include <Cube.h>
 #include <Scene.h>
 #include <Script.h>
@@ -50,7 +51,8 @@ void XmlParser::loadFromXml(const char * fileName, int * argc, char ** argv) {
     // Init gamewindow and light
     GameWindow::init(argc, argv);
     Light::init();
-    Material::init();   
+    Material::init();
+    Input::init();
 
     /*** Read Scene ***/
     // Reference to scene node
@@ -62,8 +64,21 @@ void XmlParser::loadFromXml(const char * fileName, int * argc, char ** argv) {
     // Set renderer
     GameWindow::setRenderer(renderer);
     renderer->setScene(scene);
-    // Set camera
-    renderer->setCamera(new Camera());
+
+	// Create camera
+	Camera * camera = new Camera();
+	// Set camera
+	renderer->setCamera(camera);
+	camera->setAspectRatio(W/H);
+
+	// Read Camera
+	XmlNode * cameraNode = rtNode->first_node("camera");
+	if (cameraNode) {
+		printf("Tem camera\n");
+		// Read scripts
+		XmlNode * scriptsNode = cameraNode->first_node("scripts");
+		readScripts(scene, camera, scriptsNode);
+	}
 
     // Light shadow map must be initialized after renderer has a camera
     Light::initShadowMap(renderer->createShaderProg("shaders/shadow.vert", "shaders/shadow.frag"));
@@ -139,6 +154,73 @@ void XmlParser::readCubes(Renderer * renderer ,Scene * scene, XmlNode * cubeNode
 
             // Set texture
             c->setTexture(texture);
+        }
+
+        // Set material
+        XmlNode * material = cubeNode->first_node("material");
+        if (material) {
+        	// Create material
+        	Material * m = new Material();
+
+        	// Set emissive
+        	XmlNode * emissive = material->first_node("emissive");
+			if (emissive) {
+				XmlAttr * r, *g, *b;
+				xmlAttribute(r, emissive);
+				xmlAttribute(g, emissive);
+				xmlAttribute(b, emissive);
+				// Set diffuse
+				m->setEmissive(atof(r->value()), atof(g->value()),
+						atof(b->value()));
+			}
+
+			// Read ambient
+			XmlNode * ambient = material->first_node("ambient");
+			if (ambient) {
+				XmlAttr * r, *g, *b;
+				xmlAttribute(r, ambient);
+				xmlAttribute(g, ambient);
+				xmlAttribute(b, ambient);
+				// Set diffuse
+				m->setAmbient(atof(r->value()), atof(g->value()),
+						atof(b->value()));
+			}
+
+			// Read diffuse
+			XmlNode * diffuse = material->first_node("diffuse");
+			if (diffuse) {
+				XmlAttr * r, *g, *b;
+				xmlAttribute(r, diffuse);
+				xmlAttribute(g, diffuse);
+				xmlAttribute(b, diffuse);
+				// Set diffuse
+				m->setDiffuse(atof(r->value()), atof(g->value()),
+						atof(b->value()));
+			}
+
+			// Read specular
+			XmlNode * specular = material->first_node("specular");
+			if (specular) {
+				XmlAttr * r, *g, *b;
+				xmlAttribute(r, specular);
+				xmlAttribute(g, specular);
+				xmlAttribute(b, specular);
+				// Set diffuse
+				m->setSpecular(atof(r->value()), atof(g->value()),
+						atof(b->value()));
+			}
+
+			// Read specular
+			XmlNode * shininess = material->first_node("shininess");
+			if (shininess) {
+				XmlAttr * value;
+				xmlAttribute(value, shininess);
+				// Set diffuse
+				m->setShininess(atof(value->value()));
+			}
+
+			// Set material
+			c->setMaterial(m);
         }
 
         // Read Scripts
@@ -366,6 +448,8 @@ void XmlParser::readModel(Transform * transform, XmlNode * modelNode) {
         }
     }
 }
+
+
 
 // Camera * XmlParser::xmlToCamera(XmlNode * camera) {
 //  Camera * c = new Camera();

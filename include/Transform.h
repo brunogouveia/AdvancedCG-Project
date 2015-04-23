@@ -10,6 +10,7 @@
 class Transform {
 protected:
 	glm::mat4 modelMatrix;
+	glm::mat4 vecModelMatrix;
 	glm::vec3 position;
 	glm::vec3 direction;
 	glm::vec3 up;
@@ -81,14 +82,20 @@ public:
 	}
 	virtual void moveRight(float distance){
 	}
-	virtual void moveLeft(float distance){
+	virtual void moveLeft(float distance) {
 	}
 
 	virtual glm::vec3 toTransform(glm::vec3 v) {
 		return glm::vec3(glm::inverse(modelMatrix) * glm::vec4(v, 0));
 	}
-	virtual	glm::vec3 fromTransform(glm::vec3 v) {
+	virtual glm::vec3 fromTransform(glm::vec3 v) {
 		return glm::vec3(modelMatrix * glm::vec4(v, 0));
+	}
+	virtual glm::vec3 toTransformVec(glm::vec3 v) {
+		return glm::vec3(glm::inverse(vecModelMatrix) * glm::vec4(v, 0));
+	}
+	virtual glm::vec3 fromTransformVec(glm::vec3 v) {
+		return glm::vec3(vecModelMatrix * glm::vec4(v, 0));
 	}
 
 

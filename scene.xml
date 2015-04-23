@@ -5,6 +5,11 @@
 		<width>1024</width>
 		<height>780</height>
 	</window>
+	<camera>
+		<scripts>
+			<script name="CameraScript"/>
+		</scripts>
+	</camera>
 	<scene>
 		<objects>
 			<!-- <cube>
@@ -24,10 +29,14 @@
 					<!-- <translate x="0" y="-2.5" z="0"/> -->
 					<scale x="20" y="0.05" z="20"/>
 				</model>
+				<material>
+					<ambient r="1" g="0" b="0"/>
+					<diffuse r="1" g="0.3" b="0.1"/>
+				</material>
 				<basic-shader vert="shaders/phong.vert" frag="shaders/phong.frag"/>
 				<light-shader vert="shaders/phongl.vert" frag="shaders/phongl.frag"/>
 			</cube>
-			<!-- <mesh file="houseA_obj.obj">
+			<!-- <mesh file="obj/houseA_obj.obj">
 				<model>
 					<scale x="0.1" y="0.1" z="0.1"/>
 				</model>
@@ -90,11 +99,11 @@
 			</mesh> -->
 		</objects>
 		<lights>
-			<!-- <light>
-				<position x="0" y="6.0" z="0"/>
+			<light>
+				<position x="0" y="5.5" z="0"/>
 				<diffuse r="0.3" g="0.3" b="0.3"/>
 				<specular r="0.3" g="0.3" b="0.3"/>
-			</li1ght> -->
+			</li1ght>
 			<light>
 				<position x="0" y="25.0" z="10"/>
 				<diffuse r="0.3" g="0.3" b="0.3"/>

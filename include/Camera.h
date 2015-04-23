@@ -21,6 +21,11 @@ private:
     glm::mat4 projectionMatrix;
     glm::mat4 viewMatrix;
 
+    // Field of view
+    float fov;
+    // Aspect ratio
+    float asp;
+
 public:
     Camera();
     ~Camera();
@@ -54,8 +59,15 @@ public:
      */
     void lookAt(float ex, float ey, float ez, float cx, float cy, float cz, float upx, float upy, float upz);
 
+    void setAspectRatio(float aspectRatio);
+    void setFieldOfView(float fieldOfView);
+
+    void updateProjectioneMatrix();
     void updateViewMatrix();
     void updateModelMatrix();
+
+    void zoomIn();
+    void zoomOut();
 
     void moveUp(float distance);
     void moveDown(float distance);

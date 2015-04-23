@@ -2,6 +2,7 @@
 #include <iostream>
 #include "glm/ext.hpp"
 #include "glm/gtx/string_cast.hpp"
+#include <GameWindow.h>
 
 Camera::Camera() : projectionBindingPoint(1) {
 	position = glm::vec3(0, 0.5, 0);
@@ -22,6 +23,12 @@ Camera::Camera() : projectionBindingPoint(1) {
 
 	// Unbind buffer
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+	// Initialize fov and asp
+    fov=55.0;   //  Field of view (angles)
+    asp=1;      //  Screen aspect ratio
+    updateProjectioneMatrix();
+    updateViewMatrix();
 }
 
 Camera::~Camera() {
@@ -90,6 +97,29 @@ void Camera::lookAt(float ex, float ey, float ez, float cx, float cy, float cz, 
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
+void Camera::setAspectRatio(float aspectRatio) {
+	asp = aspectRatio;
+	updateProjectioneMatrix();
+}
+void Camera::setFieldOfView(float fieldOfView) {
+	fov = fieldOfView;
+	updateProjectioneMatrix();
+}
+
+void Camera::updateProjectioneMatrix() {
+	// Create new projection matrix
+	projectionMatrix = glm::perspective<float>(M_PI*fov/180.0, asp, GameWindow::dim/16.0, GameWindow::dim*16.0);
+
+	// Bind buffer
+	glBindBuffer(GL_UNIFORM_BUFFER, projectionBuffer);
+	// Update projection matrix
+	glBufferSubData(GL_UNIFORM_BUFFER, 0, 16 * sizeof(float),
+			glm::value_ptr(projectionMatrix));
+
+	// Unbind buffer
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+}
+
 void Camera::updateViewMatrix() {
     // Create new model view matrix
     viewMatrix = glm::lookAt(position, position + direction, up);
@@ -103,56 +133,76 @@ void Camera::updateViewMatrix() {
 }
 
 void Camera::updateModelMatrix() {
-	modelMatrix = glm::mat4(glm::vec4(glm::cross(up,direction),0), glm::vec4(up,0), glm::vec4(direction,0), glm::vec4(0,0,0,1));
+	vecModelMatrix = glm::mat4(glm::vec4(glm::cross(up, direction), 0),
+			glm::vec4(up, 0), glm::vec4(direction, 0), glm::vec4(0, 0, 0, 1));
+	modelMatrix = glm::translate(glm::mat4(), position) * vecModelMatrix;
+}
+
+
+void Camera::zoomIn() {
+	if (fov > 15)
+		fov -= 3;
+	updateProjectioneMatrix();
+}
+void Camera::zoomOut() {
+	if (fov < 170)
+		fov += 3;
+	updateProjectioneMatrix();
 }
 
 void Camera::moveUp(float distance) {
-    // Set new position
-    position += distance * up;
-    // Update matrix
-    updateViewMatrix();
+	// Set new position
+	position += distance * up;
+	// Update matrices
+	updateModelMatrix();
+	updateViewMatrix();
 }
 
 void Camera::moveDown(float distance) {
-    // Set new position
-    position -= distance * up;
-    // Update matrix
-    updateViewMatrix();
+	// Set new position
+	position -= distance * up;
+	// Update matrices
+	updateModelMatrix();
+	updateViewMatrix();
 }
 
 void Camera::moveForward(float distance) {
-    // Set new position
-    position += distance * direction;
-    // Update matrix
-    updateViewMatrix();
+	// Set new position
+	position += distance * direction;
+	// Update matrices
+	updateModelMatrix();
+	updateViewMatrix();
 }
 
 void Camera::moveBackward(float distance) {
-    // Set new position
-    position -= distance * direction;
-    // Update matrix
-    updateViewMatrix();
+	// Set new position
+	position -= distance * direction;
+	// Update matrices
+	updateModelMatrix();
+	updateViewMatrix();
 }
 
 void Camera::moveLeft(float distance) {
-    // Set new position
-    position += distance * glm::cross(up,direction);
-    // Update matrix
-    updateViewMatrix();
+	// Set new position
+	position += distance * glm::cross(up, direction);
+	// Update matrices
+	updateModelMatrix();
+	updateViewMatrix();
 }
 
 void Camera::moveRight(float distance) {
-    // Set new position
-    position += distance * -glm::cross(up,direction);
-    // Update matrix
-    updateViewMatrix();
+	// Set new position
+	position += distance * -glm::cross(up, direction);
+	// Update matrices
+	updateModelMatrix();
+	updateViewMatrix();
 }
 
 void Camera::rotate(float angle, glm::vec3 & normal) {
 	// update vectors
 	position = glm::rotate(position, angle, normal);
 	direction = glm::rotate(direction, angle, normal);
-	up =  glm::rotate(up, angle, normal);
+	up = glm::rotate(up, angle, normal);
 
 	// Update matrices
 	updateModelMatrix();
@@ -160,12 +210,10 @@ void Camera::rotate(float angle, glm::vec3 & normal) {
 }
 
 void Camera::localRotate(float angle, glm::vec3 & normal) {
-	// Compute the transformation matrix
-	glm::mat4 transformation = glm::mat4();
-	transformation = glm::inverse(modelMatrix) * transformation;
-	transformation = glm::rotate(glm::mat4(), angle,	normal) * transformation;
-	transformation = modelMatrix * transformation;
-
+	// Compute the transformation matrix - use vecModelMatrix because is vector transformation
+	glm::mat4 transformation = glm::inverse(vecModelMatrix) * glm::mat4();
+	transformation = glm::rotate(glm::mat4(), angle, normal) * transformation;
+	transformation = vecModelMatrix * transformation;
 
 	// Apply transformation in direction and up vectors
 	direction = glm::vec3(transformation * glm::vec4(direction, 1));

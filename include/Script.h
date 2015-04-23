@@ -13,6 +13,7 @@ protected:
 	Transform * transform;
 
 public:
+	virtual ~Script(){};
 	/**
 	 *  This if the first method called. You should initialize things here.
 	 */

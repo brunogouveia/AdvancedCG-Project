@@ -14,9 +14,6 @@ private:
 
     int defaultBasicShader; // Default basic shader
     int defaultLightShader; // Default light shader
-    int th;                 //  Azimuth of view angle
-    int ph;                 //  Elevation of view angle
-    int zh;                 //  Light angle
     float fov;              //  Field of view (angles)
     float asp;              //  Screen aspect ratio
 

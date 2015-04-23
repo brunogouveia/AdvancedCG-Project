@@ -41,10 +41,6 @@ int          CreateNoise3D(int unit);
 void         InitCube();
 void         DrawCube(int shader, int heightMap, int texture, int normalMap);
 
-// light.c
-void         InitLight(int shaders[], int numShaders);
-void         SetLightPosition(float position[]);
-
 // projection.c
 void         InitProjection(int shaders[], int numShaders);
 void         SetProjectionMatrix(float fov, float asp, float zNear, float zFar);

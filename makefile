@@ -32,6 +32,7 @@ endif
 # Dependencies
 OBJS = \
 	$(BUILD_DIR)GameWindow.o \
+	$(BUILD_DIR)Input.o \
 	$(BUILD_DIR)Renderer.o \
 	$(BUILD_DIR)Scene.o \
 	$(BUILD_DIR)Camera.o \
@@ -83,6 +84,9 @@ $(BUILD_DIR)Main.o: Main.cpp
 
 $(BUILD_DIR)GameWindow.o: $(SRC_DIR)GameWindow.cpp
 	g++ -c -o $(BUILD_DIR)GameWindow.o $(CFLG) -I$(INCLUDE_DIR) $(SRC_DIR)GameWindow.cpp
+
+$(BUILD_DIR)Input.o: $(SRC_DIR)Input.cpp
+	g++ -c -o $(BUILD_DIR)Input.o $(CFLG) -I$(INCLUDE_DIR) $(SRC_DIR)Input.cpp
 
 $(BUILD_DIR)Renderer.o: $(SRC_DIR)Renderer.cpp
 	g++ -c -o $(BUILD_DIR)Renderer.o $(CFLG) -I$(INCLUDE_DIR) $(SRC_DIR)Renderer.cpp

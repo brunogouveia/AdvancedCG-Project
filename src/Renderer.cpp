@@ -3,15 +3,13 @@
 #include <Material.h>
 #include <iostream>
 #include <GameWindow.h>
+#include <Input.h>
 
 unsigned int shadowtex;
 
 Renderer::Renderer() {
     scene = NULL;
     camera = NULL;
-    th=0;       //  Azimuth of view angle
-    ph=0;       //  Elevation of view angle
-    zh=0;       //  Light angle
     fov=55.0;   //  Field of view (angles)
     asp=1;      //  Screen aspect ratio
     defaultBasicShader = -1;
@@ -73,9 +71,13 @@ Camera * Renderer::getCamera() {
 }
 
 void Renderer::display() {
+	// Update up
+	Input::updateDownMap();
     // Update scripts
     if (scene)
         scene->updateScripts();
+    // Reset Input
+    Input::resetMaps();
 
     // Enable z-buffer 
     glEnable(GL_DEPTH_TEST);
@@ -105,15 +107,11 @@ void Renderer::display() {
     // Disable blending
     glDisable(GL_BLEND);
 
-    //  Display parameters
-    glColor3f(1,1,1);
-    glWindowPos2i(5,5);
-    Print("FPS=%d Angle=%d,%d",
-      FramesPerSecond(),th,ph);
     //  Render the scene and make it visible
     ErrCheck("display");
     glFlush();
     glutSwapBuffers();
+
 }
 void Renderer::reshape(int width, int height) {
     //  Ratio of the width to the height of the window
@@ -121,95 +119,46 @@ void Renderer::reshape(int width, int height) {
     //  Set the viewport to the entire window
     glViewport(0,0, width,height);
     if (camera) {
-        //  Set model view matrix
-        float Ex = -2*GameWindow::dim*CsSin(th)*CsCos(ph);
-        float Ey = +2*GameWindow::dim        *CsSin(ph);
-        float Ez = +2*GameWindow::dim*CsCos(th)*CsCos(ph);
-        camera->lookAt(Ex, Ey, Ez, 0, 0, 0, 0, CsCos(ph), 0);
-        //  Set projection
-        camera->setPerspective(M_PI*fov/180.0, asp, GameWindow::dim/16.0, GameWindow::dim*16.0);
+    	camera->setAspectRatio(asp);
     }
 }
 void Renderer::special(int key, int x, int y) {
     //  Right arrow key - increase angle by 5 degrees
     if (key == GLUT_KEY_RIGHT) {
-        glm::vec3 normal = camera->toTransform(glm::vec3(0,1,0));
-      camera->localRotate(-0.1, normal);
+    	Input::setKey(KeyCode::RightArrow);
     }
     //  Left arrow key - decrease angle by 5 degrees
     else if (key == GLUT_KEY_LEFT) {
-    	glm::vec3 normal = camera->toTransform(glm::vec3(0,1,0));
-      camera->localRotate(0.1, normal);
+    	Input::setKey(KeyCode::LeftArrow);
     }
 	//  Up arrow key - increase elevation by 5 degrees
 	else if (key == GLUT_KEY_UP) {
-		glm::vec3 normal = glm::vec3(1, 0, 0);
-		camera->localRotate(-0.1, normal);
-	}
-	else if (key == GLUT_KEY_DOWN) {
-		glm::vec3 normal = glm::vec3(1, 0, 0);
-		camera->localRotate(0.1, normal);
+		Input::setKey(KeyCode::UpArrow);
 	}
 	//  Down arrow key - decrease elevation by 5 degrees
-	else if (key == GLUT_KEY_DOWN)
-    	camera->moveDown(0.1);
+	else if (key == GLUT_KEY_DOWN) {
+		Input::setKey(KeyCode::DownArrow);
+	}
     //  PageUp key - increase dim
-    else if (key == GLUT_KEY_PAGE_DOWN)
-        GameWindow::dim += 0.1;
+    else if (key == GLUT_KEY_PAGE_DOWN) {
+    	Input::setKey(KeyCode::PageDown);
+    }
     //  PageDown key - decrease dim
-    else if (key == GLUT_KEY_PAGE_UP && GameWindow::dim>1)
-        GameWindow::dim -= 0.1;
-    //  Keep angles to +/-360 degrees
-    th %= 360;
-    ph %= 360;
-    if (camera) {
-        //  Set model view matrix
-        float Ex = -2*GameWindow::dim*CsSin(th)*CsCos(ph);
-        float Ey = +2*GameWindow::dim        *CsSin(ph);
-        float Ez = +2*GameWindow::dim*CsCos(th)*CsCos(ph);
-        camera->lookAt(Ex, Ey, Ez, 0, 0, 0, 0, CsCos(ph), 0);
-        //  Set projection
-        camera->setPerspective(M_PI*fov/180.0, asp, GameWindow::dim/16.0, GameWindow::dim*16.0);
+    else if (key == GLUT_KEY_PAGE_UP) {
+    	Input::setKey(KeyCode::PageUp);
     }
     //  Tell GLUT it is necessary to redisplay the scene
     glutPostRedisplay();
 }
 void Renderer::key(unsigned char ch, int x, int y) {
-    //  Exit on ESC
-	if (ch == 27)
-		exit(0);
-	//  Up arrow key - increase elevation by 5 degrees
-	else if (ch == 'q' || ch == 'Q')
-		camera->moveUp(0.1);
-	//  Down arrow key - decrease elevation by 5 degrees
-	else if (ch == 'z')
-		camera->moveDown(0.1);
-	else if (ch == 'w' || ch == 'W') {
-		camera->moveForward(0.1);
-	} else if (ch == 's' || ch == 'S') {
-		camera->moveBackward(0.1);
-	} else if (ch == 'a' || ch == 'A') {
-		camera->moveLeft(0.1);
-	} else if (ch == 'd' || ch == 'D') {
-		camera->moveRight(0.1);
-	}
-	//  Reset view angle
-	else if (ch == '0')
-        th = ph = 0;
-    //  Move light
-    else if (ch == '[')
-        zh += 5;
-    else if (ch == ']')
-        zh -= 5;
+	// Set input
+	Input::setKey(ch);
     //  Tell GLUT it is necessary to redisplay the scene
     glutPostRedisplay();
 }
 void Renderer::idle() {
-    // Update scripts
-    scene->updateScripts();
     // Elapsed time in seconds
    double t = glutGet(GLUT_ELAPSED_TIME)/1000.0;
-   zh = fmod(90*t,360.0);
    //  Tell GLUT it is necessary to redisplay the scene
    glutPostRedisplay();
 }
