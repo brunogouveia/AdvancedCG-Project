@@ -1,3 +1,9 @@
+/*
+ *
+ *  Created on: Mar, 2015
+ *      Author: Bruno Gouveia
+ */
+
 #include "Material.h"
 #include <cstring>
 
@@ -11,7 +17,7 @@ Material::Material() {
     float newData[16] = {
         // All attributes should be treated as a vec3 with last component equal 1.0 (except Specular)
         // Emissive
-        1.0, 1.0, 1.0, 1.0,
+        0.0, 0.0, 0.0, 1.0,
         // Ambient
         1.0, 1.0, 1.0, 1.0,
         // Diffuse

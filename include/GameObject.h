@@ -1,3 +1,9 @@
+/*
+ *
+ *  Created on: Mar, 2015
+ *      Author: Bruno Gouveia
+ */
+
 #ifndef GAMEOBJECT_H__
 #define GAMEOBJECT_H__ 
 

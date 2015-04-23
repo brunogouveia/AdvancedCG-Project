@@ -1,3 +1,9 @@
+/*
+ *
+ *  Created on: Mar, 2015
+ *      Author: Bruno Gouveia
+ */
+
 #include <Renderer.h>
 #include <Light.h>
 #include <Material.h>
@@ -71,8 +77,6 @@ Camera * Renderer::getCamera() {
 }
 
 void Renderer::display() {
-	// Update up
-	Input::updateDownMap();
     // Update scripts
     if (scene)
         scene->updateScripts();
@@ -119,40 +123,40 @@ void Renderer::reshape(int width, int height) {
     //  Set the viewport to the entire window
     glViewport(0,0, width,height);
     if (camera) {
-    	camera->setAspectRatio(asp);
+        camera->setAspectRatio(asp);
     }
 }
 void Renderer::special(int key, int x, int y) {
     //  Right arrow key - increase angle by 5 degrees
     if (key == GLUT_KEY_RIGHT) {
-    	Input::setKey(KeyCode::RightArrow);
+        Input::setKey(KeyCode::RightArrow);
     }
     //  Left arrow key - decrease angle by 5 degrees
     else if (key == GLUT_KEY_LEFT) {
-    	Input::setKey(KeyCode::LeftArrow);
+        Input::setKey(KeyCode::LeftArrow);
     }
-	//  Up arrow key - increase elevation by 5 degrees
-	else if (key == GLUT_KEY_UP) {
-		Input::setKey(KeyCode::UpArrow);
-	}
-	//  Down arrow key - decrease elevation by 5 degrees
-	else if (key == GLUT_KEY_DOWN) {
-		Input::setKey(KeyCode::DownArrow);
-	}
+    //  Up arrow key - increase elevation by 5 degrees
+    else if (key == GLUT_KEY_UP) {
+        Input::setKey(KeyCode::UpArrow);
+    }
+    //  Down arrow key - decrease elevation by 5 degrees
+    else if (key == GLUT_KEY_DOWN) {
+        Input::setKey(KeyCode::DownArrow);
+    }
     //  PageUp key - increase dim
     else if (key == GLUT_KEY_PAGE_DOWN) {
-    	Input::setKey(KeyCode::PageDown);
+        Input::setKey(KeyCode::PageDown);
     }
     //  PageDown key - decrease dim
     else if (key == GLUT_KEY_PAGE_UP) {
-    	Input::setKey(KeyCode::PageUp);
+        Input::setKey(KeyCode::PageUp);
     }
     //  Tell GLUT it is necessary to redisplay the scene
     glutPostRedisplay();
 }
 void Renderer::key(unsigned char ch, int x, int y) {
-	// Set input
-	Input::setKey(ch);
+    // Set input
+    Input::setKey(ch);
     //  Tell GLUT it is necessary to redisplay the scene
     glutPostRedisplay();
 }

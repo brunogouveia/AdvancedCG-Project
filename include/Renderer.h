@@ -1,3 +1,9 @@
+/*
+ *
+ *  Created on: Mar, 2015
+ *      Author: Bruno Gouveia
+ */
+
 #ifndef RENDERER_H__
 #define RENDERER_H__ 
 

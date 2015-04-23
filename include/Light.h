@@ -1,3 +1,9 @@
+/*
+ *
+ *  Created on: Mar, 2015
+ *      Author: Bruno Gouveia
+ */
+
 #ifndef LIGHT_H__
 #define LIGHT_H__ 
 
@@ -22,6 +28,7 @@ private:
 
 
     // Light attributes
+    float angle;
     float data[12];
 
 public:
@@ -36,8 +43,11 @@ public:
     ~Light();
 
     // Set methods
+    void setLightAngle(float angle);
     void setPosition(float x, float y, float z);
     void setPosition(float position[]);
+	void setDirection(float x, float y, float z);
+	void setDirection(float direction[]);
     void setDiffuse(float r, float g, float b);
     void setDiffuse(float diffuse[]);
     void setSpecular(float r, float g, float b);

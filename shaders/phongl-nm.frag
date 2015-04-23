@@ -1,3 +1,4 @@
+
 #version 400 core
 
 //  Transformation matrices
@@ -86,7 +87,7 @@ vec4 phong()
 	vec4 ShadowCoord = shadows.DepthBiasMVP * PosModelCoord;
 	ShadowCoord /= ShadowCoord.w;
 
-	if (textureProj(depthText, ShadowCoord) == 1.0 || (ShadowCoord.x < 0.0 || ShadowCoord.x > 1.0) || (ShadowCoord.y < 0.0 || ShadowCoord.y > 1.0)) {
+	if (textureProj(depthText, ShadowCoord) == 1.0 && length(ShadowCoord.xy - vec2(0.5)) <= 0.5) {
 		// Position in eye coordinates
 		vec3 pos = IPosition;
 
@@ -117,7 +118,7 @@ vec4 phong()
 		// Specular light intensity
 		float Is = (Id > 0.0) ? pow(max(0.0, dot(R, V)), material.specular[3]) : 0.0;
 
-		return Id*light.diffuse*material.diffuse + Is*light.specular*vec4(vec3(material.specular),1.0);
+		return (Id*light.diffuse*material.diffuse + Is*light.specular*vec4(vec3(material.specular),1.0));
 	} else {
 		vec4(0.0);
 	}
@@ -126,12 +127,6 @@ vec4 phong()
 
 void main()
 {
-	// Compute PosModelCoord in light coordinates
-	vec4 ShadowCoord = shadows.DepthBiasMVP * PosModelCoord;
-	ShadowCoord /= ShadowCoord.w;
-	
+	// Set color
 	Fragcolor = texture(text, ITextCoord.st) * phong();
-	// Fragcolor = vec4(texture(depthText, ITextCoord.st));
-	// Fragcolor = vec4(ShadowCoord.xyz, 1.0);
-	// Fragcolor = vec4(texture(depthText, ShadowCoord.xy).z);
 }

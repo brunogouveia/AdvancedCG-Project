@@ -1,3 +1,9 @@
+/*
+ *
+ *  Created on: Mar, 2015
+ *      Author: Bruno Gouveia
+ */
+
 #ifndef TEXTURE_H__
 #define TEXTURE_H__ 
 
@@ -7,30 +13,30 @@
 class Texture
 {
 private:
-	int textureUnit;
-	int texture;
+    int textureUnit;
+    int texture;
 
-	// Static attributes
-	static int defaultTexture;
-	static int defaultNormalMap;
+    // Static attributes
+    static int defaultTexture;
+    static int defaultNormalMap;
 public:
-	Texture(int textureUnit, bool isNormalMap = false);
-	Texture(int textureUnit, std::string fileName);
-	~Texture();
-	
-	/**
-	 *	Active this texture
-	 */
-	void active() const;
+    Texture(int textureUnit, bool isNormalMap = false);
+    Texture(int textureUnit, std::string fileName);
+    ~Texture();
+    
+    /**
+     *  Active this texture
+     */
+    void active() const;
 
-	/**
-	 *	Bind this texture
-	 */
-	void bind() const;
+    /**
+     *  Bind this texture
+     */
+    void bind() const;
 
-	// Static methods
-	static int getDefaultTexture();
-	static int getDefaultNormalMap();
+    // Static methods
+    static int getDefaultTexture();
+    static int getDefaultNormalMap();
 };
 
 #endif

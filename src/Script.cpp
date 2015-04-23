@@ -1,27 +1,25 @@
+/*
+ *
+ *  Created on: Mar, 2015
+ *      Author: Bruno Gouveia
+ */
+
 #include "Script.h"
-// #include <GameObject.h>
 #include <scripts/ScriptsRegistration.h>
-
-void Script::OnCreate(){
-	// Do nothing
-};
-	
+    
 void Script::OnUpdate(){
-	// Do nothing
+    // Do nothing
 };
 
-void Script::OnDestroy(){
-	// Do nothing
-};
 
 Script * Script::GetScriptByName(Transform * transform, std::string scriptName) {
-	// Create script
-	Script * script;
+    // Create script
+    Script * script;
 #include "ScriptsRegistration.cpp"
 
-	// Set transform reference
-	script->transform = transform;
+    // Set transform reference
+    script->transform = transform;
 
-	// Return script
-	return script;
+    // Return script
+    return script;
 }

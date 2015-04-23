@@ -1,3 +1,9 @@
+/*
+ *
+ *  Created on: Mar, 2015
+ *      Author: Bruno Gouveia
+ */
+
 #include "Cube.h"
 #include <Texture.h>
 #include <iostream>

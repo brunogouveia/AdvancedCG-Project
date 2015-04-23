@@ -1,5 +1,10 @@
+/*
+ *
+ *  Created on: Mar, 2015
+ *      Author: Bruno Gouveia
+ */
+
 #include <MeshObject.h>
-#include <obj/glm.h>
 #include <obj/tiny_obj_loader.h>
 #include <iostream>
 #include <GameWindow.h>

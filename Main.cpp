@@ -3,16 +3,17 @@
 #include <Light.h>
 #include <Script.h>
 #include <xml/XmlParser.h>
+#include <iostream>
 
 int main(int argc, char ** argv) {
 
 	// Read;
-	XmlParser::loadFromXml("scene.xml", &argc, argv);
+	if (argc < 2)
+		XmlParser::loadFromXml("scene.xml", &argc, argv);
+	else {
+			XmlParser::loadFromXml(argv[1], &argc, argv);
+	}
 
-	//  Make sure enough texture units are available
-    int n;
-    glGetIntegerv(GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS,&n);
-    printf("%d\n", n);
 	// Call main loop
 	GameWindow::mainLoop();
 	return 0;

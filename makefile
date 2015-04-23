@@ -10,7 +10,7 @@ all: $(EXE)
 
 #  MinGW
 ifeq "$(OS)" "Windows_NT"
-CFLG=-O3 -Wall -std=gnu++0x -DUSEGLEW
+CFLG=-O3 -Wall -DUSEGLEW
 LIBS=-lglew32 -lglut32cu -lglu32 -lopengl32
 CLEAN=del *.exe build\*.o *.a
 else
@@ -38,7 +38,6 @@ OBJS = \
 	$(BUILD_DIR)Camera.o \
 	$(BUILD_DIR)GameObject.o \
 	$(BUILD_DIR)MeshObject.o \
-	$(BUILD_DIR)glm.o \
 	$(BUILD_DIR)tiny_obj_loader.o \
 	$(BUILD_DIR)Script.o \
 	$(BUILD_DIR)Light.o \
@@ -47,8 +46,6 @@ OBJS = \
 	$(BUILD_DIR)Cube.o \
 	$(BUILD_DIR)XmlParser.o \
 	$(BUILD_DIR)fatal.o \
-	$(BUILD_DIR)cube.o \
-	$(BUILD_DIR)projection.o \
 	$(BUILD_DIR)loadtexbmp.o \
 	$(BUILD_DIR)print.o \
 	$(BUILD_DIR)project.o \
@@ -103,9 +100,6 @@ $(BUILD_DIR)GameObject.o: $(SRC_DIR)gameobject/GameObject.cpp
 $(BUILD_DIR)MeshObject.o: $(SRC_DIR)gameobject/MeshObject.cpp
 	g++ -c -o $(BUILD_DIR)MeshObject.o $(CFLG) -I$(INCLUDE_DIR) $(SRC_DIR)gameobject/MeshObject.cpp
 
-$(BUILD_DIR)glm.o: $(SRC_DIR)obj/glm.c
-	g++ -c -o $(BUILD_DIR)glm.o $(CFLG) -I$(INCLUDE_DIR) $(SRC_DIR)obj/glm.c
-
 $(BUILD_DIR)tiny_obj_loader.o: $(SRC_DIR)obj/tiny_obj_loader.cpp
 	g++ -c -o $(BUILD_DIR)tiny_obj_loader.o $(CFLG) -I$(INCLUDE_DIR) $(SRC_DIR)obj/tiny_obj_loader.cpp
 
@@ -129,12 +123,6 @@ $(BUILD_DIR)XmlParser.o: $(SRC_DIR)xml/XmlParser.cpp
 
 $(BUILD_DIR)fatal.o: $(SRC_DIR)fatal.c
 	g++ -c -o $(BUILD_DIR)fatal.o $(CFLG) -I$(INCLUDE_DIR) $(SRC_DIR)fatal.c
-
-$(BUILD_DIR)cube.o: $(SRC_DIR)cube.c
-	g++ -c -o $(BUILD_DIR)cube.o $(CFLG) -I$(INCLUDE_DIR) $(SRC_DIR)cube.c
-
-$(BUILD_DIR)projection.o: $(SRC_DIR)projection.cpp
-	g++ -c -o $(BUILD_DIR)projection.o $(CFLG) -I$(INCLUDE_DIR) $(SRC_DIR)projection.cpp
 
 $(BUILD_DIR)loadtexbmp.o: $(SRC_DIR)loadtexbmp.c
 	g++ -c -o $(BUILD_DIR)loadtexbmp.o $(CFLG) -I$(INCLUDE_DIR) $(SRC_DIR)loadtexbmp.c

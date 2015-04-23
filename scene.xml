@@ -6,44 +6,51 @@
 		<height>780</height>
 	</window>
 	<camera>
+		<position x="0" y="4.5" z="3.5"/>
+		<direction x="0" y="-0.5" z="-1"/>
+		<up x="0" y="1" z="-0.5"/>
+		<!-- You can attach a script to the camera, because it's a transform -->
 		<scripts>
 			<script name="CameraScript"/>
 		</scripts>
 	</camera>
 	<scene>
+		<!-- List of objects (cube or mesh) -->
 		<objects>
-			<!-- <cube>
-				<model>
-					<translate x="0" y="25" z="10"/>
-					<scale x="0.5" y="0.5" z="0.5"/>
-				</model>
-				<scripts>
-					<script name="LightScript"/>
-				</scripts>
-				<basic-shader vert="shaders/phong.vert" frag="shaders/phong.frag"/>
-				<light-shader vert="shaders/phongl.vert" frag="shaders/phongl.frag"/>
-				<texture file="textures/pi.bmp"/>
-			</cube> -->
+			<!-- Firs cube - ground -->
 			<cube>
+				<!-- Basic transformation. Maybe you want your model be smaller and then translated to some position
+					You shoul use these tags to specify it.
+				 -->
 				<model>
-					<!-- <translate x="0" y="-2.5" z="0"/> -->
+					<!-- Series of transformatio in order -->
 					<scale x="20" y="0.05" z="20"/>
 				</model>
+				<!-- Set material, each attribute is optional -->
 				<material>
 					<ambient r="1" g="0" b="0"/>
 					<diffuse r="1" g="0.3" b="0.1"/>
 				</material>
+				<!-- Define basic shader - the shader used to renderer the ambient color -->
 				<basic-shader vert="shaders/phong.vert" frag="shaders/phong.frag"/>
+				<!-- Define light shader - the shader used to renderer the light (diffuse, specular) -->
 				<light-shader vert="shaders/phongl.vert" frag="shaders/phongl.frag"/>
+
+				<!-- IT'S POSSIBLE TO ATTACH A SCRIPT TO AN OBJECT AS WELL, BUT I DID'T -->
 			</cube>
-			<!-- <mesh file="obj/houseA_obj.obj">
+			<!-- House model -->
+			<mesh file="obj/houseA_obj.obj">
 				<model>
 					<scale x="0.1" y="0.1" z="0.1"/>
 				</model>
+				<!-- Notice that i'm using a diferent frag shader for light, this is because this model requires normal map -->
 				<light-shader vert="shaders/phongl.vert" frag="shaders/phongl-nm.frag"/>
+				<!-- Texture to be used - it can't load the texture from the mtl file yet -->
 				<texture file="textures/houseA.bmp"/>
+				<!-- Normal map file -->
 				<normal-map file="textures/houseANM.bmp"/>
-			</mesh> -->
+			</mesh>
+			<!-- Weird guy model -->
 			<mesh file="obj/axe_armor.obj">
 				<model>
 					<scale x="0.02" y="0.02" z="0.02"/>
@@ -85,29 +92,24 @@
 				<texture file="textures/axe_weapon_color.bmp"/>
 				<normal-map file="textures/axe_weapon_normal.bmp"/>
 			</mesh>
-			<!-- <mesh file="obj/axe_model.obj">
-				<model>
-					<scale x="0.02" y="0.02" z="0.02"/>
-				</model>
-				<light-shader vert="shaders/phongl.vert" frag="shaders/phongl-nm.frag"/>
-				<texture file="textures/axe_body_color.bmp"/>
-				<normal-map file="textures/axe_body_normal.bmp"/>
-			</mesh> -->
-			<!-- <mesh file="batman.obj"/> -->
-<!-- 			<mesh file="001.obj">
-				<texture file="textures/t_dante_hair_black_dm.bmp"/>
-			</mesh> -->
 		</objects>
+		<!-- List o lights -->
 		<lights>
 			<light>
-				<position x="0" y="5.5" z="0"/>
-				<diffuse r="0.3" g="0.3" b="0.3"/>
-				<specular r="0.3" g="0.3" b="0.3"/>
+				<!-- Positio and direction are required -->
+				<position x="0" y="4.5" z="0"/>
+				<direction x="0" y="-1" z="0"/>
+				<!-- Each color attribute is optional -->
+				<diffuse r="0.9" g="0.9" b="0.9"/>
+				<specular r="0.9" g="0.9" b="0.9"/>
 			</li1ght>
 			<light>
-				<position x="0" y="25.0" z="10"/>
-				<diffuse r="0.3" g="0.3" b="0.3"/>
-				<specular r="0.3" g="0.3" b="0.3"/>
+				<position x="0" y="12.0" z="-15"/>
+				<direction x="0" y="-1.0" z="1.0"/>
+				<angle value="80"/>
+				<diffuse r="0.9" g="0.9" b="0.9"/>
+				<specular r="0.9" g="0.9" b="0.9"/>
+				<!-- You can attach a script to the light, because it's a transform -->
 				<scripts>
 					<script name="LightScript"/>
 				</scripts>

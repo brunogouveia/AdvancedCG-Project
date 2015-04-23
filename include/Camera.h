@@ -1,3 +1,9 @@
+/*
+ *
+ *  Created on: Mar, 2015
+ *      Author: Bruno Gouveia
+ */
+
 #ifndef CAMERA_H__
 #define CAMERA_H__ 
 
@@ -61,6 +67,9 @@ public:
 
     void setAspectRatio(float aspectRatio);
     void setFieldOfView(float fieldOfView);
+    void setPosition(float x, float y, float z);
+    void setDirection(float x, float y, float z);
+    void setUp(float x, float y, float z);
 
     void updateProjectioneMatrix();
     void updateViewMatrix();
@@ -76,6 +85,7 @@ public:
     void moveLeft(float distance);
     void moveRight(float distance);
 
+    void translate(glm::vec3 & t);
     void rotate(float angle, glm::vec3 & normal);
     void localRotate(float angle, glm::vec3 & normal);
 };

@@ -1,3 +1,9 @@
+/*
+ *
+ *  Created on: Mar, 2015
+ *      Author: Bruno Gouveia
+ */
+
 #ifndef INPUT_H__
 #define INPUT_H__
 
@@ -6,47 +12,34 @@
 
 class KeyCode {
 public:
-	unsigned int value;
+    unsigned int value;
 
-	KeyCode(unsigned int key);
+    KeyCode(unsigned int key);
 
-	static KeyCode Esc;
-	static KeyCode UpArrow;
-	static KeyCode DownArrow;
-	static KeyCode LeftArrow;
-	static KeyCode RightArrow;
-	static KeyCode PageUp;
-	static KeyCode PageDown;
+    static KeyCode Esc;
+    static KeyCode UpArrow;
+    static KeyCode DownArrow;
+    static KeyCode LeftArrow;
+    static KeyCode RightArrow;
+    static KeyCode PageUp;
+    static KeyCode PageDown;
 };
 
 class Input {
 private:
-	static std::vector<bool> keyMap;
-	static std::vector<bool> keyUpMap;
-	static std::vector<bool> keyDownMap;
+    static std::vector<bool> keyMap;
 public:
-	static void init();
+    static void init();
 
-	/**
-	 * Returns true during the frame the user starts pressing down the key identified by name.
-	 */
-	static bool getKeyDown(KeyCode key);
-
-	/**
-	 * Returns true during the frame the user releases the key identified by name.
-	 */
-	static bool getKeyUp(KeyCode key);
-
-	/**
-	 * Returns true while the user holds down the key identified by name. Think auto fire.
-	 */
-	static bool getKey(KeyCode key);
+    /**
+     * Returns true while the user holds down the key identified by name. Think auto fire.
+     */
+    static bool getKey(KeyCode key);
 
 private:
-	static void setKey(KeyCode key);
-	static void resetMaps();
-	static void updateDownMap();
-	friend class Renderer;
+    static void setKey(KeyCode key);
+    static void resetMaps();
+    friend class Renderer;
 };
 
 #endif

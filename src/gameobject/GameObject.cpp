@@ -1,7 +1,15 @@
+/*
+ *
+ *  Created on: Mar, 2015
+ *      Author: Bruno Gouveia
+ */
+
 #include "GameObject.h"
 
 GameObject::GameObject() : texture(GL_TEXTURE0), normalMap(GL_TEXTURE2, true), material(Material::getDefaultMaterial()) {
-    // do nothing
+    basicShader = -1;
+    lightShader = -1;
+
 }
 
 GameObject::~GameObject() {

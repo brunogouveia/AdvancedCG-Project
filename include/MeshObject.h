@@ -1,3 +1,9 @@
+/*
+ *
+ *  Created on: Mar, 2015
+ *      Author: Bruno Gouveia
+ */
+
 #ifndef MESHOBJECT_h__
 #define MESHOBJECT_h__ 
 

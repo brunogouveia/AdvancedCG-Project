@@ -9,6 +9,7 @@
 #include <Input.h>
 
 void CameraScript::OnUpdate() {
+	float velocity = 0.1;
 	// Get the camera
 	camera = dynamic_cast<Camera*>(transform);
 	if (camera != NULL) {
@@ -32,22 +33,22 @@ void CameraScript::OnUpdate() {
 
 		// Move camera
 		if (Input::getKey('q') || Input::getKey('Q')) {
-			camera->moveUp(0.1);
+			camera->moveUp(velocity);
 		}
 		if (Input::getKey('z') || Input::getKey('Z')) {
-			camera->moveDown(0.1);
+			camera->moveDown(velocity);
 		}
 		if (Input::getKey('w') || Input::getKey('W')) {
-			camera->moveForward(0.1);
+			camera->moveForward(velocity);
 		}
 		if (Input::getKey('s') || Input::getKey('S')) {
-			camera->moveBackward(0.1);
+			camera->moveBackward(velocity);
 		}
 		if (Input::getKey('a') || Input::getKey('A')) {
-			camera->moveLeft(0.1);
+			camera->moveLeft(velocity);
 		}
 		if (Input::getKey('d') || Input::getKey('D')) {
-			camera->moveRight(0.1);
+			camera->moveRight(velocity);
 		}
 
 		// Zoom

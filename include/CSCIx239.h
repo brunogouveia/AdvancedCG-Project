@@ -37,15 +37,6 @@ void         PrintProgramLog(int obj);
 int          CreateShaderProg(const char* VertFile,const char* FragFile);
 int          CreateNoise3D(int unit);
 
-// cube.c
-void         InitCube();
-void         DrawCube(int shader, int heightMap, int texture, int normalMap);
-
-// projection.c
-void         InitProjection(int shaders[], int numShaders);
-void         SetProjectionMatrix(float fov, float asp, float zNear, float zFar);
-void         SetModelViewMatrix(float ex, float ey, float ez, float cx, float cy, float cz, float upx, float upy, float upz);
-
 #ifdef __cplusplus
 }
 #endif

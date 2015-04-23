@@ -4,9 +4,8 @@
 void LightScript::OnUpdate() {
 	static bool isPressed = false;
 	glm::vec3 up = glm::vec3(0, 1, 0);
-	if (Input::getKeyUp('h')) {
+	if (Input::getKey('l')) {
 		isPressed = !isPressed;
-		printf("Pressed");
 	}
 
 	if (isPressed)

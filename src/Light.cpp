@@ -1,3 +1,9 @@
+/*
+ *
+ *  Created on: Mar, 2015
+ *      Author: Bruno Gouveia
+ */
+
 #include "Light.h"
 #include <cstring>
 #include <GameWindow.h>
@@ -22,7 +28,15 @@ double  Light::Rvec[4];   // Texture planes R
 double  Light::Qvec[4];   // Texture planes Q
 
 Light::Light() {
-    // do nothing
+    // Overwrite initialization
+    position = glm::vec3(0);
+    direction = glm::vec3(0, -1, 0);
+    up = glm::vec3(1, 0, 0);
+
+    // Set angle
+    angle = 45;
+
+    // Initialize data
     float newData[12] = {
         // All attributes should be treated as a vec3 with last component equal 1.0
         // Position
@@ -213,14 +227,10 @@ void Light::updateMatrices() {
     float zFar = (1.4*Ldist > Ldist + Dim) ? 1.4*Ldist : Ldist + Dim ;
 
     // Set perspective
-    projectionMatrix = glm::perspective<float>(M_PI*(30.6)/180,1,zNear,zFar);
+    projectionMatrix = glm::perspective<float>(M_PI*(angle)/180,1,zNear,0.9*zFar);
     
     // Set view
-    glm::vec3 lightPosition = glm::vec3(data[0],data[1],data[2]);
-    if (lightPosition.x != 0.0 || lightPosition.z !=0 )
-        viewMatrix = glm::lookAt(lightPosition, glm::vec3(0,0,0), glm::vec3(0,1,0));
-    else 
-        viewMatrix = glm::lookAt(lightPosition, glm::vec3(0,0,0), glm::vec3(0,0,1));
+    viewMatrix = glm::lookAt(position, position + direction, up);
     glm::mat4 modelMatrix = glm::mat4(1.0);
 
     // Copy to buffer
@@ -249,7 +259,13 @@ void Light::updateMatrices() {
     ErrCheck("Light::updateMatrices");
 }
 
+void Light::setLightAngle(float angle) {
+    this->angle = angle;
+}
+
 void Light::setPosition(float x, float y, float z) {
+    // Copy to transform position
+    position = glm::vec3(x, y, z);
     // Copy to light's data
     data[0] = x;
     data[1] = y;
@@ -258,8 +274,22 @@ void Light::setPosition(float x, float y, float z) {
 }
 
 void Light::setPosition(float position[]) {
+    // Copy to transform position
+    this->position = glm::vec3(position[0], position[1], position[2]);
     // Copy to light's data
     std::memcpy(data, position, 3*sizeof(float));
+    updateMatrices();
+}
+
+void Light::setDirection(float x, float y, float z) {
+    // Copy to transform direction
+    direction = glm::vec3(x, y, z);
+    updateMatrices();
+}
+
+void Light::setDirection(float direction[]) {
+    // Copy to transform direction
+    this->direction = glm::vec3(direction[0], direction[1], direction[2]);
     updateMatrices();
 }
 
@@ -288,6 +318,8 @@ void Light::setSpecular(float specular[]) {
 }
 
 void Light::translate(glm::vec3 & t){
+    // Copy to transform position
+    position += t;
     // Add t to data
     data[0] += t[0];
     data[1] += t[1];
@@ -296,6 +328,8 @@ void Light::translate(glm::vec3 & t){
 };
 
 void Light::translate(float tx, float ty, float tz) {
+    // Copy to transform position
+    position += glm::vec3(tx, ty, tz);
     // Add t to data
     data[0] += tx;
     data[1] += ty;
@@ -304,20 +338,22 @@ void Light::translate(float tx, float ty, float tz) {
 }
 
 void Light::rotate(float rad, glm::vec3 & normal) {
-    // Create position
-    glm::vec3 p = glm::vec3(data[0], data[1], data[2]);
-
-    // Rotate point
-    p = glm::rotate(p, rad, normal);
+    // Rotate position, direction and up
+    position = glm::rotate(position, rad, normal);
+    direction = glm::rotate(direction, rad, normal);
+    up = glm::rotate(up, rad, normal);
 
     // Copy back do data
-    data[0] = p[0];
-    data[1] = p[1];
-    data[2] = p[2];
+    data[0] = position[0];
+    data[1] = position[1];
+    data[2] = position[2];
     updateMatrices();
 }
 
 void Light::scale(glm::vec3 & s) {
+    // Update position and direction
+    position *= s;
+    direction *= s;
     // Multiply data by s
     data[0] *= s[0];
     data[1] *= s[1];
@@ -326,6 +362,9 @@ void Light::scale(glm::vec3 & s) {
 }
 
 void Light::scale(float sx, float sy, float sz) {
+    // Update position
+    position *= glm::vec3(sx, sy, sz);
+    direction *= glm::vec3(sx, sy, sz);
     // Multiply data by s
     data[0] *= sx;
     data[1] *= sy;
