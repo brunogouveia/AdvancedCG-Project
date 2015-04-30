@@ -1,9 +1,3 @@
-/*
- *
- *  Created on: Mar, 2015
- *      Author: Bruno Gouveia
- */
-
 #ifndef CUBE_H__
 #define CUBE_H__ 
 
@@ -50,6 +44,8 @@ public:
      * and normals are important here.
      */
     virtual void rendererPass(bool useLight);
+
+    virtual void deferredPass();
 };
 
 #endif

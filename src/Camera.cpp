@@ -1,9 +1,3 @@
-/*
- *
- *  Created on: Mar, 2015
- *      Author: Bruno Gouveia
- */
-
 #include "Camera.h"
 #include <iostream>
 #include "glm/ext.hpp"
@@ -11,30 +5,29 @@
 #include <GameWindow.h>
 
 Camera::Camera() : projectionBindingPoint(1) {
-    position = glm::vec3(0, 0.5, 0);
-    direction = glm::vec3(0, 0, 1);
-    up = glm::vec3(0, 1, 0);
-    updateModelMatrix();
+	position = glm::vec3(0, 0.5, 0);
+	direction = glm::vec3(0, 0, 1);
+	up = glm::vec3(0, 1, 0);
 
-    // Generate buffer
-    glGenBuffers(1, &projectionBuffer);
-    glBindBuffer(GL_UNIFORM_BUFFER, projectionBuffer);
+	// Generate buffer
+	glGenBuffers(1, &projectionBuffer);
+	glBindBuffer(GL_UNIFORM_BUFFER, projectionBuffer);
 
-    // Initialize data
-    float data[16 * 4] = { 0 };
-    glBufferData(GL_UNIFORM_BUFFER, sizeof(data), data, GL_DYNAMIC_DRAW);
+	// Initialize data
+	float data[16 * 4] = { 0 };
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(data), data, GL_DYNAMIC_DRAW);
 
-    // Bind to binding point
-    glBindBufferBase(GL_UNIFORM_BUFFER, projectionBindingPoint, projectionBuffer);
+	// Bind to binding point
+	glBindBufferBase(GL_UNIFORM_BUFFER, projectionBindingPoint,	projectionBuffer);
 
-    // Unbind buffer
-    glBindBuffer(GL_UNIFORM_BUFFER, 0);
+	// Unbind buffer
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
-    // Initialize fov and asp
+	// Initialize fov and asp
     fov=55.0;   //  Field of view (angles)
     asp=1;      //  Screen aspect ratio
     updateProjectioneMatrix();
-    updateViewMatrix();
+    updateMatrices();
 }
 
 Camera::~Camera() {
@@ -104,49 +97,57 @@ void Camera::lookAt(float ex, float ey, float ez, float cx, float cy, float cz, 
 }
 
 void Camera::setAspectRatio(float aspectRatio) {
-    asp = aspectRatio;
-    updateProjectioneMatrix();
+	asp = aspectRatio;
+	updateProjectioneMatrix();
 }
 void Camera::setFieldOfView(float fieldOfView) {
-    fov = fieldOfView;
-    updateProjectioneMatrix();
+	fov = fieldOfView;
+	updateProjectioneMatrix();
 }
 
 void Camera::setPosition(float x, float y, float z) {
-    glm::vec3 newPosition = glm::vec3(x, y, z);
-    glm::vec3 translateVec = newPosition - position;
-    translate(translateVec);
+	glm::vec3 newPosition = glm::vec3(x, y, z);
+	glm::vec3 translateVec = newPosition - position;
+	translate(translateVec);
 }
 
 void Camera::setDirection(float x, float y, float z) {
-    direction = glm::vec3(x, y, z);
-    // Update matrices
-    updateModelMatrix();
-    updateViewMatrix();
+	// Compute the transformation matrix - use modelMatrix because is point transformation
+	glm::mat4 transformation = glm::inverse(vecModelMatrix) * glm::mat4();
+	transformation = glm::lookAt(glm::vec3(x,y,z),glm::vec3(0), glm::vec3(0,1,0)) * transformation;
+	transformation = vecModelMatrix * transformation;
+
+	// Apply transformation in position
+	direction = glm::vec3(transformation * glm::vec4(direction, 1));
+	up = glm::vec3(transformation * glm::vec4(up, 1));
+	vecModelMatrix = transformation * vecModelMatrix;
+	modelMatrix = transformation * modelMatrix;
+
+	updateMatrices();
 }
 
 void Camera::setUp(float x, float y, float z) {
-    up = glm::vec3(x, y, z);
-    // Update matrices
-    updateModelMatrix();
-    updateViewMatrix();
+//	up = glm::vec3(x, y, z);
+	// Update matrices
+	updateMatrices();
 }
 
 void Camera::updateProjectioneMatrix() {
-    // Create new projection matrix
-    projectionMatrix = glm::perspective<float>(M_PI*fov/180.0, asp, GameWindow::dim/16.0, GameWindow::dim*16.0);
+	// Create new projection matrix
+	projectionMatrix = glm::perspective<float>(M_PI*fov/180.0, asp, GameWindow::dim/16.0, GameWindow::dim*16.0);
 
-    // Bind buffer
-    glBindBuffer(GL_UNIFORM_BUFFER, projectionBuffer);
-    // Update projection matrix
-    glBufferSubData(GL_UNIFORM_BUFFER, 0, 16 * sizeof(float),
-            glm::value_ptr(projectionMatrix));
+	// Bind buffer
+	glBindBuffer(GL_UNIFORM_BUFFER, projectionBuffer);
+	// Update projection matrix
+	glBufferSubData(GL_UNIFORM_BUFFER, 0, 16 * sizeof(float),
+			glm::value_ptr(projectionMatrix));
 
-    // Unbind buffer
-    glBindBuffer(GL_UNIFORM_BUFFER, 0);
+	// Unbind buffer
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
-void Camera::updateViewMatrix() {
+void Camera::updateMatrices() {
+	Transform::updateMatrices();
     // Create new model view matrix
     viewMatrix = glm::lookAt(position, position + direction, up);
 
@@ -158,101 +159,13 @@ void Camera::updateViewMatrix() {
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
-void Camera::updateModelMatrix() {
-    vecModelMatrix = glm::mat4(glm::vec4(glm::cross(up, direction), 0),
-            glm::vec4(up, 0), glm::vec4(direction, 0), glm::vec4(0, 0, 0, 1));
-    modelMatrix = glm::translate(glm::mat4(), position) * vecModelMatrix;
-}
-
-
 void Camera::zoomIn() {
-    if (fov > 15)
-        fov -= 3;
-    updateProjectioneMatrix();
+	if (fov > 15)
+		fov -= 3;
+	updateProjectioneMatrix();
 }
 void Camera::zoomOut() {
-    if (fov < 170)
-        fov += 3;
-    updateProjectioneMatrix();
-}
-
-void Camera::moveUp(float distance) {
-    // Set new position
-    position += distance * up;
-    // Update matrices
-    updateModelMatrix();
-    updateViewMatrix();
-}
-
-void Camera::moveDown(float distance) {
-    // Set new position
-    position -= distance * up;
-    // Update matrices
-    updateModelMatrix();
-    updateViewMatrix();
-}
-
-void Camera::moveForward(float distance) {
-    // Set new position
-    position += distance * direction;
-    // Update matrices
-    updateModelMatrix();
-    updateViewMatrix();
-}
-
-void Camera::moveBackward(float distance) {
-    // Set new position
-    position -= distance * direction;
-    // Update matrices
-    updateModelMatrix();
-    updateViewMatrix();
-}
-
-void Camera::moveLeft(float distance) {
-    // Set new position
-    position += distance * glm::cross(up, direction);
-    // Update matrices
-    updateModelMatrix();
-    updateViewMatrix();
-}
-
-void Camera::moveRight(float distance) {
-    // Set new position
-    position += distance * -glm::cross(up, direction);
-    // Update matrices
-    updateModelMatrix();
-    updateViewMatrix();
-}
-
-void Camera::translate(glm::vec3 & t) {
-    position += t;
-    // Update matrices
-    updateModelMatrix();
-    updateViewMatrix();
-}
-
-void Camera::rotate(float angle, glm::vec3 & normal) {
-    // update vectors
-    position = glm::rotate(position, angle, normal);
-    direction = glm::rotate(direction, angle, normal);
-    up = glm::rotate(up, angle, normal);
-
-    // Update matrices
-    updateModelMatrix();
-    updateViewMatrix();
-}
-
-void Camera::localRotate(float angle, glm::vec3 & normal) {
-    // Compute the transformation matrix - use vecModelMatrix because is vector transformation
-    glm::mat4 transformation = glm::inverse(vecModelMatrix) * glm::mat4();
-    transformation = glm::rotate(glm::mat4(), angle, normal) * transformation;
-    transformation = vecModelMatrix * transformation;
-
-    // Apply transformation in direction and up vectors
-    direction = glm::vec3(transformation * glm::vec4(direction, 1));
-    up = glm::vec3(transformation * glm::vec4(up, 1));
-
-    // Update matrices
-    updateModelMatrix();
-    updateViewMatrix();
+	if (fov < 170)
+		fov += 3;
+	updateProjectioneMatrix();
 }

@@ -1,9 +1,3 @@
-/*
- *
- *  Created on: Mar, 2015
- *      Author: Bruno Gouveia
- */
-
 #ifndef CAMERA_H__
 #define CAMERA_H__ 
 
@@ -72,22 +66,10 @@ public:
     void setUp(float x, float y, float z);
 
     void updateProjectioneMatrix();
-    void updateViewMatrix();
-    void updateModelMatrix();
+    void updateMatrices();
 
     void zoomIn();
     void zoomOut();
-
-    void moveUp(float distance);
-    void moveDown(float distance);
-    void moveForward(float distance);
-    void moveBackward(float distance);
-    void moveLeft(float distance);
-    void moveRight(float distance);
-
-    void translate(glm::vec3 & t);
-    void rotate(float angle, glm::vec3 & normal);
-    void localRotate(float angle, glm::vec3 & normal);
 };
 
 #endif

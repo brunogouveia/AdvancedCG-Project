@@ -1,9 +1,3 @@
-/*
- *
- *  Created on: Mar, 2015
- *      Author: Bruno Gouveia
- */
-
 #include "Material.h"
 #include <cstring>
 

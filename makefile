@@ -36,6 +36,8 @@ OBJS = \
 	$(BUILD_DIR)Renderer.o \
 	$(BUILD_DIR)Scene.o \
 	$(BUILD_DIR)Camera.o \
+	$(BUILD_DIR)GBuffer.o \
+	$(BUILD_DIR)Transform.o \
 	$(BUILD_DIR)GameObject.o \
 	$(BUILD_DIR)MeshObject.o \
 	$(BUILD_DIR)tiny_obj_loader.o \
@@ -91,8 +93,14 @@ $(BUILD_DIR)Renderer.o: $(SRC_DIR)Renderer.cpp
 $(BUILD_DIR)Camera.o: $(SRC_DIR)Camera.cpp
 	g++ -c -o $(BUILD_DIR)Camera.o $(CFLG) -I$(INCLUDE_DIR) $(SRC_DIR)Camera.cpp
 
+$(BUILD_DIR)GBuffer.o: $(SRC_DIR)GBuffer.cpp
+	g++ -c -o $(BUILD_DIR)GBuffer.o $(CFLG) -I$(INCLUDE_DIR) $(SRC_DIR)GBuffer.cpp
+
 $(BUILD_DIR)Scene.o: $(SRC_DIR)Scene.cpp
 	g++ -c -o $(BUILD_DIR)Scene.o $(CFLG) -I$(INCLUDE_DIR) $(SRC_DIR)Scene.cpp
+
+$(BUILD_DIR)Transform.o: $(SRC_DIR)Transform.cpp
+	g++ -c -o $(BUILD_DIR)Transform.o $(CFLG) -I$(INCLUDE_DIR) $(SRC_DIR)Transform.cpp
 
 $(BUILD_DIR)GameObject.o: $(SRC_DIR)gameobject/GameObject.cpp
 	g++ -c -o $(BUILD_DIR)GameObject.o $(CFLG) -I$(INCLUDE_DIR) $(SRC_DIR)gameobject/GameObject.cpp

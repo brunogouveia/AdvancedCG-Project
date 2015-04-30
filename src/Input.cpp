@@ -19,17 +19,17 @@ KeyCode KeyCode::PageDown(261);
  * KeyCode constructor
  */
 KeyCode::KeyCode(unsigned int v) :
-        value(v) {
+		value(v) {
 }
 
 std::vector<bool> Input::keyMap;
 
 void Input::init() {
-    keyMap.resize(262);
+	keyMap.resize(262);
 
-    for (int i = 0; i < 256; i++) {
-        keyMap[i] = false;
-    }
+	for (int i = 0; i < 256; i++) {
+		keyMap[i] = false;
+	}
 }
 
 
@@ -37,16 +37,16 @@ void Input::init() {
  * Returns true while the user holds down the key identified by name. Think auto fire.
  */
 bool Input::getKey(KeyCode key) {
-    return keyMap[key.value];
+	return keyMap[key.value];
 }
 
 void Input::setKey(KeyCode key) {
-    keyMap[key.value] = true;
+	keyMap[key.value] = true;
 }
 
 void Input::resetMaps() {
-    for (unsigned int i = 0; i < keyMap.size(); ++i) {
-        keyMap[i] = false;
-    }
+	for (unsigned int i = 0; i < keyMap.size(); ++i) {
+		keyMap[i] = false;
+	}
 }
 

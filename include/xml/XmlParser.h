@@ -1,9 +1,3 @@
-/*
- *
- *  Created on: Mar, 2015
- *      Author: Bruno Gouveia
- */
-
 #ifndef XMLPARSERSCENE_H__
 #define XMLPARSERSCENE_H__
 

@@ -1,9 +1,3 @@
-/*
- *
- *  Created on: Mar, 2015
- *      Author: Bruno Gouveia
- */
-
 #include "Texture.h"
 
 int Texture::defaultTexture = -1;

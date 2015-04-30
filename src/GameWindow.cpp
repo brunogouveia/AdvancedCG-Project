@@ -1,6 +1,7 @@
 /*
+ * GameWindow.cpp
  *
- *  Created on: Mar, 2015
+ *  Created on: Mar 23, 2015
  *      Author: Bruno Gouveia
  */
 

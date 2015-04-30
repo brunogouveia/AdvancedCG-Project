@@ -41,11 +41,12 @@ uniform Shadows {
 	mat4 DepthBiasMVP;
 } shadows;
 
+uniform vec2 dimension;
+
 //  Vertex attributes (input)
 layout(location = 0) in vec4 Vertex;
 layout(location = 1) in vec3 Normal;
 layout(location = 2) in vec2 TextCoord;
-
 
 //  Output to next shader
 out vec3 IPosition;

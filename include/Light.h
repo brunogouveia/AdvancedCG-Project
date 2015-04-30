@@ -1,9 +1,3 @@
-/*
- *
- *  Created on: Mar, 2015
- *      Author: Bruno Gouveia
- */
-
 #ifndef LIGHT_H__
 #define LIGHT_H__ 
 

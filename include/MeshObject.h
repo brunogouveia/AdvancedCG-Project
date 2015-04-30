@@ -1,14 +1,8 @@
-/*
- *
- *  Created on: Mar, 2015
- *      Author: Bruno Gouveia
- */
-
 #ifndef MESHOBJECT_h__
 #define MESHOBJECT_h__ 
 
 #include <GameObject.h>
-#include <String>
+#include <string>
 #include <vector>
 
 class MeshObject : public GameObject
@@ -45,6 +39,8 @@ public:
      * and normals are important here.
      */
     virtual void rendererPass(bool useLight);
+
+    virtual void deferredPass();
 
     /**
      *  This method loads the triangle mesh from a file. If you don't

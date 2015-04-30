@@ -1,38 +1,8 @@
 Bruno Henrique Gouveia
 
-What I have done:
+As I mentioned before, I changed my mind. Instead of a particle system I implemented screen spaced ambient occlusion. The final result is really god but I want to improve it, make it look like the original (Crytek implementation, sahshshsaahs).
 
-Load from xml:
-	There is an xml file called 'scene.xml', inside this file it's described the hole scene that I want to be rendered. 
-	I can descrbie window information such as window size and name, Camera (position, direction), list of objectc, where
-	each object is a cube or a mesh loaded from an obj file, and a list of lights.
-	There a lot you can do here, so take a look in this file, a commented somethings and would be interesting to read them.
-
-	I decided to create a class called Tranform, in which I can do operations such as translate, rotate, scale, move forward, etc.
-	The class Light, GameObject and Camera are Transform as well.
-
-Script system:
-	I created a really cool script system and simple to be used. As you can see, it's possible to move the camera and if you press 'l', 
-	the further light will rotate around the house. This is not pre-computed, but scripts that I implemented with my script system.
-	Each script is attached to a Transform object, hence I can make scripts to objects, lights and camera.
-
-	In order to create a new script you just need to create a class that inherits class Script, put the header inside the folder include/scripts and add an include statement in include/scripts/ScriptsRegistration.h, put the source file inside src/scripts and add an if statement inside the file src/ScriptsRegistration.cpp. You also need to overwrite the method 'OnUpdate', this method is called every frame.
-
-	Every script has an attribute transform. So you can use it to manipulate those objects.
-
-Inifinte number of lights:
-	So it's possible to have as many lights as you want. First the whole scene is rendering using the basic shader, which should not compute any light.
-	Then, for each light I compute the shadow map and draw the scene again using light shader and blend it to the current buffer. Hence, the lights will be added to the final result.
-
-Shadow:
-	I implemented shadow, when as you can see, the lights are actually spot lights instead of point lights. 
-
-Load obj:
-	As I mentioned before, you can load a object from an obj file. This can't load the material and texture from the mtl file yet, but I really intent to implement this future.
-
-
-Particle system:
-	It's not working properly yet, that's why I cut it off of this review, but I'm working on it.
+The code looks really simple, but I spent A LOT of time on this, and was totally worth it.
 
 Instructions of how to use it:
 	Just compile using make and run it. The file scene.xml should be in the folder of the executable, and the shader folder as well.

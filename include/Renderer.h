@@ -1,16 +1,10 @@
-/*
- *
- *  Created on: Mar, 2015
- *      Author: Bruno Gouveia
- */
-
 #ifndef RENDERER_H__
 #define RENDERER_H__ 
 
 #include "CSCIx239.h"
 #include <Scene.h>
 #include <Camera.h>
-#include <String>
+#include <string>
 
 class Renderer
 {
@@ -20,6 +14,7 @@ private:
 
     int defaultBasicShader; // Default basic shader
     int defaultLightShader; // Default light shader
+    int deferredShader;
     float fov;              //  Field of view (angles)
     float asp;              //  Screen aspect ratio
 
@@ -34,6 +29,8 @@ public:
     int createShaderProg(std::string vertShaderFile, std::string fragShaderFile);
     int getDefaultBasicShader();
     int getDefaultLightShader();
+    int getDeferredShader();
+    void bindDeferredTextures(int shader);
 
     void setScene(Scene * s);
     Scene * getScene();

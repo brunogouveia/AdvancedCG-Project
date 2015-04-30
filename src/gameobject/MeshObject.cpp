@@ -1,9 +1,3 @@
-/*
- *
- *  Created on: Mar, 2015
- *      Author: Bruno Gouveia
- */
-
 #include <MeshObject.h>
 #include <obj/tiny_obj_loader.h>
 #include <iostream>
@@ -113,6 +107,8 @@ void MeshObject::rendererPass(bool useLight) {
     // Bind normal Map
     normalMap.bind();
 
+    GameWindow::getRenderer()->bindDeferredTextures(useLight ? lightShader : basicShader);
+
     // Set uniform value
     int id = glGetUniformLocation(useLight ? lightShader : basicShader, "text");
     if (id >= 0) glUniform1i(id, 0);
@@ -136,6 +132,33 @@ void MeshObject::rendererPass(bool useLight) {
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER,0);
     glUseProgram(0);
+}
+
+void MeshObject::deferredPass() {
+    // Set model matrix
+    GameWindow::getRenderer()->getCamera()->setModelMatrix(modelMatrix);
+
+    // Bind vao and buffer
+    glBindVertexArray(vertexArrayObj);
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+
+    // Set attribute 0 - vertex (vec4)
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 9*sizeof(float), (void*)0);
+    // Set attribute 1 - normal (vec3)
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9*sizeof(float), (void*)(4*sizeof(float)));
+
+    // Draw cube
+    glDrawArrays(GL_TRIANGLES, 0, numVertices);
+
+    // Disable attributes
+    glDisableVertexAttribArray(0);
+    glDisableVertexAttribArray(1);
+
+    // Unbind everything
+    glBindVertexArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER,0);
 }
 
 void MeshObject::loadFromFile(char * fileName) {

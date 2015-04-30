@@ -1,14 +1,8 @@
-/*
- *
- *  Created on: Mar, 2015
- *      Author: Bruno Gouveia
- */
-
 #ifndef GAMEOBJECT_H__
 #define GAMEOBJECT_H__ 
 
 #include <CSCIx239.h>
-#include <List>
+#include <list>
 #include <Texture.h>
 #include <Material.h>
 #include <Transform.h>
@@ -49,6 +43,8 @@ public:
      */
     virtual void rendererPass(bool useLight);
 
+    virtual void deferredPass();
+
     /**
      *  Set a new texture (deffuse texture)
      */
@@ -64,12 +60,12 @@ public:
      */
     virtual void setMaterial(Material * newMaterial);
 
-    // Transform functions
-    virtual void translate(glm::vec3 & t);
-    virtual void translate(float tx, float ty, float tz);
-    virtual void rotate(float angle, glm::vec3 & up);
-    virtual void scale(glm::vec3 & s);
-    virtual void scale(float sx, float sy, float sz);
+//    // Transform functions
+//    virtual void translate(glm::vec3 & t);
+//    virtual void translate(float tx, float ty, float tz);
+//    virtual void rotate(float angle, glm::vec3 & up);
+//    virtual void scale(glm::vec3 & s);
+//    virtual void scale(float sx, float sy, float sz);
 };
 
 #endif
