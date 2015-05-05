@@ -7,11 +7,11 @@
 	</window>
 	<camera>
 		<model>
-			<rotate angle="3.14"/>
-			<rotate angle="-0.78">
+			<rotate angle="0.55">
 				<normal x="1" y="0" z="0"/>
 			</rotate>
-			<translate x="0" y="4.5" z="3.5"/>
+			<rotate angle="2.4"/>
+			<translate x="-6" y="6.5" z="8.5"/>
 		</model>
 		<!-- <position x="0" y="4.5" z="3.5"/>
 		<direction x="0" y="-0.5" z="-1"/>
@@ -57,6 +57,7 @@
 					<scale x="0.1" y="0.1" z="0.1"/>
 				</model>
 				<!-- Notice that i'm using a diferent frag shader for light, this is because this model requires normal map -->
+				<!-- <basic-shader vert="shaders/phong2.vert" frag="shaders/phong2.frag"/> -->
 				<light-shader vert="shaders/phongl.vert" frag="shaders/phongl-nm.frag"/>
 				<!-- Texture to be used - it can't load the texture from the mtl file yet -->
 				<texture file="textures/houseA.bmp"/>

@@ -70,7 +70,7 @@ CSCIx239.a: $(OBJS)
 
 #  Link
 GE: $(BUILD_DIR)Main.o CSCIx239.a
-	g++ -O3 -o GE -I$(INCLUDE_DIR) $(BUILD_DIR)Main.o CSCIx239.a $(LIBS) $(SRC_DIR)scripts/*.cpp
+	g++ -O3 -o GE -I$(INCLUDE_DIR) -I$(SRC_DIR) $(BUILD_DIR)Main.o CSCIx239.a $(LIBS) $(SRC_DIR)scripts/*.cpp $(SRC_DIR)Util/*.cpp 
 
 
 #  Clean

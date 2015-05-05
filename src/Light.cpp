@@ -1,6 +1,9 @@
 #include "Light.h"
 #include <cstring>
 #include <GameWindow.h>
+#define _USE_MATH_DEFINES
+#include <math.h>
+
 
 // Global
 GLuint  Light::globalLightBuffer;

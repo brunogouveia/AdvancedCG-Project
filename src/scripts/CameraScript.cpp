@@ -7,6 +7,7 @@
 
 #include "scripts/CameraScript.h"
 #include <Input.h>
+ #include <GameWindow.h>
 
 void CameraScript::OnUpdate() {
 	float velocity = 0.1;
@@ -58,6 +59,11 @@ void CameraScript::OnUpdate() {
 			camera->zoomIn();
 	} else {
 		printf("NUll");
+	}
+
+	if (Input::getKey('r'))
+	{
+		GameWindow::reshape(400,400);
 	}
 
 	// Check if user wants to close

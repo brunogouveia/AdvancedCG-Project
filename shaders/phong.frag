@@ -57,7 +57,7 @@ uniform vec2 dimension;
 uniform vec3 kernel[128];
 
 const float uRadius = 0.8;
-const float uPower = 2.0;
+const float uPower = 1;
 
 //  Input from previous shader
 in vec3 IPosition;

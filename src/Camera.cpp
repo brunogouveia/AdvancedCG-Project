@@ -3,6 +3,8 @@
 #include "glm/ext.hpp"
 #include "glm/gtx/string_cast.hpp"
 #include <GameWindow.h>
+#define _USE_MATH_DEFINES
+#include <math.h>
 
 Camera::Camera() : projectionBindingPoint(1) {
 	position = glm::vec3(0, 0.5, 0);
@@ -134,7 +136,7 @@ void Camera::setUp(float x, float y, float z) {
 
 void Camera::updateProjectioneMatrix() {
 	// Create new projection matrix
-	projectionMatrix = glm::perspective<float>(M_PI*fov/180.0, asp, GameWindow::dim/16.0, GameWindow::dim*16.0);
+	projectionMatrix = glm::perspective<float>(M_PI*fov/180.0f, asp, GameWindow::dim/16.0f, GameWindow::dim*16.0f);
 
 	// Bind buffer
 	glBindBuffer(GL_UNIFORM_BUFFER, projectionBuffer);
